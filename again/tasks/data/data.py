@@ -51,4 +51,7 @@ class Data:
             data_config.train_gt,
             data_config.validate_gt)
 
+        if hasattr(data_config, 'ignore_label'):
+            self.gt.ignore_label = data_config.ignore_label
+
         assert self.raw.spatial_dims == self.gt.spatial_dims

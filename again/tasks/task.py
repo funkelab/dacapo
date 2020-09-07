@@ -32,4 +32,7 @@ class Task:
         loss_args = {}
         if hasattr(task_config, 'loss_args'):
             loss_args = task_config.loss_args
+        if hasattr(data.gt, 'ignore_label'):
+            loss_args['ignore_label'] = data.gt.ignore_label
+            print(f"ignoring label {data.gt.ignore_label}")
         self.loss = task_config.loss(**loss_args)

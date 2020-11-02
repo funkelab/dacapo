@@ -13,7 +13,7 @@ class Dataset:
         self.voxel_size = gp.Coordinate(ds.attrs['resolution'])
         self.spatial_dims = len(self.voxel_size)
         if 'offset' in ds.attrs:
-            self.offset = gp.Coordinate(ds['resolution'])
+            self.offset = gp.Coordinate(ds['offset'])
         else:
             self.offset = gp.Coordinate((0,)*self.spatial_dims)
         self.shape = gp.Coordinate(ds.shape)

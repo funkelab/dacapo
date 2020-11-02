@@ -15,6 +15,8 @@ import numpy as np
 import os
 import time
 
+import torch
+torch.backends.cudnn.benchmark = True
 
 parser = configargparse.ArgParser(
     default_config_files=['~/.config/again', './again.conf'])

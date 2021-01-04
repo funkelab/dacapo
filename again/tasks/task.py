@@ -35,4 +35,9 @@ class Task:
         if hasattr(data.gt, 'ignore_label'):
             loss_args['ignore_label'] = data.gt.ignore_label
             print(f"ignoring label {data.gt.ignore_label}")
+        if hasattr(data.gt, 'neg_label'):
+            loss_args['neg_label'] = data.gt.neg_label
+            loss_args['neg_target'] = data.gt.neg_target
+            print(f"label {data.gt.neg_label} will be treated as not "
+                  f"{data.gt.neg_target}")
         self.loss = task_config.loss(**loss_args)

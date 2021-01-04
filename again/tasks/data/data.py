@@ -53,5 +53,8 @@ class Data:
 
         if hasattr(data_config, 'ignore_label'):
             self.gt.ignore_label = data_config.ignore_label
+        if hasattr(data_config, 'neg_label'):
+            self.gt.neg_label = data_config.neg_label
+            self.gt.neg_target = data_config.neg_target
 
         assert self.raw.spatial_dims == self.gt.spatial_dims

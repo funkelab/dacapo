@@ -263,7 +263,7 @@ def run_remote(run):
                 f'-b {run.keep_best_validation} ',
         num_cpus=2,
         num_gpus=1,
-        queue='slowpoke',
+        queue='gpu_any',
         execute=True)
 
 

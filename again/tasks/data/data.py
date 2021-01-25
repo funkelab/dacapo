@@ -37,6 +37,19 @@ class GtData:
         self.spatial_dims = self.train.spatial_dims
 
 
+class MaskData:
+
+    def __init__(self, filename, train_ds):
+
+        self.train = Dataset(filename, train_ds)
+
+        # mask should not have a channel dimension
+        assert self.train.num_channels == 0
+
+        self.num_channels = self.train.num_channels
+        self.voxel_size = self.train.voxel_size
+
+
 class Data:
 
     def __init__(self, data_config):
@@ -50,6 +63,14 @@ class Data:
             self.filename,
             data_config.train_gt,
             data_config.validate_gt)
+
+        if hasattr(data_config, 'train_mask'):
+            self.mask = MaskData(
+                self.filename,
+                data_config.train_mask)
+            self.has_mask = True
+        else:
+            self.has_mask = False
 
         if hasattr(data_config, 'ignore_label'):
             self.gt.ignore_label = data_config.ignore_label

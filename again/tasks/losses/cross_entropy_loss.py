@@ -25,33 +25,36 @@ class CrossEntropyLoss(torch.nn.CrossEntropyLoss, Loss):
         self.neg_label = neg_label
         self.neg_target = neg_target
 
-        if self.neg_label is None:
-            super(CrossEntropyLoss, self).__init__(weight, ignore_index=ignore_label)
-        else:
-            super(CrossEntropyLoss, self).__init__(
-                weight,
-                ignore_index=ignore_label,
-                reduction='none')
+        super(CrossEntropyLoss, self).__init__(
+            weight,
+            ignore_index=ignore_label,
+            reduction='none')
 
-    def forward(self, prediction, target):
+    def forward(self, prediction, target, mask=None):
 
-        if self.neg_label is None:
-            return super(CrossEntropyLoss, self).forward(prediction, target)
+        have_neg_label = self.neg_label is not None
+        have_mask = mask is not None
 
-        # mask for all neg_labels
-        neg_mask = target == self.neg_label
+        if not have_neg_label and not have_mask:
+            loss = super(CrossEntropyLoss, self).forward(prediction, target)
+            return loss.mean()
 
-        # replace neg_label with neg_target in target
-        target[neg_mask] = self.neg_target
+        if have_neg_label:
 
-        # print(target)
-        # print(torch.unique(target))
-        # print(prediction.shape)
+            neg_mask = target == self.neg_label
+
+            # replace neg_label with neg_target in target
+            target[neg_mask] = self.neg_target
 
         # compute loss without reduction
         loss = super(CrossEntropyLoss, self).forward(prediction, target)
 
         # invert loss within neg_mask
-        loss[neg_mask] *= -1
+        if have_neg_label:
+            loss[neg_mask] *= -1
+
+        # mask out
+        if have_mask:
+            loss[mask == 0] = 0
 
         return loss.mean()

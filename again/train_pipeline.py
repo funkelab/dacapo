@@ -159,12 +159,15 @@ def create_pipeline_3d(
     output_shape = predictor.output_shape
     voxel_size = task.data.raw.train.voxel_size
 
+    has_mask = task.data.has_mask
+
     # switch to world units
     input_size = voxel_size*input_shape
     output_size = voxel_size*output_shape
 
     raw = gp.ArrayKey('RAW')
     gt = gp.ArrayKey('GT')
+    mask = gp.ArrayKey('MASK')
     target = gp.ArrayKey('TARGET')
     weights = gp.ArrayKey('WEIGHTS')
     prediction = gp.ArrayKey('PREDICTION')
@@ -178,6 +181,9 @@ def create_pipeline_3d(
     sources = (
         task.data.raw.train.get_source(raw),
         task.data.gt.train.get_source(gt))
+    if has_mask:
+        print("Using mask")
+        sources = sources + (task.data.mask.train.get_source(mask),)
     pipeline = sources + gp.MergeProvider()
     pipeline += gp.Pad(raw, None)
     # raw: ([c,] d, h, w)
@@ -185,7 +191,10 @@ def create_pipeline_3d(
     pipeline += gp.Normalize(raw)
     # raw: ([c,] d, h, w)
     # gt: ([c,] d, h, w)
-    pipeline += gp.RandomLocation()
+    if has_mask:
+        pipeline += gp.RandomLocation(min_masked=0.1, mask=mask)
+    else:
+        pipeline += gp.RandomLocation()
     # raw: ([c,] d, h, w)
     # gt: ([c,] d, h, w)
     for augmentation in eval(task.augmentations):
@@ -196,10 +205,14 @@ def create_pipeline_3d(
     # target: ([c,] d, h, w)
     weights_node = task.loss.add_weights(target, weights)
     if weights_node:
+        assert not has_mask
         pipeline += weights_node
         loss_inputs = {0: prediction, 1: target, 2: weights}
     else:
-        loss_inputs = {0: prediction, 1: target}
+        if has_mask:
+            loss_inputs = {0: prediction, 1: target, 2: mask}
+        else:
+            loss_inputs = {0: prediction, 1: target}
     # raw: ([c,] d, h, w)
     # target: ([c,] d, h, w)
     # [weights: ([c,] d, h, w)]
@@ -260,6 +273,8 @@ def create_pipeline_3d(
     request.add(raw, input_size)
     request.add(gt, output_size)
     request.add(target, output_size)
+    if has_mask:
+        request.add(mask, output_size)
     if weights_node:
         request.add(weights, output_size)
     request.add(prediction, output_size)

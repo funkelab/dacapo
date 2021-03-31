@@ -8,6 +8,11 @@ so, `pip install -r build-requirements.txt`
 4) `pip install .`
 
 ## Usage:
+### MongoDB:
+you need a mongodb. In the root directory, wherever you are running dacapo from,
+you need to have a `dacapo.yaml` file, with 2 fields:
+1) `mongo_db_host: "mongodb://my_mongo_db_url"`
+2) `mongo_db_name: "dacapo"`
 ### Web interface:
 Install the [DaCapo dashboard](https://github.com/pattonw/dacapo-dashboard)
 run `dacapo-dashboard dashboard`

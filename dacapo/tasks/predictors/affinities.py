@@ -74,7 +74,9 @@ class Affinities(PredictorABC):
     def fmaps_out(self):
         return len(self.neighborhood)
 
-    def head(self, fmaps_in: int):
+    def head(self, model, dataset):
+
+        fmaps_in = model.architecture.fmaps_out
 
         assert self.fmaps_in is None or self.fmaps_in == fmaps_in
         self.fmaps_in = fmaps_in
@@ -101,18 +103,10 @@ class Affinities(PredictorABC):
                 raise Exception(f"{self.weighting_type} not a valid option")
         else:
             weights_node = None
-        padding = (
-            gp.Coordinate(
-                max([0] + [a[d] for a in self.neighborhood])
-                for d in range(len(self.neighborhood[0]))
-            )
-            * target_voxel_size
-        )
 
         return (
             target_node,
-            weights_node,
-            padding
+            weights_node
             # TODO: Fix Error: Found dtype Byte but expected Float
             # This can occur when backpropogating through MSE where
             # the predictions are floats but the targets are uint8

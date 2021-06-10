@@ -11,3 +11,5 @@
 *.coverage
 build
 .vscode
+runs/*
+UNET.md

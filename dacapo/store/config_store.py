@@ -10,6 +10,11 @@ class ConfigStore(ABC):
     """
 
     @abstractmethod
+    def no_such_config_exception_handler(func):
+        """Error handling when config name not found"""
+        pass
+
+    @abstractmethod
     def store_run_config(self, run_config):
         """Store a run config. This should also store the configs that are part
         of the run config (i.e., task, architecture, trainer, and dataset

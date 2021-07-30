@@ -76,7 +76,6 @@ class MongoConfigStore(ConfigStore):
         task_doc = self.tasks.find_one(
             {"name": task_name},
             projection={"_id": False})
-        print("doc", task_doc, converter.structure(task_doc, TaskConfig))
         return converter.structure(task_doc, TaskConfig)
 
     def retrieve_task_config_names(self):

@@ -1,8 +1,11 @@
+from dacapo.store.create_store import create_config_store, create_stats_store
+from dacapo.experiments.run import Run
 from bokeh.palettes import Category20 as palette
 import bokeh.layouts
 import bokeh.plotting
 import itertools
 import numpy as np
+from collections import namedtuple
 
 
 def smooth_values(a, n, stride=1):
@@ -12,12 +15,12 @@ def smooth_values(a, n, stride=1):
     # mean
     m = np.cumsum(a)
     m[n:] = m[n:] - m[:-n]
-    m = m[n - 1 :] / n
+    m = m[n - 1:] / n
 
     # mean of squared values
     m2 = np.cumsum(a ** 2)
     m2[n:] = m2[n:] - m2[:-n]
-    m2 = m2[n - 1 :] / n
+    m2 = m2[n - 1:] / n
 
     # stddev
     s = m2 - m ** 2
@@ -29,7 +32,39 @@ def smooth_values(a, n, stride=1):
     return m, s
 
 
-def plot_runs(runs, smooth=100, validation_score=None):
+def get_runs_info(run_config_names):
+    config_store = create_config_store()
+    stats_store = create_stats_store()
+    runs = []
+
+    RunInfo = namedtuple("run_info",
+                         ["name",
+                          "task",
+                          "architecture",
+                          "trainer",
+                          "dataset",
+                          "training_stats",
+                          "validation_scores"])
+
+    for run_config_name in run_config_names:
+        run_config = config_store.retrieve_run_config(run_config_name)
+        run = RunInfo(run_config_name,
+                      run_config.task_config.name,
+                      run_config.architecture_config.name,
+                      run_config.trainer_config.name,
+                      run_config.dataset_config.name,
+                      stats_store.retrieve_training_stats(
+                          run_config_name),
+                      stats_store.retrieve_validation_scores(
+                          run_config_name)
+                      )
+
+        runs.append(run)
+
+        return runs
+
+
+def plot_runs(run_config_names, smooth=100, validation_score=None):
     relation, validation_score = validation_score.split(":")
     if relation == "min":
         higher_is_better = False
@@ -38,14 +73,14 @@ def plot_runs(runs, smooth=100, validation_score=None):
     else:
         raise Exception(f"Don't know how to handle relation: {relation}")
 
-    run_names = [str(run) for run in runs]
-    max_iteration = max([run.training_stats.trained_until() for run in runs])
+    runs = get_runs_info(run_config_names)
 
     colors = itertools.cycle(palette[20])
     loss_tooltips = [
         ("task", "@task"),
-        ("model", "@model"),
-        ("optimizer", "@optimizer"),
+        ("architecture", "@architecture"),
+        ("trainer", "@trainer"),
+        ("dataset",  "@dataset"),
         ("iteration", "@iteration"),
         ("loss", "@loss"),
     ]
@@ -66,9 +101,9 @@ def plot_runs(runs, smooth=100, validation_score=None):
     validation_tooltips = [
         ("run", "@run"),
         ("task", "@task"),
-        ("model", "@model"),
-        ("optimizer", "@optimizer"),
-        ("iteration", "@iteration"),
+        ("architecture", "@architecture"),
+        ("trainer", "@trainer"),
+        ("dataset",  "@dataset"),
     ] + [(name, "@" + name) for name in validation_score_names]
     validation_figure = bokeh.plotting.figure(
         tools="pan, wheel_zoom, reset, save, hover",
@@ -81,8 +116,9 @@ def plot_runs(runs, smooth=100, validation_score=None):
     summary_tooltips = [
         ("run", "@run"),
         ("task", "@task"),
-        ("model", "@model"),
-        ("optimizer", "@optimizer"),
+        ("architecture", "@architecture"),
+        ("trainer", "@trainer"),
+        ("dataset",  "@dataset"),
         ("best iteration", "@iteration"),
         ("best voi_split", "@voi_split"),
         ("best voi_merge", "@voi_merge"),
@@ -102,18 +138,25 @@ def plot_runs(runs, smooth=100, validation_score=None):
 
         if run.training_stats.trained_until() > 0:
 
-            name = str(run)
-            l = run.training_stats.iterations[-1]
+            name = run.name
+            #l = run.training_stats.iterations[-1]
 
-            x, _ = smooth_values(run.training_stats.iterations, smooth, stride=smooth)
-            y, s = smooth_values(run.training_stats.losses, smooth, stride=smooth)
+            iterations = [stat.iteration
+                          for stat in run.training_stats.iteration_stats]
+            losses = [stat.loss
+                      for stat in run.training_stats.iteration_stats]
+            x, _ = smooth_values(
+                iterations, smooth, stride=smooth)
+            y, s = smooth_values(losses,
+                                 smooth, stride=smooth)
             source = bokeh.plotting.ColumnDataSource(
                 {
                     "iteration": x,
                     "loss": y,
-                    "task": [run.task_config.id] * len(x),
-                    "model": [run.model_config.id] * len(x),
-                    "optimizer": [run.optimizer_config.id] * len(x),
+                    "task": [run.task] * len(x),
+                    "architecture": [run.architecture] * len(x),
+                    "trainer": [run.trainer] * len(x),
+                    "dataset": [run.dataset] * len(x),
                     "run": [str(run)] * len(x),
                 }
             )
@@ -139,9 +182,10 @@ def plot_runs(runs, smooth=100, validation_score=None):
             x = run.validation_scores.iterations
             source_dict = {
                 "iteration": x,
-                "task": [run.task_config.id] * len(x),
-                "model": [run.model_config.id] * len(x),
-                "optimizer": [run.optimizer_config.id] * len(x),
+                "task": [run.task.name] * len(x),
+                "architecture": [run.architecture] * len(x),
+                "trainer": [run.trainer] * len(x),
+                "dataset": [run.dataset.name] * len(x),
                 "run": [str(run)] * len(x),
             }
             # TODO: get_best: higher_is_better is not true for all scores

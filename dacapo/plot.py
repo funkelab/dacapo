@@ -1,5 +1,4 @@
 from dacapo.store.create_store import create_config_store, create_stats_store
-from dacapo.experiments.run import Run
 from bokeh.palettes import Category20 as palette
 import bokeh.layouts
 import bokeh.plotting
@@ -33,6 +32,7 @@ def smooth_values(a, n, stride=1):
 
 
 def get_runs_info(run_config_names):
+
     config_store = create_config_store()
     stats_store = create_stats_store()
     runs = []
@@ -58,10 +58,9 @@ def get_runs_info(run_config_names):
                       stats_store.retrieve_validation_scores(
                           run_config_name)
                       )
-
         runs.append(run)
 
-        return runs
+    return runs
 
 
 def plot_runs(run_config_names, smooth=100, validation_score=None):

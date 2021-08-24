@@ -7,6 +7,7 @@ import bokeh.plotting
 import itertools
 import numpy as np
 from collections import namedtuple
+import time
 
 
 def smooth_values(a, n, stride=1):
@@ -69,8 +70,8 @@ def get_runs_info(run_config_base_names,
                           run_config.architecture_config.name,
                           run_config.trainer_config.name,
                           run_config.dataset_config.name,
-                          stats_store.retrieve_training_stats(
-                              run_config_name),
+                          [stats_store.retrieve_training_stats(
+                              run_config_name) if plot_loss else None][0],
                           stats_store.retrieve_validation_scores(
                               run_config_name),
                           validation_score_name,
@@ -83,7 +84,6 @@ def get_runs_info(run_config_base_names,
 
 
 def plot_runs(run_config_base_names, smooth=100, validation_scores=None, higher_is_betters=None, plot_losses=None, return_json=False):
-
     runs = get_runs_info(run_config_base_names,
                          validation_scores, higher_is_betters, plot_losses)
 
@@ -159,11 +159,9 @@ def plot_runs(run_config_base_names, smooth=100, validation_scores=None, higher_
     include_loss_figure = False
 
     for run, color in zip(runs, colors):
-        if run.training_stats.trained_until() > 0:
-
-            name = run.name
-            #l = run.training_stats.iterations[-1]
-
+        name = run.name
+        
+        if run.plot_loss:
             iterations = [stat.iteration
                           for stat in run.training_stats.iteration_stats]
             losses = [stat.loss

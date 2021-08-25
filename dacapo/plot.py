@@ -7,7 +7,6 @@ import bokeh.plotting
 import itertools
 import numpy as np
 from collections import namedtuple
-import time
 
 
 def smooth_values(a, n, stride=1):

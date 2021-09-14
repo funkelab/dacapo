@@ -7,5 +7,5 @@ import attr
 @attr.s
 class MSELoss(LossABC):
 
-    def instantiate(self):
+    def module(self):
         return torch.nn.MSELoss()

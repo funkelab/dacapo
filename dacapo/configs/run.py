@@ -100,7 +100,7 @@ class Run:
 
         # initialize model, heads, optimizer etc.
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        backbone = model.instantiate(dataset).to(device)
+        backbone = model.module(dataset).to(device)
         heads = [
             predictor.head(model, dataset).to(device) for predictor in task.predictors
         ]
@@ -112,7 +112,7 @@ class Run:
                 {"params": head.parameters()},
             )
         torch_optimizer = optimizer.instance(parameters)
-        torch_losses = [loss.instantiate() for loss in task.losses]
+        torch_losses = [loss.module() for loss in task.losses]
 
         # load from checkpoint
         if checkpoint is not None:

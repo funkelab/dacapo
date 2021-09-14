@@ -34,7 +34,7 @@ def predict(
     model = store.get_model(run.model)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    backbone = model.instantiate(dataset).to(device)
+    backbone = model.module(dataset).to(device)
     backbone.eval()
     heads = [predictor.head(model, dataset).to(device) for predictor in task.predictors]
     [head.eval() for head in heads]

@@ -11,5 +11,5 @@ class ModelABC:
         return True
 
     @abstractmethod
-    def instantiate(self):
+    def module(self):
         pass

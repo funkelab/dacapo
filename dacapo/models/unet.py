@@ -87,7 +87,7 @@ class UNet(ModelABC):
         default=None, metadata={"help_text": "The number of channels in your raw data."}
     )  # can be read from data num_channels
 
-    def instantiate(self, dataset):
+    def module(self, dataset):
         assert (
             self.fmaps_in is None or self.fmaps_in == dataset.raw.num_channels
         ), f"{self.fmaps_in} {dataset.raw.num_channels}"

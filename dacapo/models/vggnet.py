@@ -22,5 +22,5 @@ class VGGNet(ModelABC):
         metadata={"help_text": "The number of featuremaps provided."}
     )
 
-    def instantiate(self, fmaps_in: int):
+    def module(self, fmaps_in: int):
         raise NotImplementedError()

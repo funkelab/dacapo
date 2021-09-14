@@ -9,7 +9,7 @@ from typing import Optional
 @attr.s
 class WeightedMSELoss(LossABC):
 
-    def instantiate(self):
+    def module(self):
         return WeightedMSELossOp()
 
 

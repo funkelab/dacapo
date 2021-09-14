@@ -15,11 +15,11 @@ from typing import Optional
 class MyLoss(LossABC):
     param_a: float = attr.ib()
 
-    def instantiate(self):
+    def module(self):
         return MyTorchLoss(param_a)
 ```
 
-The only required function is `instantiate`, that returns a torch Module. The returned
+The only required function is `module`, that returns a torch Module. The returned
 module will then recieve the predictions, targets, and optional weights with which
 to compute the loss.
 

@@ -21,11 +21,11 @@ class MyArchitecture(ArchitectureABC):
     predict_input_shape: Optional[List[int]] = attr.ib()
     predict_output_shape: Optional[List[int]] = attr.ib()
 
-    def instantiate(self, fmaps_in: int):
+    def module(self, fmaps_in: int):
         return MyTorchModule(fmaps_in, *args, **kwargs)
 ```
 
-`Architecture`s require the `instantiate` method, which takes `fmaps_in`
+`Architecture`s require the `module` method, which takes `fmaps_in`
 and returns a `torch` module that can take a volume of size `input_shape`
 with `fmaps_in` channels and return a volume of size `output_shape` with
 `fmaps_out` channels.

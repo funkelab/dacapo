@@ -142,7 +142,7 @@ def load_prediction_config(
         )
 
     if output_shape is None:
-        backbone = model.instantiate(dataset)
+        backbone = model.module(dataset)
         output_shape = Coordinate(backbone.output_shape(input_shape))
 
     # load in data to run on

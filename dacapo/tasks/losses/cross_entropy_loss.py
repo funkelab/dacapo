@@ -19,7 +19,7 @@ class CrossEntropyLoss(LossABC):
         },
     )
 
-    def instantiate(self):
+    def module(self):
         return torch.nn.CrossEntropyLoss(
             torch.tensor(self.weights) if self.weights is not None else None,
             ignore_index=self.ignore_label,

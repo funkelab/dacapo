@@ -23,7 +23,7 @@ class DefaultBatchGenerator:
 
         # to compute output shape on the fly. Should probably add helper functions to
         # do this automatically on each supported model.
-        backbone = model.instantiate(dataset)
+        backbone = model.module(dataset)
 
         raw_channels = max(1, dataset.raw.num_channels)
         input_shape = Coordinate(model.input_shape)

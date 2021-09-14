@@ -76,14 +76,14 @@ class Run:
 
         task = store.get_task(self.task)
         dataset = store.get_dataset(self.dataset)
-        model = store.get_model(self.model)
+        architecture = store.get_architecture(self.architecture)
         optimizer = store.get_optimizer(self.optimizer)
 
-        # self.num_parameters = model.num_parameters + task.num_parameters
+        # self.num_parameters = architecture.num_parameters + task.num_parameters
         self.outdir.mkdir(parents=True, exist_ok=True)
 
         checkpoint, starting_iteration = self.load_training_state(
-            store, model, optimizer
+            store, architecture, optimizer
         )
         if starting_iteration > 0:
             store.store_training_stats(self)
@@ -92,17 +92,17 @@ class Run:
         pipeline, request, predictor_keys = batch_generator.create_pipeline(
             task,
             dataset,
-            model,
+            architecture,
             optimizer,
             outdir=self.outdir,
             snapshot_every=self.execution_details.snapshot_interval,
         )
 
-        # initialize model, heads, optimizer etc.
+        # initialize architecture, heads, optimizer etc.
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        backbone = model.module(dataset).to(device)
+        backbone = architecture.module(dataset).to(device)
         heads = [
-            predictor.head(model, dataset).to(device) for predictor in task.predictors
+            predictor.head(architecture, dataset).to(device) for predictor in task.predictors
         ]
         parameters = [
             {"params": backbone.parameters()},

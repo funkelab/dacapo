@@ -128,21 +128,21 @@ def load_prediction_config(
     # get necessary configs from job
     run = store.get_run(run_id)
     dataset = store.get_dataset(run.dataset)
-    model = store.get_model(run.model)
+    architecture = store.get_architecture(run.architecture)
 
     try:
-        input_shape = Coordinate(model.predict_input_shape)
+        input_shape = Coordinate(architecture.predict_input_shape)
     except AttributeError:
-        input_shape = Coordinate(model.input_shape)
+        input_shape = Coordinate(architecture.input_shape)
     try:
-        output_shape = Coordinate(model.predict_output_shape)
+        output_shape = Coordinate(architecture.predict_output_shape)
     except AttributeError:
         output_shape = (
-            Coordinate(model.output_shape) if model.output_shape is not None else None
+            Coordinate(architecture.output_shape) if architecture.output_shape is not None else None
         )
 
     if output_shape is None:
-        backbone = model.module(dataset)
+        backbone = architecture.module(dataset)
         output_shape = Coordinate(backbone.output_shape(input_shape))
 
     # load in data to run on

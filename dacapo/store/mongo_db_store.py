@@ -27,7 +27,7 @@ class DictAsMember(dict):
 
 class MongoDbStore:
     def __init__(self):
-        """Create a MongoDB sync. Used to sync runs, tasks, models,
+        """Create a MongoDB sync. Used to sync runs, tasks, architectures,
         optimizers, trainig stats, and validation scores."""
 
         assert Path( expanduser("~/.config/dacapo") ).exists() or Path("./dacapo.yaml").exists()
@@ -138,14 +138,14 @@ class MongoDbStore:
             self.datasets.find_one({"id": dataset}, projection={"_id": False}), Dataset
         )
 
-    def add_model(self, model):
-        return self.__save_insert(self.models, converter.unstructure(model))
+    def add_architecture(self, architecture):
+        return self.__save_insert(self.architectures, converter.unstructure(architecture))
 
-    def get_model(self, model: str):
-        from dacapo.models import Model
+    def get_architecture(self, architecture: str):
+        from dacapo.architectures import Architectures
 
         return converter.structure(
-            self.models.find_one({"id": model}, projection={"_id": False}), Model
+            self.architectures.find_one({"id": architecture}, projection={"_id": False}), Architectures
         )
 
     def add_optimizer(self, optimizer):
@@ -291,9 +291,9 @@ class MongoDbStore:
         item_id = self.__save_insert(self.datasets, converter.unstructure(dataset))
         dataset.id = item_id
 
-    def __sync_model(self, model):
-        item_id = self.__save_insert(self.models, converter.unstructure(model))
-        model.id = item_id
+    def __sync_architecture(self, architecture):
+        item_id = self.__save_insert(self.architectures, converter.unstructure(architecture))
+        architecture.id = item_id
 
     def __sync_optimizer(self, optimizer):
         item_id = self.__save_insert(self.optimizers, converter.unstructure(optimizer))
@@ -435,7 +435,7 @@ class MongoDbStore:
         )
         self.tasks.create_index([("id", ASCENDING)], name="id", unique=True)
         self.datasets.create_index([("id", ASCENDING)], name="id", unique=True)
-        self.models.create_index([("id", ASCENDING)], name="id", unique=True)
+        self.architectures.create_index([("id", ASCENDING)], name="id", unique=True)
         self.optimizers.create_index([("id", ASCENDING)], name="id", unique=True)
         self.training_stats.create_index(
             [("run", ASCENDING), ("iteration", ASCENDING)], name="run_it", unique=True
@@ -452,7 +452,7 @@ class MongoDbStore:
         self.predictions = self.database["predictions"]
         self.tasks = self.database["tasks"]
         self.datasets = self.database["datasets"]
-        self.models = self.database["models"]
+        self.architectures = self.database["architectures"]
         self.optimizers = self.database["optimizers"]
         self.training_stats = self.database["training_stats"]
         self.validation_scores = self.database["validation_scores"]

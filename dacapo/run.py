@@ -55,7 +55,7 @@ def run_local(run):
     print(
         f"Running task {run.task} "
         f"with data {run.dataset}, "
-        f"with model {run.model}, "
+        f"with architecture {run.architecture}, "
         f"using optimizer {run.optimizer}"
     )
 

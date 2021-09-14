@@ -31,12 +31,12 @@ def predict(
     run = store.get_run(predict_config.run_id)
     task = store.get_task(run.task)
     dataset = store.get_dataset(run.dataset)
-    model = store.get_model(run.model)
+    architecture = store.get_architecture(run.architecture)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    backbone = model.module(dataset).to(device)
+    backbone = architecture.module(dataset).to(device)
     backbone.eval()
-    heads = [predictor.head(model, dataset).to(device) for predictor in task.predictors]
+    heads = [predictor.head(architecture, dataset).to(device) for predictor in task.predictors]
     [head.eval() for head in heads]
 
     voxel_size = predict_config.raw.voxel_size

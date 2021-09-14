@@ -15,7 +15,7 @@ from .data import (
     ArrayDataSource,
     GraphDataSource,
 )
-from .models import Model, UNet, VGGNet
+from .architectures import Architectures, UNet, VGGNet
 from .optimizers import Optimizer, Adam, RAdam
 
 __all__ = [
@@ -23,7 +23,7 @@ __all__ = [
     Run,
     Task,
     Dataset,
-    Model,
+    Architectures,
     UNet,
     Optimizer,
     Adam,

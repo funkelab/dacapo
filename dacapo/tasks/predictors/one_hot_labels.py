@@ -71,9 +71,9 @@ class OneHotLabels(PredictorABC):
     def fmaps_out(self):
         return self.num_classes
 
-    def head(self, model, dataset):
-        assert self.fmaps_in is None or self.fmaps_in == model.architecture.fmaps_out
-        self.fmaps_in = model.architecture.fmaps_out
+    def head(self, architecture, dataset):
+        assert self.fmaps_in is None or self.fmaps_in == architecture.fmaps_out
+        self.fmaps_in = architecture.fmaps_out
         assert self.dims is None or self.dims == dataset.dims
         self.dims = dataset.dims
         assert self.num_classes is None or self.num_classes == dataset.gt.num_classes

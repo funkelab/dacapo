@@ -3,7 +3,7 @@ from funlib.geometry import Coordinate
 import attr
 
 from .module_wrapper import ModuleWrapper
-from .model_abc import ModelABC
+from .architecture_abc import ArchitectureABC
 from dacapo.converter import converter
 
 from typing import List, Optional, Tuple
@@ -26,7 +26,7 @@ converter.register_structure_hook(
 
 
 @attr.s
-class UNet(ModelABC):
+class UNet(ArchitectureABC):
     # standard model attributes
     input_shape: List[int] = attr.ib(
         metadata={"help_text": "The input shape of the model."}

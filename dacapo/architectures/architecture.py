@@ -1,21 +1,27 @@
-from .architectures import AnyArchitecture
+import attr
+
 from dacapo.converter import converter
 
-import attr
+from abc import ABC, abstractmethod
 
 
 @attr.s
-class Model:
+class Architecture(ABC):
     name: str = attr.ib(
         metadata={"help_text": "Name of your model for easy search and reuse"}
     )
-    architecture: AnyArchitecture = attr.ib(metadata={"help_text": "The type of model"})
 
     def verify(self):
         unstructured = converter.unstructure(self)
         structured = converter.structure(unstructured, self.__class__)
         assert self == structured
-        self.architecture.verify()
+        return True
 
-    def __getattr__(self, name):
-        return getattr(self.architecture, name)
+    @abstractmethod
+    def module(self):
+        pass
+
+    @property
+    @abstractmethod
+    def name(self):
+        pass

@@ -19,7 +19,9 @@ class Applicator(ABC):
     name: str = attr.ib(metadata={"help_text": "Unique identifier for this Applicator"})
 
     @abstractmethod
-    def out_dir(self, experiment_path: Path) -> Path:
+    def out_dir(
+        self, experiment_path: Path, run_repitition: int, dataset_name: str
+    ) -> Path:
         raise NotImplementedError("Please implement in subclass!")
 
     @abstractmethod

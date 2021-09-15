@@ -12,20 +12,21 @@ This is where we keep anything that we might want to provide multiple versions o
     - networkx file
     - rasterized graph
     - zarr
-4) Executers
+4) Evaluators
+5) Executers
     - local
-5) Losses
+6) Losses
     - cross entropy
     - mse
     - weighted mse
-6) optimizers
+7) optimizers
     - adam
     - radam
-7) Predictors
+8) Predictors
     - affinities
     - lsd
     - one_hot_labels
-8) Processing Steps
+9) Processing Steps
     - Agglomerate
     - Argmax
     - Create LUTS

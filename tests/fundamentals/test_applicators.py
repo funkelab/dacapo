@@ -18,7 +18,7 @@ def test_applicators(applicator):
         applicator.keep_model_predictions, bool
     )
     assert applicator.keep_post_processing_intermediates is not None and isinstance(
-        applicator.keep_post_processing_intermediates.name, str
+        applicator.keep_post_processing_intermediates, bool
     )
 
     assert isinstance(applicator.out_dir(Path("test"), 2, "test_data"), Path)

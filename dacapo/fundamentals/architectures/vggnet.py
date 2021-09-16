@@ -1,26 +1,33 @@
-import attr
+from .helpers import Architecture
 
-from .model_abc import ModelABC
+from funlib.learn.torch.models import Vgg3D as VGGNetModule
+import attr
 
 from typing import List, Optional
 from enum import Enum
 
 
-class ConvPaddingOption(Enum):
-    VALID = "valid"
-    SAME = "same"
-
-
 @attr.s
-class VGGNet(ModelABC):
+class VGGNet(Architecture):
     # standard model attributes
     input_shape: List[int] = attr.ib(metadata={"help_text": "The input shape."})
-    output_shape: Optional[List[int]] = attr.ib(
-        metadata={"help_text": "The output shape."}
-    )
     fmaps_out: int = attr.ib(
         metadata={"help_text": "The number of featuremaps provided."}
     )
+    downsample_factors: List[List[int]] = attr.ib(
+        metadata={
+            "help_text": "The factor by which to downsample spatial dimensions along each axis."
+        }
+    )
 
-    def module(self, fmaps_in: int):
-        raise NotImplementedError()
+    fmaps_in: Optional[int] = attr.ib(
+        default=None, metadata={"help_text": "The number of channels in the input data"}
+    )
+
+    def module(self):
+        return VGGNetModule(
+            input_size=self.input_shape,
+            fmaps=self.fmaps_in,
+            output_classes=self.fmaps_out,
+            downsample_factors=self.downsample_factors,
+        )

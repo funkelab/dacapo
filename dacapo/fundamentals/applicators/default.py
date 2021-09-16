@@ -1,4 +1,4 @@
-from .helpers.applicator import Applicator
+from .helpers import Applicator
 
 import attr
 

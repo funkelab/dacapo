@@ -1,11 +1,11 @@
-from .augment_abc import AugmentABC
+from .helpers import Augment
 
 import attr
 import gunpowder as gp
 
 
 @attr.s
-class IntensityAugment(AugmentABC):
+class IntensityAugment(Augment):
     scale_min: float = attr.ib(metadata={"help_text": "min scale to augment your data"})
     scale_max: float = attr.ib(metadata={"help_text": "max scale to augment your data"})
     shift_min: float = attr.ib(metadata={"help_text": "min shift to augment your data"})

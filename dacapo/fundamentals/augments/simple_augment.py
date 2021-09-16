@@ -1,4 +1,4 @@
-from .augment_abc import AugmentABC
+from .helpers import Augment
 
 import attr
 import gunpowder as gp
@@ -7,7 +7,7 @@ from typing import Optional, List
 
 
 @attr.s
-class SimpleAugment(AugmentABC):
+class SimpleAugment(Augment):
     mirror_only: List[int] = attr.ib(
         metadata={
             "help_text": "The axes to mirror. This lets you exclude some axes "

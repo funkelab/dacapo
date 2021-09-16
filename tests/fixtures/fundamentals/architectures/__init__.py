@@ -1,3 +1,4 @@
-from .architectures import Architectures  # noqa
-from .unet import UNet  # noqa
-from .vggnet import VGGNet  # noqa
+from .unet import unet  # noqa
+from .vggnet import vggnet  # noqa
+
+ARCHITECTURES = [unet, vggnet]

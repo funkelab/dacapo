@@ -1,10 +1,7 @@
-import funlib.learn.torch as ft
-from funlib.geometry import Coordinate
-import attr
+from .helpers import Architecture
 
-from .module_wrapper import ModuleWrapper
-from .architecture_abc import ArchitectureABC
-from dacapo.converter import converter
+from funlib.learn.torch.models import UNet as UNetModule
+import attr
 
 from typing import List, Optional, Tuple
 from enum import Enum
@@ -15,18 +12,8 @@ class ConvPaddingOption(Enum):
     SAME = "same"
 
 
-converter.register_unstructure_hook(
-    ConvPaddingOption,
-    lambda o: {"value": o.value},
-)
-converter.register_structure_hook(
-    ConvPaddingOption,
-    lambda o, _: ConvPaddingOption(o["value"]),
-)
-
-
 @attr.s
-class UNet(ArchitectureABC):
+class UNet(Architecture):
     # standard model attributes
     input_shape: List[int] = attr.ib(
         metadata={"help_text": "The input shape of the model."}
@@ -87,52 +74,31 @@ class UNet(ArchitectureABC):
         default=None, metadata={"help_text": "The number of channels in your raw data."}
     )  # can be read from data num_channels
 
-    def module(self, dataset):
-        assert (
-            self.fmaps_in is None or self.fmaps_in == dataset.raw.num_channels
-        ), f"{self.fmaps_in} {dataset.raw.num_channels}"
-        self.fmaps_in = dataset.raw.num_channels
-        return UNetModule(self)
+    def module(self):
+        fmaps_in = self.fmaps_in
+        levels = len(self.downsample_factors) + 1
+        dims = len(self.downsample_factors[0])
 
-
-class UNetModule(ModuleWrapper):
-    """Creates a funlib.learn.torch U-Net for the given data from a model
-    configuration."""
-
-    def __init__(self, model_config: UNet):
-
-        super(UNetModule, self).__init__(
-            None,
-            model_config.fmaps_in,
-            model_config.fmaps_out,
-        )
-
-        fmaps_in = model_config.fmaps_in
-        levels = len(model_config.downsample_factors) + 1
-        dims = len(model_config.downsample_factors[0])
-
-        if hasattr(model_config, "kernel_size_down"):
-            kernel_size_down = model_config.kernel_size_down
+        if hasattr(self, "kernel_size_down"):
+            kernel_size_down = self.kernel_size_down
         else:
             kernel_size_down = [[(3,) * dims, (3,) * dims]] * levels
-        if hasattr(model_config, "kernel_size_up"):
-            kernel_size_up = model_config.kernel_size_up
+        if hasattr(self, "kernel_size_up"):
+            kernel_size_up = self.kernel_size_up
         else:
             kernel_size_up = [[(3,) * dims, (3,) * dims]] * (levels - 1)
 
         # downsample factors has to be a list of tuples
-        downsample_factors = [tuple(x) for x in model_config.downsample_factors]
+        downsample_factors = [tuple(x) for x in self.downsample_factors]
 
-        self.unet = ft.models.UNet(
+        unet = UNetModule(
             in_channels=fmaps_in,
-            num_fmaps=model_config.fmaps_out,
-            fmap_inc_factor=model_config.fmap_inc_factor,
+            num_fmaps=self.fmaps_out,
+            fmap_inc_factor=self.fmap_inc_factor,
             kernel_size_down=kernel_size_down,
             kernel_size_up=kernel_size_up,
             downsample_factors=downsample_factors,
-            constant_upsample=True,
-            padding=model_config.padding,
+            constant_upsample=self.constant_upsample,
+            padding=self.padding,
         )
-
-    def forward(self, x):
-        return self.unet(x)
+        return unet

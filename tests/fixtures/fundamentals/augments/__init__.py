@@ -1,3 +1,4 @@
-from .augments import AnyAugment
-from .intensity_augment import IntensityAugment
-from .simple_augment import SimpleAugment
+from .intensity_augment import intensity_augment
+from .simple_augment import simple_augment
+
+AUGMENTS = [intensity_augment, simple_augment]

@@ -20,4 +20,5 @@ zarr
 click
 attr
 cattrs
+dotenv
 intern # for bossdb

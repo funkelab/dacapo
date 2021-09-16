@@ -1,7 +1,7 @@
 from ..fixtures.fundamentals.augments import AUGMENTS
 
 from dacapo.store.converter import converter
-from dacapo.fundamentals.augments import Augments
+from dacapo.fundamentals.augments import Augment
 
 import gunpowder as gp
 
@@ -21,5 +21,5 @@ def test_augments(augment):
     # so that it works properly with the database
     serialized = converter.unstructure(augment)
     assert serialized == converter.unstructure(
-        converter.structure(serialized, Augments)
+        converter.structure(serialized, Augment)
     )

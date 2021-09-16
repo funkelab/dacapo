@@ -1,3 +1,4 @@
+from .helpers import Augment  # noqa
 from .augments import Augments
 from .intensity_augment import IntensityAugment
 from .simple_augment import SimpleAugment

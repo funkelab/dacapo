@@ -1,7 +1,7 @@
 from ..fixtures.fundamentals.graphsources import GRAPHSOURCES
 
 from dacapo.store.converter import converter
-from dacapo.fundamentals.graphsources import GraphSources
+from dacapo.fundamentals.graphsources import GraphSource
 
 from gunpowder.graph import GraphKey
 from gunpowder.nodes import BatchProvider
@@ -22,5 +22,5 @@ def test_augments(datasource):
     # so that it works properly with the database
     serialized = converter.unstructure(datasource)
     assert serialized == converter.unstructure(
-        converter.structure(serialized, GraphSources)
+        converter.structure(serialized, GraphSource)
     )

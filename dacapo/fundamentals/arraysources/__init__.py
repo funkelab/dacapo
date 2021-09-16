@@ -1,3 +1,4 @@
+from .helpers import ArraySource  # noqa
 from .arraysources import ArraySources  # noqa
 from .bossdb_source import BossDBSource  # noqa
 from .zarr_source import ZarrSource  # noqa

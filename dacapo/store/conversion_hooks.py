@@ -4,9 +4,11 @@ from dacapo.fundamentals.applicators import *
 from dacapo.fundamentals.architectures import *
 from dacapo.fundamentals.arraysources import *
 from dacapo.fundamentals.augments import *
+
 # from dacapo.fundamentals.evaluators import *
 # from dacapo.fundamentals.executers import *
 from dacapo.fundamentals.graphsources import *
+
 # from dacapo.fundamentals.losses import *
 # from dacapo.fundamentals.optimizers import *
 # from dacapo.fundamentals.predictors import *
@@ -14,6 +16,9 @@ from dacapo.fundamentals.graphsources import *
 # from dacapo.fundamentals.starts import *
 # from dacapo.fundamentals.trainers import *
 # from dacapo.fundamentals.validators import *
+
+from funlib.geometry import Coordinate, Roi
+
 from pathlib import Path
 
 
@@ -74,6 +79,16 @@ def register_hooks(converter):
     #################
     # general hooks #
     #################
+
+    # coordinate to tuple and back
+    converter.register_unstructure_hook(Coordinate, lambda o: tuple(o))
+    converter.register_structure_hook(Coordinate, lambda o, _: Coordinate(o))
+    
+    # Roi to tuple of tuples and back
+    converter.register_unstructure_hook(
+        Roi, lambda o: (tuple(o.offset), tuple(o.shape))
+    )
+    converter.register_structure_hook(Roi, lambda o, _: Roi(o[0], o[1]))
 
     # path to string and back
     converter.register_unstructure_hook(

@@ -8,7 +8,7 @@ from gunpowder import (
 from funlib.geometry import Coordinate, Roi
 import attr
 
-from .graph_sources import AnyGraphSource
+from dacapo.fundamentals.graphsources import GraphSources
 
 from typing import List, Optional
 
@@ -44,7 +44,7 @@ class RasterizeSource:
     The class representing a single zarr dataset
     """
 
-    graph_source: AnyGraphSource = attr.ib()
+    graph_source: GraphSources = attr.ib()
 
     rasterization_settings: RasterizationSetting = attr.ib()
 

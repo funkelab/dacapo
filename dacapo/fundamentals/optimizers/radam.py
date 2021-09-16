@@ -36,7 +36,7 @@ class RAdam(Optimizer):
         metadata={"help_text": ""},
     )
 
-    def instance(self, params):
+    def optim(self, params):
         return RAdamOptimizer(
             params,
             self.lr,

@@ -1,3 +1,4 @@
-from .optimizers import Optimizers  # noqa
-from .adam import Adam  # noqa
-from .radam import RAdam  # noqa
+from .adam_optimizers import simple_adam
+from .radam_optimizers import simple_radam
+
+OPTIMIZERS = [simple_adam, simple_radam]

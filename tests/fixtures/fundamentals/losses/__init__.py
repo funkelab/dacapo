@@ -1,4 +1,5 @@
-from .losses import Losses # noqa
-from .cross_entropy_loss import CrossEntropyLoss # noqa
-from .mse_loss import MSELoss # noqa
-from .weighted_mse_loss import WeightedMSELoss # noqa
+from .cross_entropy_losses import simple_cross_entropy
+from .mse_losses import simple_mse
+from .weighted_mse_losses import simple_weighted_mse
+
+LOSSES = [simple_cross_entropy, simple_mse, simple_weighted_mse]

@@ -46,9 +46,6 @@ class MaskToWeights(gp.BatchFilter):
 
 @attr.s
 class OneHotLabels(Predictor):
-    name: str = attr.ib(
-        metadata={"help_text": "This name is used to differentiate between predictors."}
-    )
 
     # attributes that can be read from other configurable classes
     fmaps_in: Optional[int] = attr.ib(

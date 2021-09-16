@@ -2,29 +2,23 @@ from .helpers import Predictor
 from dacapo.gp import AddDistance
 
 import gunpowder as gp
+from funlib.geometry import Coordinate
+
 import torch
+import attr
 
 from typing import List, Optional
 from enum import Enum
 
-import attr
 
 # Define conv layers for different dimension counts
 CONV_LAYERS = {2: torch.nn.Conv2d, 3: torch.nn.Conv3d}
 
 
-class WeightingOption(Enum):
-    BALANCE_LABELS = "balance_labels"
-    DISTANCE = "distance"
-
-
 @attr.s
 class Affinities(Predictor):
-    name: str = attr.ib(
-        metadata={"help_text": "This name is used to differentiate between predictors."}
-    )
 
-    neighborhood: List[List[int]] = attr.ib(
+    neighborhood: List[Coordinate] = attr.ib(
         metadata={
             "help_text": "The neighborhood upon which to calculate affinities. "
             "This is provided as a list of offsets, where each offset is a list of "
@@ -32,7 +26,7 @@ class Affinities(Predictor):
             "For 3D data and plain affinities, this is usually [[1,0,0],[0,1,0],[0,0,1]]"
         }
     )
-    weighting_type: WeightingOption = attr.ib(
+    weighting_type: str = attr.ib(
         metadata={
             "help_text": "Experimental support for different loss weighting schemes. "
             "Balance labels dynamically balances between the number of classes per batch"

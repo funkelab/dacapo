@@ -1,7 +1,7 @@
-from dacapo.models import ModuleWrapper
-from .predictor_abc import PredictorABC
+from .helpers import Predictor
 
 import gunpowder as gp
+
 import torch
 import numpy as np
 import attr
@@ -45,7 +45,7 @@ class MaskToWeights(gp.BatchFilter):
 
 
 @attr.s
-class OneHotLabels(PredictorABC):
+class OneHotLabels(Predictor):
     name: str = attr.ib(
         metadata={"help_text": "This name is used to differentiate between predictors."}
     )
@@ -89,7 +89,7 @@ class OneHotLabels(PredictorABC):
         return AddClassLabels(gt, target), weights_node
 
 
-class OneHotLabelsHead(ModuleWrapper):
+class OneHotLabelsHead(torch.nn.Module):
     def __init__(self, config: OneHotLabels):
         super(OneHotLabelsHead, self).__init__(
             None, config.fmaps_in, config.num_classes

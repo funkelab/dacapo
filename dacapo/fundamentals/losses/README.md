@@ -1,10 +1,10 @@
 # Losses
 
 To add support for a new Loss, you must create an `attr.s` class that
-subclasses the `LossABC` like this:
+subclasses the `Loss` like this:
 
 ```python
-from .loss_abc import LossABC
+from .helpers import Loss
 
 import attr
 
@@ -12,7 +12,7 @@ from typing import Optional
 
 
 @attr.s
-class MyLoss(LossABC):
+class MyLoss(Loss):
     param_a: float = attr.ib()
 
     def module(self):

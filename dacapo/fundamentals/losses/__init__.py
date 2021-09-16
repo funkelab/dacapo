@@ -1,3 +1,4 @@
+from .helpers import Loss
 from .losses import Losses # noqa
 from .cross_entropy_loss import CrossEntropyLoss # noqa
 from .mse_loss import MSELoss # noqa

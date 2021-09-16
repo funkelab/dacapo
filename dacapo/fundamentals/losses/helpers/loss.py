@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class LossABC(ABC):
+class Loss(ABC):
     @abstractmethod
     def module(self):
         pass

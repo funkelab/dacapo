@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod, abstractproperty
 
 
-class PredictorABC(ABC):
+class Predictor(ABC):
     @abstractmethod
     def head(self):
         pass

@@ -1,13 +1,13 @@
 from torch.optim import Adam as AdamOptimizer
 
-from .algorithm_abc import Algorithm
+from .helpers import Optimizer
 
 from typing import Tuple
 import attr
 
 
 @attr.s
-class Adam(Algorithm):
+class Adam(Optimizer):
     lr: float = attr.ib(
         default=0.001,
         metadata={"help_text": "The learning rate."},
@@ -34,7 +34,7 @@ class Adam(Algorithm):
         metadata={"help_text": "Whether to use the AMSGrad variant."},
     )
 
-    def instance(self, params):
+    def optim(self, params):
         return AdamOptimizer(
             params,
             lr=self.lr,

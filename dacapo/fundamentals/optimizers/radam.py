@@ -2,14 +2,14 @@ import math
 import torch
 from torch.optim.optimizer import Optimizer
 
-from .algorithm_abc import Algorithm
+from .helpers import Optimizer
 
 from typing import Tuple
 import attr
 
 
 @attr.s
-class RAdam(Algorithm):
+class RAdam(Optimizer):
     lr: float = attr.ib(
         default=1e-3,
         metadata={"help_text": "The learning rate."},

@@ -1,11 +1,11 @@
-from .loss_abc import LossABC
+from .helpers import Loss
 
 import torch
 import attr
 
 
 @attr.s
-class MSELoss(LossABC):
+class MSELoss(Loss):
 
     def module(self):
         return torch.nn.MSELoss()

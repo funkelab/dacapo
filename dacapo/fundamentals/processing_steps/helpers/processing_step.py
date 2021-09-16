@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from dacapo.store import MongoDbStore
 
 
-class PostProcessingStepABC(ABC):
+class ProcessingStep(ABC):
     @abstractmethod
     def tasks(self, **kwargs):
         # Must return a list of Tasks, and a list of their respective parameters

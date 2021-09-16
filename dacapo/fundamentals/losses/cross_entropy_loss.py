@@ -1,4 +1,4 @@
-from .loss_abc import LossABC
+from .helpers import Loss
 
 import torch
 import attr
@@ -7,7 +7,7 @@ from typing import Optional, List
 
 
 @attr.s
-class CrossEntropyLoss(LossABC):
+class CrossEntropyLoss(Loss):
     ignore_label: int = attr.ib(
         default=-100, metadata={"help_text": "A label to avoid training on."}
     )

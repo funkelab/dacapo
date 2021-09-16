@@ -1,4 +1,4 @@
-from .loss_abc import LossABC
+from .helpers import Loss
 
 import torch
 import attr
@@ -7,7 +7,7 @@ from typing import Optional
 
 
 @attr.s
-class WeightedMSELoss(LossABC):
+class WeightedMSELoss(Loss):
 
     def module(self):
         return WeightedMSELossOp()

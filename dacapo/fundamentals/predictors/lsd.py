@@ -1,4 +1,4 @@
-from .predictor_abc import PredictorABC
+from .helpers import Predictor
 
 import gunpowder as gp
 import torch
@@ -14,7 +14,7 @@ CONV_LAYERS = {2: torch.nn.Conv2d, 3: torch.nn.Conv3d}
 
 
 @attr.s
-class LSD(PredictorABC):
+class LSD(Predictor):
     name: str = attr.ib(
         metadata={"help_text": "This name is used to differentiate between predictors."}
     )

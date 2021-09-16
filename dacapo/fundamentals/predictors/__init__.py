@@ -1,3 +1,4 @@
+from .helpers import Predictor  # noqa
 from .predictors import Predictors # noqa
 from .affinities import Affinities  # noqa
 from .one_hot_labels import OneHotLabels  # noqa

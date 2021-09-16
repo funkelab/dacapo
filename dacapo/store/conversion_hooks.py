@@ -4,18 +4,16 @@ from dacapo.fundamentals.applicators import *
 from dacapo.fundamentals.architectures import *
 from dacapo.fundamentals.arraysources import *
 from dacapo.fundamentals.augments import *
-
-# from dacapo.fundamentals.evaluators import *
-# from dacapo.fundamentals.executers import *
+from dacapo.fundamentals.evaluators import *
+from dacapo.fundamentals.executers import *
 from dacapo.fundamentals.graphsources import *
-
-# from dacapo.fundamentals.losses import *
-# from dacapo.fundamentals.optimizers import *
-# from dacapo.fundamentals.predictors import *
+from dacapo.fundamentals.losses import *
+from dacapo.fundamentals.optimizers import *
+from dacapo.fundamentals.predictors import *
 # from dacapo.fundamentals.processing_steps import *
-# from dacapo.fundamentals.starts import *
-# from dacapo.fundamentals.trainers import *
-# from dacapo.fundamentals.validators import *
+from dacapo.fundamentals.starts import *
+from dacapo.fundamentals.trainers import *
+from dacapo.fundamentals.validators import *
 
 from funlib.geometry import Coordinate, Roi
 
@@ -29,16 +27,16 @@ def register_hierarchy_hooks(converter):
     converter.register_hierarchy(Architecture, cls_fun)
     converter.register_hierarchy(ArraySource, cls_fun)
     converter.register_hierarchy(Augment, cls_fun)
-    # converter.register_hierarchy(Evaluator, cls_fun)
-    # converter.register_hierarchy(Executer, cls_fun)
+    converter.register_hierarchy(Evaluator, cls_fun)
+    converter.register_hierarchy(Executer, cls_fun)
     converter.register_hierarchy(GraphSource, cls_fun)
-    # converter.register_hierarchy(Losse, cls_fun)
-    # converter.register_hierarchy(Optimizer, cls_fun)
-    # converter.register_hierarchy(Predictor, cls_fun)
+    converter.register_hierarchy(Loss, cls_fun)
+    converter.register_hierarchy(Optimizer, cls_fun)
+    converter.register_hierarchy(Predictor, cls_fun)
     # converter.register_hierarchy(Processing_step, cls_fun)
-    # converter.register_hierarchy(Start, cls_fun)
-    # converter.register_hierarchy(Trainer, cls_fun)
-    # converter.register_hierarchy(Validator, cls_fun)
+    converter.register_hierarchy(Start, cls_fun)
+    converter.register_hierarchy(Trainer, cls_fun)
+    converter.register_hierarchy(Validator, cls_fun)
 
 
 def register_hooks(converter):
@@ -83,7 +81,7 @@ def register_hooks(converter):
     # coordinate to tuple and back
     converter.register_unstructure_hook(Coordinate, lambda o: tuple(o))
     converter.register_structure_hook(Coordinate, lambda o, _: Coordinate(o))
-    
+
     # Roi to tuple of tuples and back
     converter.register_unstructure_hook(
         Roi, lambda o: (tuple(o.offset), tuple(o.shape))

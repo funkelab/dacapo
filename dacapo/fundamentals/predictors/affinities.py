@@ -1,6 +1,5 @@
+from .helpers import Predictor
 from dacapo.gp import AddDistance
-from .predictor_abc import PredictorABC
-from dacapo.converter import converter
 
 import gunpowder as gp
 import torch
@@ -19,25 +18,8 @@ class WeightingOption(Enum):
     DISTANCE = "distance"
 
 
-converter.register_unstructure_hook(
-    WeightingOption,
-    lambda o: {"value": o.value},
-)
-
-
-def structure_weighting_option(o):
-    print(o)
-    return WeightingOption(o["value"])
-
-
-converter.register_structure_hook(
-    WeightingOption,
-    lambda o, _: structure_weighting_option(o),
-)
-
-
 @attr.s
-class Affinities(PredictorABC):
+class Affinities(Predictor):
     name: str = attr.ib(
         metadata={"help_text": "This name is used to differentiate between predictors."}
     )

@@ -1,7 +1,10 @@
+import attr
+
 from abc import ABC, abstractmethod
 import time
 
 
+@attr.s
 class PostProcessor(ABC):
     """
     This class handles post processing.
@@ -14,6 +17,12 @@ class PostProcessor(ABC):
     single daisy task, a PostProcessor is considered to be a series
     of `PostProcessingStep`s
     """
+
+    name: str = attr.ib(
+        metadata={
+            "help_text": "The name of your PostProcessor for easy search and reuse"
+        }
+    )
 
     @abstractmethod
     def tasks(self):

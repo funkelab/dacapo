@@ -1,11 +1,10 @@
-from .post_processor_abc import PostProcessorABC
-from .steps import ArgMaxStep
+from .helpers import PostProcessor
 
 import attr
 
 
 @attr.s
-class ArgMax(PostProcessorABC):
+class ArgMax(PostProcessor):
     outputs: str = attr.ib(
         default="labels", metadata={"help_text": "The name of the provided outputs."}
     )

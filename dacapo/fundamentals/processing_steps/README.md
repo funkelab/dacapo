@@ -9,14 +9,14 @@ import numpy as np
 import daisy
 
 from dacapo.store import MongoDbStore
-from .step_abc import PostProcessingStepABC
+from .helpers import ProcessingStep
 
 import time
 from typing import Optional, List
 
 
 @attr.s
-class MyStep(PostProcessingStepABC):
+class MyStep(ProcessingStep):
     step_id: str = attr.ib(default="my_new_step")
 
     # parameter ranges:

@@ -1,9 +1,9 @@
+# from dacapo.store import MongoDbStore
+from .helpers import ProcessingStep
+
 import attr
 import numpy as np
 import daisy
-
-from dacapo.store import MongoDbStore
-from .step_abc import PostProcessingStepABC
 
 import time
 from typing import Optional, List
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @attr.s
-class ArgMaxStep(PostProcessingStepABC):
+class ArgMaxStep(ProcessingStep):
     step_id: str = attr.ib(default="argmax")
 
     # blockwise_processing_parameters

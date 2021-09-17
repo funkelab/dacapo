@@ -1,5 +1,5 @@
-from gunpowder.batch import Batch
 from ..fixtures.fundamentals.arraysources import ARRAYSOURCES
+from ..fixtures.db import DB_AVAILABLE, mongo_config_store
 
 from dacapo.store.converter import converter
 from dacapo.fundamentals.arraysources import ArraySources
@@ -24,4 +24,14 @@ def test_augments(arraysource):
     serialized = converter.unstructure(arraysource)
     assert serialized == converter.unstructure(
         converter.structure(serialized, ArraySources)
+    )
+
+
+@pytest.mark.skipif(not DB_AVAILABLE, reason="Mongodb not available")
+@pytest.mark.parametrize("arraysource", ARRAYSOURCES)
+def test_db(arraysource, mongo_config_store):
+    mongo_config_store.store_arraysource(arraysource)
+    retrieved_arraysource = mongo_config_store.retrieve_arraysource(arraysource.name)
+    assert converter.unstructure(arraysource) == converter.unstructure(
+        retrieved_arraysource
     )

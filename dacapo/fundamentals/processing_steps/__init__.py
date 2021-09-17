@@ -1,3 +1,4 @@
+from .helpers import ProcessingStep
 from .argmax import ArgMaxStep
 from .fragment import Fragment
 from .agglomerate import Agglomerate

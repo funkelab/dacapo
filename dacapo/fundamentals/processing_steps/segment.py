@@ -5,8 +5,8 @@ from daisy.persistence import MongoDbGraphProvider
 import numpy as np
 from funlib.segment.arrays import replace_values
 
-from .step_abc import PostProcessingStepABC
-from dacapo.store import MongoDbStore
+from .helpers import ProcessingStep
+# from dacapo.store import MongoDbStore
 
 from typing import List, Optional
 import logging
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 @attr.s
-class Segment(PostProcessingStepABC):
+class Segment(ProcessingStep):
     step_id: str = attr.ib(default="segment")
 
     # blockwise_processing_parameters:

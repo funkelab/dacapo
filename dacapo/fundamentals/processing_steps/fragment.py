@@ -3,16 +3,16 @@ import daisy
 from daisy import Task, Block
 from daisy.persistence import MongoDbGraphProvider
 
-from .step_abc import PostProcessingStepABC
-from .watershed_helpers import watershed_in_block
-from dacapo.store import MongoDbStore
+from .helpers import ProcessingStep
+# from .watershed_helpers import watershed_in_block
+# from dacapo.store import MongoDbStore
 
 from typing import List, Optional
 import itertools
 
 
 @attr.s
-class Fragment(PostProcessingStepABC):
+class Fragment(ProcessingStep):
     step_id: str = attr.ib(default="fragment")
 
     # grid searchable arguments

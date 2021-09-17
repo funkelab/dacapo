@@ -1,4 +1,5 @@
 from ..fixtures.fundamentals.graphsources import GRAPHSOURCES
+from ..fixtures.db import DB_AVAILABLE, mongo_config_store
 
 from dacapo.store.converter import converter
 from dacapo.fundamentals.graphsources import GraphSource
@@ -10,7 +11,7 @@ import pytest
 
 
 @pytest.mark.parametrize("datasource", GRAPHSOURCES)
-def test_augments(datasource):
+def test_graphsources(datasource):
 
     # Test that the datasource provides all the necessary information
     assert datasource.name is not None and isinstance(datasource.name, str)
@@ -23,4 +24,14 @@ def test_augments(datasource):
     serialized = converter.unstructure(datasource)
     assert serialized == converter.unstructure(
         converter.structure(serialized, GraphSource)
+    )
+
+
+@pytest.mark.skipif(not DB_AVAILABLE, reason="Mongodb not available")
+@pytest.mark.parametrize("graphsource", GRAPHSOURCES)
+def test_db(graphsource, mongo_config_store):
+    mongo_config_store.store_graphsource(graphsource)
+    retrieved_graphsource = mongo_config_store.retrieve_graphsource(graphsource.name)
+    assert converter.unstructure(graphsource) == converter.unstructure(
+        retrieved_graphsource
     )

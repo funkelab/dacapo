@@ -4,8 +4,8 @@ from daisy.persistence import MongoDbGraphProvider
 import numpy as np
 from funlib.segment.graphs.impl import connected_components
 
-from .step_abc import PostProcessingStepABC
-from dacapo.store import MongoDbStore
+from .helpers import ProcessingStep
+# from dacapo.store import MongoDbStore
 
 from typing import List
 import time
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 @attr.s
-class CreateLUTS(PostProcessingStepABC):
+class CreateLUTS(ProcessingStep):
     step_id: str = attr.ib(default="luts")
     # grid searchable arguments
     threshold: List[float] = attr.ib(factory=list)

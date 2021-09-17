@@ -1,7 +1,5 @@
 from enum import Enum
 
-from dacapo.converter import converter
-
 
 class MergeFunction(Enum):
     HIST_QUANT_10 = "hist_quant_10"
@@ -15,13 +13,3 @@ class MergeFunction(Enum):
     HIST_QUANT_90 = "hist_quant_90"
     HIST_QUANT_90_INITMAX = "hist_quant_90_initmax"
     MEAN = "mean"
-
-
-converter.register_unstructure_hook(
-    MergeFunction,
-    lambda o: {"value": o.value},
-)
-converter.register_structure_hook(
-    MergeFunction,
-    lambda o, _: MergeFunction(o["value"]),
-)

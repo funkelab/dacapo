@@ -1,4 +1,5 @@
 from ..fixtures.fundamentals.applicators import APPLICATORS
+from ..fixtures.db import mongo_config_store, DB_AVAILABLE
 
 from dacapo.store.converter import converter
 from dacapo.fundamentals.applicators import Applicators
@@ -29,4 +30,14 @@ def test_applicators(applicator):
     serialized = converter.unstructure(applicator)
     assert serialized == converter.unstructure(
         converter.structure(serialized, Applicators)
+    )
+
+
+@pytest.mark.skipif(not DB_AVAILABLE, reason="Mongodb not available")
+@pytest.mark.parametrize("applicator", APPLICATORS)
+def test_db(applicator, mongo_config_store):
+    mongo_config_store.store_applicator(applicator)
+    retrieved_applicator = mongo_config_store.retrieve_applicator(applicator.name)
+    assert converter.unstructure(applicator) == converter.unstructure(
+        retrieved_applicator
     )

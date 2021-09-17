@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from dacapo.store import MongoDbStore
+# from dacapo.store import MongoDbStore
 
 
 class ProcessingStep(ABC):

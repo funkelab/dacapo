@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import time
 
 
-class PostProcessorABC(ABC):
+class PostProcessor(ABC):
     """
     This class handles post processing.
 

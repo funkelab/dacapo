@@ -4,16 +4,16 @@ from daisy import Task, Block
 from daisy.persistence import MongoDbGraphProvider
 import lsd
 
-from .step_abc import PostProcessingStepABC
-from dacapo.store import MongoDbStore
-from .waterz_merge_functions import MergeFunction
+from .helpers import ProcessingStep
+# from dacapo.store import MongoDbStore
+from .helpers.waterz_merge_functions import MergeFunction
 
 from typing import List, Optional
 import time
 
 
 @attr.s
-class Agglomerate(PostProcessingStepABC):
+class Agglomerate(ProcessingStep):
     step_id: str = attr.ib(default="agglomerate")
     # grid searchable arguments
     merge_function: List[MergeFunction] = attr.ib(factory=list)

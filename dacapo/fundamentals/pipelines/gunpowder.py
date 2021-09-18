@@ -35,7 +35,6 @@ class Gunpowder(Pipeline):
             return self._gp_request
 
     def init_train_pipeline(self, dataset, architecture, output, trainer):
-        backbone = architecture.module()
 
         raw_channels = max(1, dataset.raw.num_channels)
         input_shape = architecture.input_shape
@@ -122,10 +121,6 @@ class Gunpowder(Pipeline):
             if predictor_weight is not None:
                 gp_request.add(predictor_weight, output_size)
 
-        # Setup gp_pipeline. Normally this would be done with gp.build(gp_pipeline)
-        # However, we have no intention of reusing this gp_pipeline or its
-        # components, so we just set it up.
-        gp_pipeline.setup()
         self._gp_pipeline = gp_pipeline
         self._gp_request = gp_request
         self._predictor_keys = predictor_keys

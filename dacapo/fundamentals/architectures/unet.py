@@ -1,6 +1,8 @@
 from .helpers import Architecture
 
 from funlib.learn.torch.models import UNet as UNetModule
+from funlib.geometry import Coordinate
+
 import attr
 
 from typing import List, Optional, Tuple
@@ -15,8 +17,11 @@ class ConvPaddingOption(Enum):
 @attr.s
 class UNet(Architecture):
     # standard model attributes
-    input_shape: List[int] = attr.ib(
+    input_shape: Coordinate = attr.ib(
         metadata={"help_text": "The input shape of the model."}
+    )
+    output_shape: Coordinate = attr.ib(
+        metadata={"help_text": "The output shape of the Model."}
     )
     fmaps_out: int = attr.ib(
         metadata={"help_text": "Number of feature maps output by model."}
@@ -29,27 +34,21 @@ class UNet(Architecture):
             "feature maps at each down sample."
         }
     )
-    downsample_factors: List[List[int]] = attr.ib(
+    downsample_factors: List[Coordinate] = attr.ib(
         metadata={
             "help_text": "The factor by which to downsample spatial dimensions along each axis."
         }
     )
 
-    # optional values
-    # standard model attributes
-    output_shape: Optional[List[int]] = attr.ib(
-        default=None, metadata={"help_text": "The output shape of the Model."}
-    )
-
     # unet attributes
-    kernel_size_down: Optional[List[List[int]]] = attr.ib(
+    kernel_size_down: Optional[List[Coordinate]] = attr.ib(
         default=None,
         metadata={
             "help_text": "The number and size of the convolutional kernels before downsampling. "
             "Defaults to 2 3x3x3 kernels."
         },
     )
-    kernel_size_up: Optional[List[List[int]]] = attr.ib(
+    kernel_size_up: Optional[List[Coordinate]] = attr.ib(
         default=None,
         metadata={
             "help_text": "The number and size of the convolutional kernels after upsampling. "

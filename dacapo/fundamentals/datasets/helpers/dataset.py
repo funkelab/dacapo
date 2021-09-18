@@ -20,3 +20,11 @@ class Dataset(ABC):
         Does this dataset provide a source for the given `key`?
         """
         pass
+
+    @abstractmethod
+    def random_location_provider(self):
+        """
+        Return a gunpowder pipeline that can provide random crops
+        from the provided data.
+        """
+        pass

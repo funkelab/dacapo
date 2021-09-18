@@ -15,59 +15,41 @@ class LocalWeightsStore(WeightsStore):
 
         self.basedir = basedir
 
-    def latest_iteration(self, run):
-        """Return the latest iteration for which weights are available for the
-        given run."""
+    def latest_iteration(self):
+        """Return the latest iteration for which weights are available."""
 
-        weights_dir = self.__get_weights_dir(run)
-
-        iterations = sorted([
-            int(path.parts[-1])
-            for path in weights_dir.glob('*')
-        ])
+        iterations = sorted([int(path.parts[-1]) for path in self.basedir.glob("*")])
 
         if not iterations:
             return None
 
         return iterations[-1]
 
-    def store_weights(self, run, iteration):
+    def store_weights(self, iteration, model, optimizer):
         """Store the network weights of the given run."""
 
-        logger.info(
-            "Storing weights for run %s, iteration %d",
-            run.name,
-            iteration)
+        logger.info("Storing weights for iteration %d", iteration)
 
-        weights_dir = self.__get_weights_dir(run)
-        weights_name = Path(weights_dir, str(iteration))
+        weights_name = Path(self.basedir, str(iteration))
 
-        if not weights_dir.exists():
-            weights_dir.mkdir(parents=True, exist_ok=True)
+        if not self.basedir.exists():
+            self.basedir.mkdir(parents=True, exist_ok=True)
 
         weights = {
-            'model': run.model.state_dict(),
-            'optimizer': run.optimizer.state_dict()
+            "model": model.state_dict(),
+            "optimizer": optimizer.state_dict(),
         }
 
         torch.save(weights, weights_name)
 
-    def retrieve_weights(self, run, iteration):
+    def retrieve_weights(self, iteration, model, optimizer):
         """Retrieve the network weights of the given run."""
 
-        logger.info(
-            "Retrieving weights for run %s, iteration %d",
-            run.name,
-            iteration)
+        logger.info("Retrieving weights for iteration %d", iteration)
 
-        weights_dir = self.__get_weights_dir(run)
-        weights_name = Path(weights_dir, str(iteration))
+        weights_name = Path(self.basedir, str(iteration))
 
         weights = torch.load(weights_name)
 
-        run.model.load_state_dict(weights['model'])
-        run.optimizer.load_state_dict(weights['optimizer'])
-
-    def __get_weights_dir(self, run):
-
-        return Path(self.basedir, run.name, 'checkpoints')
+        model.load_state_dict(weights["model"])
+        optimizer.load_state_dict(weights["optimizer"])

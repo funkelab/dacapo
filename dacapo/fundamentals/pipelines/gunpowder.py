@@ -72,7 +72,7 @@ class Gunpowder(Pipeline):
         channel_dims = 0 if raw_channels == 1 else 1
 
         # Get source nodes
-        gp_pipeline = dataset.random_provider(raw, gt)
+        gp_pipeline = dataset.random_location_provider(raw, gt)
 
         # Who should do the normalization? I think the datasource should
         # gp_pipeline += gp.Normalize(raw)

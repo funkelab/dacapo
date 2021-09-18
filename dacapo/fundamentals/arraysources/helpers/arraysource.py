@@ -1,4 +1,3 @@
-
 from funlib.geometry import Coordinate, Roi
 
 import attr
@@ -27,22 +26,40 @@ class ArraySource(ABC):
     name: str = attr.ib(
         metadata={"help_text": "Name of your ArraySource for easy search and reuse"}
     )
-    axes: Optional[List[str]] = attr.ib()
-    voxel_size: Optional[Coordinate] = attr.ib()
-    offset: Optional[Coordinate] = attr.ib()
-    shape: Optional[Coordinate] = attr.ib()
-    num_channels: Optional[int] = attr.ib()
-    interpolatable: Optional[bool] = attr.ib()
 
+    @property
     @abstractmethod
-    def update_metadata(self):
-        """
-        Update user provided metadata fields using the source metadata.
-        Raise an exception if:
-        1) User provided metadata does not match metadata stored on source
-        2) There exists a necessary field not provided by either user config
-            nor source metadata.
-        """
+    def axes(self) -> List[str]:
+        pass
+
+    @property
+    @abstractmethod
+    def voxel_size(self) -> Coordinate:
+        pass
+
+    @property
+    @abstractmethod
+    def offset(self) -> Coordinate:
+        pass
+
+    @property
+    @abstractmethod
+    def shape(self) -> Coordinate:
+        pass
+
+    @property
+    @abstractmethod
+    def num_channels(self) -> int:
+        pass
+
+    @property
+    @abstractmethod
+    def interpolatable(self) -> bool:
+        pass
+
+    @property
+    @abstractmethod
+    def h5py_like(self):
         pass
 
     @property

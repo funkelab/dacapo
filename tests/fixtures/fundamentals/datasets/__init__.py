@@ -1,3 +1,3 @@
-from .default_datasets import simple_train, simple_validate
+from .default_datasets import mk_simple_train, mk_simple_validate
 
-DATASETS = [simple_train, simple_validate]
+MK_FUNCTIONS = [mk_simple_train, mk_simple_validate]

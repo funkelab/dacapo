@@ -1,3 +1,3 @@
-from .default_pipelines import simple_default
+from .gunpowder_pipelines import simple_gunpowder
 
-PIPELINES = [simple_default]
+PIPELINES = [simple_gunpowder]

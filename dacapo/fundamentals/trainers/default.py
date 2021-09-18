@@ -5,4 +5,5 @@ import attr
 
 @attr.s
 class Default(Trainer):
-    pass
+    num_iterations: int = attr.ib()
+    batch_size: int = attr.ib()

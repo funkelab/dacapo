@@ -22,3 +22,7 @@ class Default(Output):
     @property
     def num_outputs(self):
         return len(self.outputs)
+
+    @property
+    def predictors(self):
+        return (o[0] for o in self.outputs)

@@ -1,5 +1,5 @@
 from .helpers import Run
-from .training_iteration_stats import TrainingIterationStats
+from dacapo.fundamentals.training_iteration_stats import TrainingIterationStats
 from dacapo.store import ConfigStore, StatsStore, stats_store, LocalWeightsStore
 
 import attr
@@ -71,7 +71,7 @@ class DefaultRun(Run):
 
         self.training_stats.add_iteration_stats(iteration_stats)
 
-        if (iteration_stats.iteration + 1) % self.validator.validation_interval == 0:
+        if self.validator.validation_step(self.training_stats):
 
             self.validation_step()
 
@@ -80,6 +80,7 @@ class DefaultRun(Run):
     def training_step(self):
         training_data = self.train_provider.next()
 
+        # TODO: This should be initialized elsewhere, not on every training step
         backbone = self.architecture.module()
         heads = [
             predictor.head(self.architecture, self.datasplit.train)

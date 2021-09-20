@@ -1,4 +1,4 @@
-from .validation_iteration_scores import ValidationIterationScores
+from dacapo.fundamentals.validation_iteration_scores import ValidationIterationScores
 from typing import List
 import attr
 
@@ -7,7 +7,8 @@ import attr
 class ValidationScores:
 
     iteration_scores: List[ValidationIterationScores] = attr.ib(
-        default=attr.Factory(list))
+        default=attr.Factory(list)
+    )
 
     def add_iteration_scores(self, iteration_scores):
 
@@ -16,9 +17,7 @@ class ValidationScores:
     def delete_after(self, iteration):
 
         self.iteration_scores = [
-            scores
-            for scores in self.iteration_scores
-            if scores.iteration < iteration
+            scores for scores in self.iteration_scores if scores.iteration < iteration
         ]
 
     def validated_until(self):
@@ -30,7 +29,7 @@ class ValidationScores:
         return max([score.iteration for score in self.iteration_scores]) + 1
 
 
-'''
+"""
     def get_score_names(self):
 
         for scores in self.scores:
@@ -56,4 +55,4 @@ class ValidationScores:
                     list(iteration_scores.values())[i]['scores']['average'].get(name, 0)
                 )
         return best_scores
-'''
+"""

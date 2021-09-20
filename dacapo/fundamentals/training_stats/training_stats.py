@@ -1,4 +1,4 @@
-from .training_iteration_stats import TrainingIterationStats
+from dacapo.fundamentals.training_iteration_stats import TrainingIterationStats
 from typing import List
 import attr
 
@@ -6,8 +6,7 @@ import attr
 @attr.s
 class TrainingStats:
 
-    iteration_stats: List[TrainingIterationStats] = attr.ib(
-        default=attr.Factory(list))
+    iteration_stats: List[TrainingIterationStats] = attr.ib(default=attr.Factory(list))
 
     def add_iteration_stats(self, iteration_stats):
 
@@ -16,9 +15,7 @@ class TrainingStats:
     def delete_after(self, iteration):
 
         self.iteration_stats = [
-            stats
-            for stats in self.iteration_stats
-            if stats.iteration < iteration
+            stats for stats in self.iteration_stats if stats.iteration < iteration
         ]
 
     @property
@@ -28,6 +25,6 @@ class TrainingStats:
 
         if not self.iteration_stats:
             return 0
-        
-        #TODO: Is this slowing us down?
+
+        # TODO: Is this slowing us down?
         return max([stat.iteration for stat in self.iteration_stats]) + 1

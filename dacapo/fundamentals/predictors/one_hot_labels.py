@@ -69,13 +69,11 @@ class OneHotLabels(Predictor):
         return self.num_classes
 
     def head(self, architecture, dataset):
-        assert self.fmaps_in is None or self.fmaps_in == architecture.fmaps_out
-        self.fmaps_in = architecture.fmaps_out
-        assert self.dims is None or self.dims == dataset.dims
-        self.dims = dataset.dims
-        assert self.num_classes is None or self.num_classes == dataset.gt.num_classes
-        self.num_classes = dataset.gt.num_classes
-        return OneHotLabelsHead(self)
+        return OneHotLabelsHead(
+            dims=architecture.output_shape.dims,
+            fmaps_in=architecture.fmaps_out,
+            num_classes=dataset.gt.array_type.num_classes,
+        )
 
     def add_target(self, gt, target, weights=None, mask=None):
 
@@ -87,13 +85,11 @@ class OneHotLabels(Predictor):
 
 
 class OneHotLabelsHead(torch.nn.Module):
-    def __init__(self, config: OneHotLabels):
-        super(OneHotLabelsHead, self).__init__(
-            None, config.fmaps_in, config.num_classes
-        )
+    def __init__(self, dims: int, fmaps_in: int, num_classes: int):
+        super(OneHotLabelsHead, self).__init__()
 
-        conv = CONV_LAYERS[config.dims]
-        logit_layers = [conv(config.fmaps_in, config.num_classes, (1,) * config.dims)]
+        conv = CONV_LAYERS[dims]
+        logit_layers = [conv(fmaps_in, num_classes, (1,) * dims)]
 
         self.logits = torch.nn.Sequential(*logit_layers)
         self.probs = torch.nn.LogSoftmax()

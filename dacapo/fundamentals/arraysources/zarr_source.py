@@ -34,7 +34,13 @@ class ZarrSource(ArraySource):
 
     @property
     def shape(self) -> Coordinate:
-        return Coordinate(self.h5py_like.shape) * self.voxel_size
+        if "c" not in self.axes:
+            return Coordinate(self.h5py_like.shape) * self.voxel_size
+        else:
+            phys_shape = [
+                s for s, name in zip(self.h5py_like.shape, self.axes) if name != "c"
+            ]
+            return Coordinate(phys_shape) * self.voxel_size
 
     @property
     def num_channels(self) -> Coordinate:

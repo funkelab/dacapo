@@ -27,7 +27,10 @@ def train(
 
     run = experiment.run(repitition)
     
+    # TODO: Use a context manager?
+    run.setup() # load model weights, initialize data pipeline etc.
+
     while not run.complete:
         run.step()
 
-    run.teardown()
+    run.teardown() # free resources, stop workers, etc.

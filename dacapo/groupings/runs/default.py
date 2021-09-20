@@ -50,8 +50,7 @@ class DefaultRun(Run):
             self.experiment_name, self.repitition
         )
 
-    def __attrs_post_init__(self):
-
+    def setup(self):
         # read in previous training/validation stats
         self._training_stats = self.retrieve_training_stats()
         # self._validation_scores = self.retrieve_validation_scores()

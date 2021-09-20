@@ -3,9 +3,11 @@ from .training_iteration_stats import TrainingIterationStats
 from dacapo.store import ConfigStore, StatsStore, stats_store, LocalWeightsStore
 
 import attr
+import torch
 
 from pathlib import Path
 import logging
+import time
 
 logger = logging.getLogger(__file__)
 
@@ -54,67 +56,15 @@ class DefaultRun(Run):
         self._training_stats = self.retrieve_training_stats()
         # self._validation_scores = self.retrieve_validation_scores()
 
-        self.pipeline.init_train_pipeline(
+        self.train_provider.init_provider(
             self.datasplit.train, self.architecture, self.output, self.trainer
         )
-        # self.pipeline.init_validation_pipeline()
+        # self.validation_provider.init_provider(
+        #     self.datasplit.validate, self.architecture, self.output, self.validator
+        # )
 
-        """
-        train_until = self.trainer.num_iterations
-        trained_until = self.training_stats.trained_until
-        validation_interval = self.validator.validation_interval
-
-        logger.info("Current state: trained until %d/%d", trained_until, train_until)
-
-        # read weights of the latest iteration
-
-        latest_weights_iteration = self.weights_store.latest_iteration()
-
-        if trained_until > 0:
-
-            if latest_weights_iteration is None:
-
-                logger.warning(
-                    "Run %s was previously trained until %d, but no weights are "
-                    "stored. Will restart training from scratch.",
-                    self.name,
-                    trained_until,
-                )
-
-                trained_until = 0
-                self.training_stats.delete_after(0)
-                self.validation_scores.delete_after(0)
-
-            elif latest_weights_iteration < trained_until:
-
-                logger.warning(
-                    "Run %s was previously trained until %d, but the latest "
-                    "weights are stored for iteration %d. Will resume training "
-                    "from %d.",
-                    self.name,
-                    trained_until,
-                    latest_weights_iteration,
-                    latest_weights_iteration,
-                )
-
-                trained_until = latest_weights_iteration
-                self.training_stats.delete_after(trained_until)
-                self.validation_scores.delete_after(trained_until)
-                self.weights_store.retrieve_weights(iteration=trained_until)
-
-            elif latest_weights_iteration == trained_until:
-
-                logger.info("Resuming training from iteration %d", trained_until)
-
-                self.weights_store.retrieve_weights(iteration=trained_until)
-
-            elif latest_weights_iteration > trained_until:
-
-                raise RuntimeError(
-                    f"Found weights for iteration {latest_weights_iteration}, but "
-                    f"run {self.name} was only trained until {trained_until}."
-                )
-        """
+    def teardown(self):
+        self.train_provider.next(done=True)
 
     def step(self):
 
@@ -129,11 +79,56 @@ class DefaultRun(Run):
         logger.info("Trained until %d, finished.", self.trained_iterations)
 
     def training_step(self):
-        result = self.pipeline.training_step()
+        training_data = self.train_provider.next()
+
+        backbone = self.architecture.module()
+        heads = [
+            predictor.head(self.architecture, self.datasplit.train)
+            for predictor in self.output.predictors
+        ]
+        optimizer = self.optimizer.optim(
+            [
+                {"params": backbone.parameters()},
+                *[{"params": head.parameters() for head in heads}],
+            ]
+        )
+        device = None
+
+        t1 = time.time()
+        optimizer.zero_grad()
+        backbone_output = backbone.forward(
+            torch.as_tensor(training_data["raw"], device=device).float()
+        )
+        losses = []
+        for predictor, loss, _, _ in self.output.outputs:
+            loss = loss.module()
+            head = predictor.head(self.architecture, self.datasplit.train)
+
+            # gather loss inputs
+            predicted = head.forward(backbone_output)
+            target = torch.as_tensor(
+                training_data["targets"][predictor.name], device=device
+            ).float()
+            weights_data = training_data["weights"].get(predictor.name)
+            if weights_data is not None:
+                weights = torch.as_tensor(weights_data, device=device).float()
+            else:
+                weights = None
+
+            if weights is not None:
+                losses.append(loss.forward(predicted, target, weights))
+            else:
+                losses.append(loss.forward(predicted, target))
+
+        total_loss = torch.prod(torch.stack(losses))
+        total_loss.backward()
+        optimizer.step()
+        t2 = time.time()
+
         stats = TrainingIterationStats(
             iteration=self.trained_iterations + 1,
-            loss=result.loss,
-            time=None,
+            loss=total_loss.detach().cpu(),
+            time=t2 - t1,
         )
         return stats
 

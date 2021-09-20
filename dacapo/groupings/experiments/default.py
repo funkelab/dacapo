@@ -1,15 +1,14 @@
-from dacapo.fundamentals.architectures.helpers import architecture
 from .helpers import Experiment
 from dacapo.fundamentals.datasplits import DataSplit
 from dacapo.fundamentals.architectures import Architecture
 from dacapo.fundamentals.outputs import Output
-from dacapo.fundamentals.pipelines import Pipeline
+from dacapo.fundamentals.dataproviders import DataProvider
 from dacapo.fundamentals.trainers import Trainer
 from dacapo.fundamentals.validators import Validator
-from dacapo.fundamentals.executers import Executer
+from dacapo.fundamentals.optimizers import Optimizer
 from dacapo.store import ConfigStore, StatsStore, weights_store
 from dacapo.categoricals.datakeys import ArrayKey
-from dacapo.groupings.runs import Run, Default as DefaultRun
+from dacapo.groupings.runs import Run, DefaultRun
 
 import attr
 
@@ -31,8 +30,11 @@ class DefaultExperiment(Experiment):
             "help_text": "The configuration for your model 'heads' and how to handle them"
         }
     )
-    pipeline: Pipeline = attr.ib(
-        metadata={"help_text": "The pipeline to use for moving data around"}
+    optimizer: Optimizer = attr.ib(
+        metadata={"help_text": "The optimizer to use for training your model"}
+    )
+    dataprovider: DataProvider = attr.ib(
+        metadata={"help_text": "The dataprovider to use for moving data around"}
     )
     trainer: Trainer = attr.ib(metadata={"help_text": "Training details go here"})
     validator: Validator = attr.ib(metadata={"help_text": "Validation details go here"})
@@ -87,8 +89,10 @@ class DefaultExperiment(Experiment):
             stats_store=self.stats_store,
             trainer=self.trainer,
             validator=self.validator,
-            pipeline=self.pipeline,
+            train_provider=self.dataprovider,
+            validation_provider=self.dataprovider,
             datasplit=self.datasplit,
             architecture=self.architecture,
             output=self.output,
+            optimizer=self.optimizer,
         )

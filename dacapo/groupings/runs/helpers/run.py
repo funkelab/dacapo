@@ -1,10 +1,11 @@
 from dacapo.store import StatsStore, WeightsStore
 from dacapo.fundamentals.trainers import Trainer
 from dacapo.fundamentals.validators import Validator
-from dacapo.fundamentals.pipelines import Pipeline
+from dacapo.fundamentals.dataproviders import DataProvider
 from dacapo.fundamentals.datasplits import DataSplit
 from dacapo.fundamentals.architectures import Architecture
 from dacapo.fundamentals.outputs import Output
+from dacapo.fundamentals.optimizers import Optimizer
 
 import attr
 
@@ -26,14 +27,20 @@ class Run(ABC):
 
     trainer: Trainer = attr.ib()
     validator: Validator = attr.ib()
-    pipeline: Pipeline = attr.ib()
+    train_provider: DataProvider = attr.ib()
+    validation_provider: DataProvider = attr.ib()
     datasplit: DataSplit = attr.ib()
     architecture: Architecture = attr.ib()
     output: Output = attr.ib()
+    optimizer: Optimizer = attr.ib()
 
     @property
     @abstractmethod
     def complete(self):
+        pass
+
+    @abstractmethod
+    def teardown(self):
         pass
 
     @abstractmethod

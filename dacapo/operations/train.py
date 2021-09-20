@@ -29,3 +29,5 @@ def train(
     
     while not run.complete:
         run.step()
+
+    run.teardown()

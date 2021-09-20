@@ -1,3 +1,5 @@
+from dacapo.fundamentals.arraytypes import ArrayType
+
 from funlib.geometry import Coordinate, Roi
 
 import attr
@@ -26,6 +28,7 @@ class ArraySource(ABC):
     name: str = attr.ib(
         metadata={"help_text": "Name of your ArraySource for easy search and reuse"}
     )
+    array_type: ArrayType = attr.ib()
 
     @property
     @abstractmethod

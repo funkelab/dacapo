@@ -1,2 +1,2 @@
 from .helpers import Experiment
-from .default import Default
+from .default import DefaultExperiment

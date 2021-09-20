@@ -1,3 +1,3 @@
 from .helpers import Validator
-from .default import Default
+from .default import DefaultValidator
 from .null import Null

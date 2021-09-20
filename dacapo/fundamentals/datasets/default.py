@@ -11,7 +11,7 @@ from typing import Optional
 
 
 @attr.s
-class Default(Dataset):
+class DefaultDataset(Dataset):
     raw: ArraySource = attr.ib(
         metadata={"help_text": "The source from which to fetch the raw array"}
     )

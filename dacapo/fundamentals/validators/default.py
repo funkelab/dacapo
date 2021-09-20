@@ -4,5 +4,5 @@ import attr
 
 
 @attr.s
-class Default(Validator):
+class DefaultValidator(Validator):
     pass

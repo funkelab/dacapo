@@ -1,2 +1,2 @@
 from .helpers import Output
-from .default import Default
+from .default import DefaultOutput

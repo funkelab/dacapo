@@ -10,7 +10,7 @@ from typing import List, Tuple
 
 
 @attr.s
-class Default(Output):
+class DefaultOutput(Output):
 
     outputs: List[Tuple[Predictor, Loss, PostProcessor, Evaluator]] = attr.ib(
         metadata={

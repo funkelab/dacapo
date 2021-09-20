@@ -1,2 +1,2 @@
 from .helpers import Dataset
-from .default import Default
+from .default import DefaultDataset

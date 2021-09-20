@@ -5,7 +5,7 @@ import attr
 
 
 @attr.s
-class Default(DataSplit):
+class DefaultDataSplit(DataSplit):
     train: Dataset = attr.ib(metadata={"help_text": "The dataset to use for training"})
     validate: Dataset = attr.ib(
         metadata={"help_text": "The dataset to use for validation"}

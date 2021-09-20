@@ -4,5 +4,5 @@ import attr
 
 
 @attr.s
-class Default(Application):
+class DefaultApplication(Application):
     pass

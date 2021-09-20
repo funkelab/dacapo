@@ -18,7 +18,7 @@ from pathlib import Path
 
 
 @attr.s
-class Default(Experiment):
+class DefaultExperiment(Experiment):
 
     datasplit: DataSplit = attr.ib(
         metadata={"help_text": "The data split for training and validation"}

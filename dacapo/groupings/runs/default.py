@@ -11,7 +11,7 @@ logger = logging.getLogger(__file__)
 
 
 @attr.s
-class Default(Run):
+class DefaultRun(Run):
 
     _training_stats = None
 

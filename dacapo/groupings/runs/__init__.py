@@ -1,5 +1,5 @@
 from .helpers import Run
-from .default import Default
+from .default import DefaultRun
 
 from .training_iteration_stats import TrainingIterationStats
 from .training_stats import TrainingStats

@@ -1,6 +1,5 @@
 import math
 import torch
-from torch.optim.optimizer import Optimizer
 
 from .helpers import Optimizer
 
@@ -47,7 +46,7 @@ class RAdam(Optimizer):
         )
 
 
-class RAdamOptimizer(Optimizer):
+class RAdamOptimizer(torch.optim.Optimizer):
     def __init__(
         self,
         params,

@@ -3,6 +3,7 @@
 from dacapo.fundamentals.applicators import *
 from dacapo.fundamentals.architectures import *
 from dacapo.fundamentals.arraysources import *
+from dacapo.fundamentals.arraytypes import *
 from dacapo.fundamentals.augments import *
 from dacapo.fundamentals.evaluators import *
 from dacapo.fundamentals.executers import *
@@ -26,6 +27,7 @@ def register_hierarchy_hooks(converter):
     converter.register_hierarchy(Applicator, cls_fun)
     converter.register_hierarchy(Architecture, cls_fun)
     converter.register_hierarchy(ArraySource, cls_fun)
+    converter.register_hierarchy(ArrayType, cls_fun)
     converter.register_hierarchy(Augment, cls_fun)
     converter.register_hierarchy(Evaluator, cls_fun)
     converter.register_hierarchy(Executer, cls_fun)

@@ -1,3 +1,3 @@
-from .default import default
+from .default_applicators import simple_applicator
 
-APPLICATORS = [default]
+APPLICATORS = [simple_applicator]

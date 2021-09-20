@@ -1,3 +1,3 @@
 from dacapo.fundamentals.applicators import DefaultApplicator
 
-default = DefaultApplicator()
+simple_applicator = DefaultApplicator(name="simple_applicator")

@@ -3,7 +3,8 @@ from ..fixtures.fundamentals.outputs import OUTPUTS
 from ..fixtures.fundamentals.architectures import ARCHITECTURES
 from ..fixtures.fundamentals.starts import STARTS
 from ..fixtures.fundamentals.trainers import TRAINERS
-from ..fixtures.fundamentals.pipelines import PIPELINES
+from ..fixtures.fundamentals.dataproviders import DATAPROVIDERS
+from ..fixtures.fundamentals.optimizers import OPTIMIZERS
 from ..fixtures.fundamentals.executers import simple_local as executer
 
 from dacapo import Experiment, train
@@ -18,23 +19,25 @@ import pytest
 @pytest.mark.parametrize("start", STARTS)
 @pytest.mark.parametrize("architecture", ARCHITECTURES)
 @pytest.mark.parametrize("output", OUTPUTS)
+@pytest.mark.parametrize("optimizer", OPTIMIZERS)
 @pytest.mark.parametrize("trainer", TRAINERS)
-@pytest.mark.parametrize("pipeline", PIPELINES)
+@pytest.mark.parametrize("dataprovider", DATAPROVIDERS)
 def test_train(
     tmp_path,
     mkfunction,
     start,
     architecture,
     output,
+    optimizer,
     trainer,
-    pipeline,
+    dataprovider,
 ):
     # make the temporary datasets to use:
     datasplit = mkfunction(tmp_path)
 
     name = (
         f"{datasplit.name}-{start.name}-{architecture.name}-"
-        f"{output.name}-{trainer.name}-{pipeline.name}"
+        f"{output.name}-{trainer.name}-{dataprovider.name}"
     )
 
     validator = NullValidator()
@@ -46,7 +49,8 @@ def test_train(
         datasplit=datasplit,
         architecture=architecture,
         output=output,
-        pipeline=pipeline,
+        optimizer=optimizer,
+        dataprovider=dataprovider,
         trainer=trainer,
         validator=validator,
         config_store=config_store,

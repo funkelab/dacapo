@@ -1,4 +1,5 @@
 from dacapo.fundamentals.arraysources import ZarrSource
+from dacapo.fundamentals.arraytypes import Intensities, Annotations
 
 import zarr
 import numpy as np
@@ -9,17 +10,18 @@ zarr_source = ZarrSource(
     name="test_zarr",
     filename=Path("test.zarr"),
     ds_name="volumes/raw",
+    array_type=Intensities(name="simple_intensities", shift=0, scale=0),
 )
 
 
 def mk_train_raw(path):
-    noise = np.random.randn(100, 100, 100)
+    noise = np.random.randn(2, 100, 100, 100)
     label_0 = np.zeros_like(noise)
-    noise_0 = np.random.randn(100, 100, 100)
+    noise_0 = np.random.randn(2, 100, 100, 100)
     label_1 = np.zeros_like(noise)
-    noise_1 = np.random.randn(100, 100, 100)
-    label_0[:50, :, :] = 1
-    label_1[50:, :, :] = 1
+    noise_1 = np.random.randn(2, 100, 100, 100)
+    label_0[0, :50, :, :] = 1
+    label_1[1, 50:, :, :] = 1
     data = noise + label_0 * noise_0 * 0.5 + label_1 * noise_1 * 2
 
     container_path = path / "data.zarr"
@@ -31,7 +33,7 @@ def mk_train_raw(path):
         dataset = zarr_container.create_dataset(
             "volumes/train/raw", data=data, shape=[100, 100, 100], dtype=np.float64
         )
-        dataset.attrs["axes"] = ["z", "y", "x"]
+        dataset.attrs["axes"] = ["c", "z", "y", "x"]
         dataset.attrs["resolution"] = (1, 1, 1)
         dataset.attrs["offset"] = (0, 0, 0)
         dataset.attrs["interpolatable"] = True
@@ -44,6 +46,7 @@ def mk_train_raw(path):
         name="train_raw_zarr",
         filename=path / "data.zarr",
         ds_name="volumes/train/raw",
+        array_type=Intensities(name="simple_intensities", shift=0, scale=0),
     )
 
 
@@ -77,4 +80,5 @@ def mk_train_gt(path):
         name="train_gt_zarr",
         filename=path / "data.zarr",
         ds_name="volumes/train/gt",
+        array_type=Annotations(name="simple_annotations", num_classes=2),
     )

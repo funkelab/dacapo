@@ -1,4 +1,4 @@
-from dacapo.fundamentals.datasets import Default
+from dacapo.fundamentals.datasets import DefaultDataset
 from ..arraysources import mk_train_raw, mk_train_gt
 
 
@@ -9,7 +9,7 @@ def mk_simple_train(path):
     """
     train_raw = mk_train_raw(path)
     train_gt = mk_train_gt(path)
-    return Default(name="simple_train", raw=train_raw, gt=train_gt, mask=None)
+    return DefaultDataset(name="simple_train", raw=train_raw, gt=train_gt, mask=None)
 
 
 def mk_simple_validate(path):

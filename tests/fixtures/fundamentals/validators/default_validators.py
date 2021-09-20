@@ -1,3 +1,3 @@
-from dacapo.fundamentals.validators import Default
+from dacapo.fundamentals.validators import DefaultValidator
 
-simple_default = Default(name="simple_default")
+simple_default = DefaultValidator(name="simple_default")

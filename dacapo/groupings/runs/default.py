@@ -52,10 +52,8 @@ class DefaultRun(Run):
 
     def setup(self):
         self.setup_training()
-
-        # we may want to run validation in parallel
-        if self.validation_executer is not None:
-            self.setup_validation()
+        if self.validation_executer is None:
+            self.validation_setup()
 
     def setup_training(self):
         # Read training stats from db
@@ -89,7 +87,15 @@ class DefaultRun(Run):
         pass
 
     def teardown(self):
+        self.training_teardown()
+        if self.validation_executer is None:
+            self.validation_teardown()
+
+    def training_teardown(self):
         self.train_provider.next(done=True)
+
+    def validation_teardown(self):
+        pass
 
     def step(self):
 

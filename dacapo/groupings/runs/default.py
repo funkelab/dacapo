@@ -51,16 +51,42 @@ class DefaultRun(Run):
         )
 
     def setup(self):
-        # read in previous training/validation stats
-        self._training_stats = self.retrieve_training_stats()
-        # self._validation_scores = self.retrieve_validation_scores()
+        self.setup_training()
 
+        # we may want to run validation in parallel
+        if self.validation_executer is not None:
+            self.setup_validation()
+
+    def setup_training(self):
+        # Read training stats from db
+        self._training_stats = self.retrieve_training_stats()
+        # initialize the data provider
         self.train_provider.init_provider(
             self.datasplit.train, self.architecture, self.output, self.trainer
         )
+
+        # TODO: This should be initialized elsewhere, not on every training step
+        self._backbone = self.architecture.module()
+        self._heads = [
+            predictor.head(self.architecture, self.datasplit.train)
+            for predictor in self.output.predictors
+        ]
+        self._losses = [loss.module() for loss in self.output.losses]
+        self._optimizer = self.optimizer.optim(
+            [
+                {"params": self._backbone.parameters()},
+                *[{"params": head.parameters() for head in self._heads}],
+            ]
+        )
+        self._device = None
+
+    def setup_validation(self):
+        # self._validation_scores = self.retrieve_validation_scores()
+
         # self.validation_provider.init_provider(
         #     self.datasplit.validate, self.architecture, self.output, self.validator
         # )
+        pass
 
     def teardown(self):
         self.train_provider.next(done=True)
@@ -80,38 +106,23 @@ class DefaultRun(Run):
     def training_step(self):
         training_data = self.train_provider.next()
 
-        # TODO: This should be initialized elsewhere, not on every training step
-        backbone = self.architecture.module()
-        heads = [
-            predictor.head(self.architecture, self.datasplit.train)
-            for predictor in self.output.predictors
-        ]
-        optimizer = self.optimizer.optim(
-            [
-                {"params": backbone.parameters()},
-                *[{"params": head.parameters() for head in heads}],
-            ]
-        )
-        device = None
-
         t1 = time.time()
-        optimizer.zero_grad()
-        backbone_output = backbone.forward(
-            torch.as_tensor(training_data["raw"], device=device).float()
+        self._optimizer.zero_grad()
+        backbone_output = self._backbone.forward(
+            torch.as_tensor(training_data["raw"], device=self._device).float()
         )
         losses = []
-        for predictor, loss, _, _ in self.output.outputs:
-            loss = loss.module()
-            head = predictor.head(self.architecture, self.datasplit.train)
-
+        for predictor, loss, head in zip(
+            self.output.predictors, self._losses, self._heads
+        ):
             # gather loss inputs
             predicted = head.forward(backbone_output)
             target = torch.as_tensor(
-                training_data["targets"][predictor.name], device=device
+                training_data["targets"][predictor.name], device=self._device
             ).float()
             weights_data = training_data["weights"].get(predictor.name)
             if weights_data is not None:
-                weights = torch.as_tensor(weights_data, device=device).float()
+                weights = torch.as_tensor(weights_data, device=self._device).float()
             else:
                 weights = None
 
@@ -122,7 +133,7 @@ class DefaultRun(Run):
 
         total_loss = torch.prod(torch.stack(losses))
         total_loss.backward()
-        optimizer.step()
+        self._optimizer.step()
         t2 = time.time()
 
         stats = TrainingIterationStats(

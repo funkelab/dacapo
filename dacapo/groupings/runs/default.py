@@ -84,6 +84,8 @@ class DefaultRun(Run):
         # self.validation_provider.init_provider(
         #     self.datasplit.validate, self.architecture, self.output, self.validator
         # )
+
+        # self.model.eval()
         pass
 
     def teardown(self):
@@ -95,6 +97,8 @@ class DefaultRun(Run):
         self.train_provider.next(done=True)
 
     def validation_teardown(self):
+        
+        # self.model.train()
         pass
 
     def step(self):
@@ -150,13 +154,14 @@ class DefaultRun(Run):
         return stats
 
     def validation_step(self):
-        self.model.eval()
+        # Do any setup necessary for validation
+        self.validation_setup()
 
-        self.weights_store.store_weights(self.iteration_stats.iteration + 1)
-        validate_run(self.iteration_stats.iteration + 1)
-        stats_store.store_validation_scores(run_name, self.validation_scores)
+        # Run validations
+        # self.weights_store.store_weights(self.iteration_stats.iteration + 1)
+        # validate_run(self.iteration_stats.iteration + 1)
+        # stats_store.store_validation_scores(run_name, self.validation_scores)
+        # stats_store.store_training_stats(run_name, self.training_stats)
+        # trained_until = self.training_stats.trained_until()
 
-        self.model.train()
-
-        stats_store.store_training_stats(run_name, self.training_stats)
-        trained_until = self.training_stats.trained_until()
+        self.validation_teardown()

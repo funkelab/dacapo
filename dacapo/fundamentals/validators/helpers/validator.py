@@ -13,7 +13,7 @@ class Validator(ABC):
     )
 
     @abstractmethod
-    def validate(training_stats: TrainingStats, validation_scores: ValidationScores) -> bool:
+    def validate_next(training_stats: TrainingStats, validation_scores: ValidationScores) -> bool:
         """
         Whether or not to validate now.
         Takes in the existing training_stats.

@@ -11,5 +11,5 @@ class DefaultValidator(Validator):
 
     validation_interval: int = attr.ib()
 
-    def validate(self, training_stats: TrainingStats, validation_scores: ValidationScores):
+    def validate_next(self, training_stats: TrainingStats, validation_scores: ValidationScores):
         return (training_stats.trained_until + 1) % self.validation_interval == 0

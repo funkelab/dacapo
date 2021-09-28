@@ -7,5 +7,5 @@ import attr
 class Null(Validator):
     name: str = attr.ib("null")
 
-    def validate(self, training_stats, validation_stats):
+    def validate_next(self, training_stats, validation_scores):
         return False

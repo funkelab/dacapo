@@ -26,3 +26,7 @@ class DefaultOutput(Output):
     @property
     def predictors(self):
         return (o[0] for o in self.outputs)
+
+    @property
+    def losses(self):
+        return (o[1] for o in self.outputs)

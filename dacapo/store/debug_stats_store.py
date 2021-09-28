@@ -2,7 +2,8 @@ from .stats_store import StatsStore
 
 from dacapo.fundamentals.training_stats import TrainingStats
 from dacapo.fundamentals.training_iteration_stats import TrainingIterationStats
-# from dacapo.groupings.run import ValidationScores, ValidationIterationScores
+from dacapo.fundamentals.validation_scores import ValidationScores
+from dacapo.fundamentals.validation_iteration_scores import ValidationIterationScores
 
 
 class DebugStatsStore(StatsStore):
@@ -11,7 +12,8 @@ class DebugStatsStore(StatsStore):
         return stats
 
     def retrieve_validation_scores(self, experiment_name, run_repitition):
-        raise NotImplementedError()
+        scores = ValidationScores()
+        return scores
 
     def store_training_stats(self):
         raise NotImplementedError()

@@ -29,6 +29,13 @@ class DefaultRun(Run):
             return self._training_stats
 
     @property
+    def validation_scores(self):
+        if self._validation_scores is None:
+            raise ValueError("Validation scores have not been initialized")
+        else:
+            return self._validation_scores
+
+    @property
     def name(self):
         return f"{self.experiment_name}:{self.repitition}"
 
@@ -52,12 +59,11 @@ class DefaultRun(Run):
 
     def setup(self):
         self.setup_training()
-        if self.validation_executer is None:
-            self.validation_setup()
 
     def setup_training(self):
         # Read training stats from db
         self._training_stats = self.retrieve_training_stats()
+        self._validation_scores = self.retrieve_validation_scores()
         # initialize the data provider
         self.train_provider.init_provider(
             self.datasplit.train, self.architecture, self.output, self.trainer
@@ -90,8 +96,6 @@ class DefaultRun(Run):
 
     def teardown(self):
         self.training_teardown()
-        if self.validation_executer is None:
-            self.validation_teardown()
 
     def training_teardown(self):
         self.train_provider.next(done=True)
@@ -107,7 +111,7 @@ class DefaultRun(Run):
 
         self.training_stats.add_iteration_stats(iteration_stats)
 
-        if self.validator.validation_step(self.training_stats):
+        if self.validator.validate_next(self.training_stats, self.validation_scores):
 
             self.validation_step()
 

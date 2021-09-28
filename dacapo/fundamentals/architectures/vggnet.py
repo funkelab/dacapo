@@ -28,7 +28,7 @@ class VGGNet(Architecture):
             "help_text": "The factor by which to downsample spatial dimensions along each axis."
         }
     )
-    num_dense: Optional[int] = attr.ib()
+    num_hidden: Optional[int] = attr.ib()
     fmaps_in: Optional[int] = attr.ib(
         default=None, metadata={"help_text": "The number of channels in the input data"}
     )
@@ -52,7 +52,7 @@ class VGGNet(Architecture):
                 output_classes=self.fmaps_out,
                 downsample_factors=self.downsample_factors,
                 input_fmaps=self.fmaps_in,
-                num_dense=self.num_dense,
+                num_hidden=self.num_hidden,
             ),
             AddSpatial(*self.output_shape),
         )

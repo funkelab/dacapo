@@ -1,7 +1,7 @@
 bokeh
 configargparse
 git+git://github.com/funkey/waterz
-git+git://github.com/funkelab/funlib.learn.torch
+git+git://github.com/pattonw/funlib.learn.torch@vgg-expose-num-hidden
 git+git://github.com/funkelab/funlib.evaluate@e53a8c5099f696b076f30ef8851ebaf4c7e66ce0#egg=funlib.evaluate
 git+git://github.com/funkelab/funlib.run
 git+git://github.com/turagalab/malis
@@ -20,5 +20,5 @@ zarr
 click
 attr
 cattrs
-dotenv
+python-dotenv
 intern # for bossdb

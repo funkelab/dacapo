@@ -1,6 +1,7 @@
 from .stats_store import StatsStore
 
-from dacapo.groupings.runs import TrainingStats, TrainingIterationStats
+from dacapo.fundamentals.training_stats import TrainingStats
+from dacapo.fundamentals.training_iteration_stats import TrainingIterationStats
 # from dacapo.groupings.run import ValidationScores, ValidationIterationScores
 
 

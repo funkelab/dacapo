@@ -10,5 +10,5 @@ vggnet = VGGNet(
     input_shape=Coordinate(20, 20, 20),
     fmaps_out=10,
     downsample_factors=[Coordinate(2, 2, 2), Coordinate(2, 2, 2)],
-    num_dense=32,
+    num_hidden=32,
 )

@@ -5,7 +5,6 @@ from ..fixtures.fundamentals.starts import STARTS
 from ..fixtures.fundamentals.trainers import TRAINERS
 from ..fixtures.fundamentals.dataproviders import DATAPROVIDERS
 from ..fixtures.fundamentals.optimizers import OPTIMIZERS
-from ..fixtures.fundamentals.executers import simple_local as executer
 
 from dacapo import Experiment, train
 from dacapo.fundamentals.validators import Null as NullValidator
@@ -35,10 +34,7 @@ def test_train(
     # make the temporary datasets to use:
     datasplit = mkfunction(tmp_path)
 
-    name = (
-        f"{datasplit.name}-{start.name}-{architecture.name}-"
-        f"{output.name}-{trainer.name}-{dataprovider.name}"
-    )
+    name = "test_train"
 
     validator = NullValidator()
     config_store = DebugConfigStore()

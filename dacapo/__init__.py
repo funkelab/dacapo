@@ -12,4 +12,4 @@
 # from . import config_fields  # noqa
 
 from .groupings.experiments import DefaultExperiment as Experiment
-from .operations import train
+from .operations import train, validate

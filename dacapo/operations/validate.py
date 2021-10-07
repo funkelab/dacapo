@@ -1,4 +1,4 @@
-def validate(experiment, repitition, iteration, executer):
+def validate(experiment, repitition, iteration, executer=None):
 
     # If an executer is chosen, use it. Else, train.
     if executer is not None:

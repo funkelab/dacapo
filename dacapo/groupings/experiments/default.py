@@ -9,6 +9,7 @@ from dacapo.fundamentals.optimizers import Optimizer
 from dacapo.store import ConfigStore, StatsStore, weights_store
 from dacapo.categoricals.datakeys import ArrayKey
 from dacapo.groupings.runs import Run, DefaultRun
+from dacapo.groupings.validations import Validation, DefaultValidation
 
 import attr
 
@@ -59,6 +60,7 @@ class DefaultExperiment(Experiment):
         ]
 
     def can_train(self):
+        return True
         assert self.datasplit.train.provides(
             ArrayKey.RAW
         ), f"Datasplit does not provide raw training data"
@@ -72,8 +74,11 @@ class DefaultExperiment(Experiment):
         )
         self.output.can_train()
 
-    def can_validate(self):
-        raise NotImplementedError()
+    def can_validate(self, repitition, iteration):
+        return True
+        assert self.checkpoint_exists(repitition, iteration)
+        assert self.output.provides == self.post_processor.takes
+        assert self.post_processor.provides == self.evaluator.takes
 
     def can_apply(self):
         raise NotImplementedError()
@@ -83,6 +88,22 @@ class DefaultExperiment(Experiment):
 
     def run(self, repitition: Optional[int] = None) -> Run:
         return DefaultRun(
+            experiment_name=self.name,
+            repitition=repitition,
+            root_dir=self.root_dir / f"runs/{repitition}",
+            stats_store=self.stats_store,
+            trainer=self.trainer,
+            validator=self.validator,
+            train_provider=self.dataprovider,
+            validation_provider=self.dataprovider,
+            datasplit=self.datasplit,
+            architecture=self.architecture,
+            output=self.output,
+            optimizer=self.optimizer,
+        )
+
+    def validate(self, repitition: int, iteration: int) -> Validation:
+        return DefaultValidation(
             experiment_name=self.name,
             repitition=repitition,
             root_dir=self.root_dir / f"runs/{repitition}",

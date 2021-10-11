@@ -93,12 +93,13 @@ class GunpowderValidate(DataProvider):
 
         # generate gp_request for all necessary inputs to training
         gp_request = gp.BatchRequest()
-        gp_request.add(raw, input_roi.shape)
-        gp_request.add(gt, output_roi.shape)
+        # avoid convenience "add" since we want to request the true input/output rois
+        gp_request[raw] = gp.ArraySpec(roi=input_roi)
+        gp_request[gt] = gp.ArraySpec(roi=output_roi)
         for predictor in output.predictors:
             name = predictor.name
             predictor_target = predictor_keys[name]
-            gp_request.add(predictor_target, output_roi.shape)
+            gp_request[predictor_target] = gp.ArraySpec(roi=output_roi)
 
         self._gp_pipeline = gp_pipeline
         self._gp_request = gp_request
@@ -114,17 +115,11 @@ class GunpowderValidate(DataProvider):
                 raw = batch[gp.ArrayKeys.RAW].data
                 targets = {
                     name: batch[target_key].data
-                    for name, (target_key, _) in self._predictor_keys.items()
-                }
-                weights = {
-                    name: batch[weight_key].data
-                    for name, (_, weight_key) in self._predictor_keys.items()
-                    if weight_key is not None
+                    for name, target_key in self._predictor_keys.items()
                 }
                 self._has_next = yield {
                     "raw": raw,
                     "targets": targets,
-                    "weights": weights,
                 }
         yield None
 

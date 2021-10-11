@@ -7,13 +7,22 @@ from dacapo.store.validation_iteration_scores import ValidationIterationScores
 
 
 class DebugStatsStore(StatsStore):
+
+    def __init__(self):
+        self._training_stats = {}
+        self._validation_scores = {}
+
     def retrieve_training_stats(self, experiment_name, run_repitition):
-        stats = TrainingStats()
-        return stats
+        key = (experiment_name, run_repitition)
+        if key not in self._training_stats:
+            self._training_stats[key] = TrainingStats()
+        return self._training_stats[key]
 
     def retrieve_validation_scores(self, experiment_name, run_repitition):
-        scores = ValidationScores()
-        return scores
+        key = (experiment_name, run_repitition)
+        if key not in self._validation_scores:
+            self._validation_scores[key] = ValidationScores()
+        return self._validation_scores[key]
 
     def store_training_stats(self):
         raise NotImplementedError()

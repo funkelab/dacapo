@@ -1,5 +1,5 @@
 from dacapo.fundamentals.datasets import DefaultDataset
-from ..arraysources import mk_train_raw, mk_train_gt
+from ..arraysources import mk_train_raw, mk_train_gt, mk_val_raw, mk_val_gt
 
 
 def mk_simple_train(path):
@@ -17,5 +17,6 @@ def mk_simple_validate(path):
     create the data necessary to use the
     "simple_validate" dataset at the given `path`
     """
-    raise NotImplementedError() 
-    returnDefault(name="simple_validate", raw=None, gt=None, mask=None)
+    val_raw = mk_val_raw(path)
+    val_gt = mk_val_gt(path)
+    return DefaultDataset(name="simple_validate", raw=val_raw, gt=val_gt, mask=None)

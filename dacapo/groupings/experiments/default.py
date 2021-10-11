@@ -48,10 +48,23 @@ class DefaultExperiment(Experiment):
     stats_store: StatsStore = attr.ib(
         metadata={"help_text": "Where to store your stats"}
     )
+    experiments_dir: Optional[Path] = attr.ib(
+        metadata={"help_text": "Where to find your experiments"}, default=None
+    )
 
     @property
     def root_dir(self):
-        return Path(f"experiments/{self.name}")
+        if self.experiments_dir is not None:
+            return self.experiments_dir / f"{self.name}"
+        else:
+            return Path(f"experiments/{self.name}")
+
+    @property
+    def num_repititions(self):
+        if (self.root_dir / "runs").exists():
+            return len(list((self.root_dir / "runs").iterdir()))
+        else:
+            return 0
 
     def is_valid(self):
         return True
@@ -92,6 +105,7 @@ class DefaultExperiment(Experiment):
         raise NotImplementedError()
 
     def run(self, repitition: Optional[int] = None) -> Run:
+        repitition = repitition if repitition is not None else self.num_repititions
         return DefaultRun(
             experiment_name=self.name,
             repitition=repitition,

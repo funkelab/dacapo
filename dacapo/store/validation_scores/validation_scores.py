@@ -20,6 +20,7 @@ class ValidationScores:
             scores for scores in self.iteration_scores if scores.iteration < iteration
         ]
 
+    @property
     def validated_until(self):
         """The number of iterations validated for (the maximum iteration plus
         one)."""

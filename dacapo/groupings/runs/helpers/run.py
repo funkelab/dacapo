@@ -50,3 +50,11 @@ class Run(ABC):
     @abstractmethod
     def retrieve_validation_scores(self):
         pass
+
+    @abstractmethod
+    def best_weights(self) -> Optional[Path]:
+        pass
+
+    @abstractmethod
+    def latest_weights(self) -> Optional[Path]:
+        pass

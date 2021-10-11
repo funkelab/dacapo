@@ -33,7 +33,12 @@ class DefaultDataset(Dataset):
         else:
             return False
 
-    def random_location_provider(self, raw: GPArrayKey, gt: GPArrayKey, mask: GPArrayKey = None):
+    def random_location_provider(
+        self, raw: GPArrayKey, gt: GPArrayKey, mask: GPArrayKey = None
+    ):
+        return self.provider(raw, gt, mask) + RandomLocation()
+
+    def provider(self, raw, gt, mask=None):
         raw_source = self.raw.node(raw)
         gt_source = self.gt.node(gt)
         if self.mask is not None:
@@ -42,5 +47,4 @@ class DefaultDataset(Dataset):
         else:
             pipeline = (raw_source, gt_source) + MergeProvider()
 
-        pipeline += RandomLocation()
         return pipeline

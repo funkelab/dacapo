@@ -1,3 +1,4 @@
+from dacapo.groupings import experiments
 from ..fixtures.fundamentals.datasplits import MK_FUNCTIONS
 from ..fixtures.fundamentals.outputs import OUTPUTS
 from ..fixtures.fundamentals.architectures import ARCHITECTURES
@@ -36,7 +37,7 @@ def test_train(
     name = "test_train"
     trainer = DefaultTrainer(name="test_train", num_iterations=100, batch_size=1)
     validator = NullValidator()
-    
+
     config_store = DebugConfigStore()
     stats_store = DebugStatsStore()
 
@@ -46,7 +47,8 @@ def test_train(
         architecture=architecture,
         output=output,
         optimizer=optimizer,
-        dataprovider=dataprovider,
+        train_provider=dataprovider,
+        val_provider=None,
         trainer=trainer,
         validator=validator,
         config_store=config_store,
@@ -56,6 +58,9 @@ def test_train(
 
     if not can_train:
         with pytest.raises(ValueError):
-            train(experiment)
+            repitition = train(experiment)
     else:
-        train(experiment)
+        repitition = train(experiment)
+
+    run = experiment.run(repitition)
+    assert run.training_stats.trained_until == 100

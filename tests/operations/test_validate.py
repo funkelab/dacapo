@@ -34,6 +34,7 @@ def test_validate(
 
     config_store = DebugConfigStore()
     stats_store = DebugStatsStore()
+    assert len(stats_store._training_stats) == 0
 
     optimizer = Adam("validation_test")
 
@@ -52,11 +53,22 @@ def test_validate(
         validator=validator,
         config_store=config_store,
         stats_store=stats_store,
+        experiments_dir=tmp_path,
     )
     can_validate = experiment.can_validate()
 
     if not can_validate:
         with pytest.raises(ValueError):
-            train(experiment)
+            repitition = train(experiment)
     else:
-        train(experiment)
+        repitition = train(experiment)
+
+    run = experiment.run(repitition)
+    assert run.training_stats.trained_until == 100
+    assert run.validation_scores.validated_until == 100
+
+    path_to_best_model = run.best_weights()
+    assert path_to_best_model.exists()
+    
+    path_to_latest_model = run.latest_weights()
+    assert path_to_latest_model.exists()

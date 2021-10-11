@@ -34,3 +34,5 @@ def train(
         run.step()
 
     run.teardown() # free resources, stop workers, etc.
+
+    return run.repitition

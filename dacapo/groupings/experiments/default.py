@@ -34,8 +34,11 @@ class DefaultExperiment(Experiment):
     optimizer: Optimizer = attr.ib(
         metadata={"help_text": "The optimizer to use for training your model"}
     )
-    dataprovider: DataProvider = attr.ib(
-        metadata={"help_text": "The dataprovider to use for moving data around"}
+    train_provider: DataProvider = attr.ib(
+        metadata={"help_text": "The dataprovider to use for fetching training batches"}
+    )
+    val_provider: DataProvider = attr.ib(
+        metadata={"help_text": "The dataprovider to use for iterating validation data"}
     )
     trainer: Trainer = attr.ib(metadata={"help_text": "Training details go here"})
     validator: Validator = attr.ib(metadata={"help_text": "Validation details go here"})
@@ -74,11 +77,13 @@ class DefaultExperiment(Experiment):
         )
         self.output.can_train()
 
-    def can_validate(self, repitition, iteration):
+    def can_validate(self, repitition=None, iteration=None):
         return True
-        assert self.checkpoint_exists(repitition, iteration)
+        # check if validation is generally possible
         assert self.output.provides == self.post_processor.takes
         assert self.post_processor.provides == self.evaluator.takes
+        # if validation and iteration are provided, check if necessary state exists:
+        assert self.checkpoint_exists(repitition, iteration)
 
     def can_apply(self):
         raise NotImplementedError()
@@ -94,8 +99,8 @@ class DefaultExperiment(Experiment):
             stats_store=self.stats_store,
             trainer=self.trainer,
             validator=self.validator,
-            train_provider=self.dataprovider,
-            validation_provider=self.dataprovider,
+            train_provider=self.train_provider,
+            validation_provider=self.val_provider,
             datasplit=self.datasplit,
             architecture=self.architecture,
             output=self.output,

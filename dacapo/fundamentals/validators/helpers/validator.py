@@ -1,6 +1,3 @@
-from dacapo.fundamentals.training_stats import TrainingStats
-from dacapo.fundamentals.validation_scores import ValidationScores
-
 import attr
 
 from abc import ABC, abstractmethod
@@ -13,7 +10,7 @@ class Validator(ABC):
     )
 
     @abstractmethod
-    def validate_next(training_stats: TrainingStats, validation_scores: ValidationScores) -> bool:
+    def validate_next(training_stats, validation_scores) -> bool:
         """
         Whether or not to validate now.
         Takes in the existing training_stats.

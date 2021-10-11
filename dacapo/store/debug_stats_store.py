@@ -1,9 +1,9 @@
 from .stats_store import StatsStore
 
-from dacapo.fundamentals.training_stats import TrainingStats
-from dacapo.fundamentals.training_iteration_stats import TrainingIterationStats
-from dacapo.fundamentals.validation_scores import ValidationScores
-from dacapo.fundamentals.validation_iteration_scores import ValidationIterationScores
+from dacapo.store.training_stats import TrainingStats
+from dacapo.store.training_iteration_stats import TrainingIterationStats
+from dacapo.store.validation_scores import ValidationScores
+from dacapo.store.validation_iteration_scores import ValidationIterationScores
 
 
 class DebugStatsStore(StatsStore):

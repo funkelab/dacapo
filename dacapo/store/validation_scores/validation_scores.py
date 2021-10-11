@@ -1,4 +1,4 @@
-from dacapo.fundamentals.validation_iteration_scores import ValidationIterationScores
+from dacapo.store.validation_iteration_scores import ValidationIterationScores
 from typing import List
 import attr
 

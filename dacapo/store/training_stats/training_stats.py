@@ -1,4 +1,4 @@
-from dacapo.fundamentals.training_iteration_stats import TrainingIterationStats
+from dacapo.store.training_iteration_stats import TrainingIterationStats
 from typing import List
 import attr
 

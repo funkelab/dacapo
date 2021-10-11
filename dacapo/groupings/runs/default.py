@@ -1,5 +1,5 @@
 from .helpers import Run
-from dacapo.fundamentals.training_iteration_stats import TrainingIterationStats
+from dacapo.store.training_iteration_stats import TrainingIterationStats
 from dacapo.store import ConfigStore, StatsStore, stats_store, LocalWeightsStore
 
 import attr

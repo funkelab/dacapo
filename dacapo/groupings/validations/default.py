@@ -1,5 +1,5 @@
 from .helpers import Validation
-from dacapo.fundamentals.validation_iteration_scores import ValidationIterationScores
+from dacapo.store.validation_iteration_scores import ValidationIterationScores
 from dacapo.store import ConfigStore, StatsStore, stats_store, LocalWeightsStore
 
 import attr

@@ -48,7 +48,6 @@ def test_train(
         output=output,
         optimizer=optimizer,
         train_provider=dataprovider,
-        val_provider=None,
         trainer=trainer,
         validator=validator,
         config_store=config_store,

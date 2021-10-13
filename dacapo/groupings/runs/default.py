@@ -5,7 +5,7 @@ from dacapo.store import ConfigStore, StatsStore, stats_store, LocalWeightsStore
 import attr
 import torch
 
-from typing import Optional
+from typing import Optional, Dict, Any
 from pathlib import Path
 import logging
 import time
@@ -74,6 +74,9 @@ class DefaultRun(Run):
         else:
             return None
 
+    def checkpoint(self, iteration: int) -> Path:
+        return self.weights_dir / f"{iteration}.checkpoint"
+
     def retrieve_training_stats(self):
         return self.stats_store.retrieve_training_stats(
             self.experiment_name, self.repitition
@@ -94,14 +97,14 @@ class DefaultRun(Run):
 
     def setup_training(self):
         # initialize the data provider
-        self.train_provider.init_provider(
-            self.datasplit.train, self.architecture, self.output, self.trainer
+        self.dataprovider.init_provider(
+            self.dataset, self.architecture, self.output, self.trainer
         )
 
         # TODO: This should be initialized elsewhere, not on every training step
         self._backbone = self.architecture.module()
         self._heads = [
-            predictor.head(self.architecture, self.datasplit.train)
+            predictor.head(self.architecture, self.dataset)
             for predictor in self.output.predictors
         ]
         self._losses = [loss.module() for loss in self.output.losses]
@@ -113,40 +116,14 @@ class DefaultRun(Run):
         )
         self._device = None
 
-    def setup_validation(self):
-        self.validation_provider.init_provider(
-            self.datasplit.validate, self.architecture, self.output, self.validator
-        )
-
-        self._backbone.eval()
-        for head in self._heads:
-            head.eval()
-
     def teardown(self):
         self.training_teardown()
 
     def training_teardown(self):
-        self.train_provider.next(done=True)
-
-    def validation_teardown(self):
-        # prepare for continued training
-
-        self._backbone.train()
-        for head in self._heads:
-            head.train()
+        self.dataprovider.next(done=True)
 
     def step(self):
-
-        iteration_stats = self.training_step()
-
-        self.training_stats.add_iteration_stats(iteration_stats)
-
-        if self.validator.validate_next(self.training_stats, self.validation_scores):
-
-            self.validation_step()
-
-    def training_step(self):
-        training_data = self.train_provider.next()
+        training_data = self.dataprovider.next()
 
         t1 = time.time()
         self._optimizer.zero_grad()
@@ -179,42 +156,44 @@ class DefaultRun(Run):
         t2 = time.time()
 
         stats = TrainingIterationStats(
-            iteration=self.trained_iterations + 1,
+            iteration=self.trained_iterations,
             loss=total_loss.detach().cpu(),
             time=t2 - t1,
         )
-        return stats
 
-    def validation_step(self):
-        # Do any setup necessary for validation
-        self.setup_validation()
+        self.training_stats.add_iteration_stats(stats)
 
-        # Run validations
-        # self.weights_store.store_weights(self.iteration_stats.iteration + 1)
-        # validate_run(self.iteration_stats.iteration + 1)
-        # stats_store.store_validation_scores(run_name, self.validation_scores)
-        # stats_store.store_training_stats(run_name, self.training_stats)
-        # trained_until = self.training_stats.trained_until()
+        if self.validator.validate_next(self.training_stats, self.validation_scores):
+            self.save_weights()
+            return True
+        else:
+            return False
 
-        self.save_weights(overwrite_best=True)
+    def add_iteration_scores(self, iteration_scores):
+        new_best = self.output.is_better(
+            iteration_scores, self.validation_scores.best_iteration_score
+        )
+        self.validation_scores.add_iteration_scores(iteration_scores, new_best)
+        if new_best:
+            self.update_best_model(iteration_scores.iteration)
 
-        self.validation_teardown()
-
-    def save_weights(self, overwrite_best: bool = False):
+    def save_weights(self):
         if not self.weights_dir.exists():
             self.weights_dir.mkdir(parents=True)
 
-        iteration = self.trained_iterations
+        # the last trained iteration
+        iteration = self.trained_iterations - 1
+
         state_dict = {
-            "backbone": self._backbone.state_dict,
-            "optimizer": self._optimizer.state_dict,
+            "backbone": self._backbone.state_dict(),
+            "optimizer": self._optimizer.state_dict(),
         }
         for predictor, head in zip(self.output.predictors, self._heads):
-            state_dict[predictor.name] = head.state_dict
+            state_dict[predictor.name] = head.state_dict()
 
         torch.save(state_dict, self.weights_dir / f"{iteration}.checkpoint")
 
-        if overwrite_best:
-            torch.save(state_dict, self.weights_dir / f"best.checkpoint")
-            assert (self.weights_dir / f"best.checkpoint").exists()
-            assert self.best_weights().exists()
+    def update_best_model(self, iteration: int):
+        iteration_weights = self.weights_dir / f"{iteration}.checkpoint"
+        best_weights = self.weights_dir / "best.checkpoint"
+        best_weights.write_bytes(iteration_weights.read_bytes())

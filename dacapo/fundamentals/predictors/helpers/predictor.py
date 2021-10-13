@@ -1,7 +1,9 @@
-from abc import ABC, abstractmethod
+from dacapo.basics.arraytypes import ArrayType
 
 import torch
 import attr
+
+from abc import ABC, abstractmethod
 
 
 @attr.s
@@ -21,6 +23,11 @@ class Predictor(ABC):
     name: str = attr.ib(
         metadata={"help_text": "This name is used to differentiate between predictors."}
     )
+    
+    @property
+    @abstractmethod
+    def output_arraytype(self) -> ArrayType:
+        pass
 
     @abstractmethod
     def head(self) -> torch.nn.Module:

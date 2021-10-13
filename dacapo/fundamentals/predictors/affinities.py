@@ -1,5 +1,6 @@
 from .helpers import Predictor
 from dacapo.gp import AddDistance
+from dacapo.basics.arraytypes import ArrayType, AffinityArray
 
 import gunpowder as gp
 from funlib.geometry import Coordinate
@@ -45,6 +46,10 @@ class Affinities(Predictor):
         default=3,
         metadata={"help_text": "The number of dimensions of your data. Defaults to 3."},
     )  # from data
+
+    @property
+    def output_arraytype(self) -> ArrayType:
+        return AffinityArray()
 
     @property
     def fmaps_out(self):

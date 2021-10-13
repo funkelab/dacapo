@@ -1,5 +1,5 @@
 from .helpers import Predictor
-
+from dacapo.basics.arraytypes import ArrayType, OneHotArray
 import gunpowder as gp
 
 import torch
@@ -61,6 +61,10 @@ class OneHotLabels(Predictor):
     )  # can be read from data
 
     @property
+    def output_arraytype(self) -> ArrayType:
+        return OneHotArray(num_channels = self.num_classes)
+
+    @property
     def target_fmaps(self):
         return 1
 
@@ -69,10 +73,12 @@ class OneHotLabels(Predictor):
         return self.num_classes
 
     def head(self, architecture, dataset):
+        if self.num_classes is None:
+            self.num_classes = dataset.gt.array_type.num_classes
         return OneHotLabelsHead(
             dims=architecture.output_shape.dims,
             fmaps_in=architecture.fmaps_out,
-            num_classes=dataset.gt.array_type.num_classes,
+            num_classes=self.num_classes,
         )
 
     def add_target(self, gt, target, weights=None, mask=None):

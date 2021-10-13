@@ -1,4 +1,5 @@
 from .helpers import Predictor
+from dacapo.basics.arraytypes import ArrayType, LSDArray
 
 import gunpowder as gp
 import torch
@@ -38,6 +39,10 @@ class LSD(Predictor):
         default=None,
         metadata={"help_text": "The dimensionality of your data."},
     )
+
+    @property
+    def output_arraytype(self) -> ArrayType:
+        return LSDArray()
 
     def head(self, fmaps_in: int):
         conv = torch.nn.Conv3d

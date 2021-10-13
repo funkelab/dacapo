@@ -1,7 +1,7 @@
 from .helpers import Evaluator
 from dacapo.basics import Parameters
 from dacapo.fundamentals.arraysources import ArraySource
-from dacapo.store import ScoresStore
+# from dacapo.store.scores_store import ScoresStore
 
 import funlib.evaluate
 import daisy
@@ -25,7 +25,7 @@ class LabelEvaluator(Evaluator):
         post_processing_parameters: Parameters,
         pred_source: ArraySource,
         gt_source: ArraySource,
-        scores_store: ScoresStore,
+        scores_store,
         upstream_task: daisy.Task,
     ) -> daisy.Task:
 
@@ -69,7 +69,7 @@ class LabelEvaluator(Evaluator):
                     agg_scores[k] += v * (block_weight / total_weight)
         return agg_scores
 
-    def evaluate_block(self, block, predicted, ground_truth, scores_store: ScoresStore):
+    def evaluate_block(self, block, predicted, ground_truth, scores_store):
 
         voxel_size = ground_truth.voxel_size
 

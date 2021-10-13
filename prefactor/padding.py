@@ -1,6 +1,6 @@
 from gunpowder import Coordinate
 
-from .converter import converter
+from dacapo.attrs import converter
 
 from enum import Enum
 

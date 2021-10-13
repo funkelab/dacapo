@@ -1,7 +1,7 @@
 from ..fixtures.fundamentals.applicators import APPLICATORS
 from ..fixtures.db import mongo_config_store, DB_AVAILABLE
 
-from dacapo.store.converter import converter
+from dacapo.attrs.converter import converter
 from dacapo.fundamentals.applicators import Applicators
 
 import pytest

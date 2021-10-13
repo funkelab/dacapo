@@ -1,5 +1,5 @@
 from .config_store import ConfigStore, DuplicateNameError
-from .converter import converter
+from dacapo.attrs import converter
 from dacapo.fundamentals.applicators import Applicator
 from dacapo.fundamentals.arraysources import ArraySource
 from dacapo.fundamentals.datasets import Dataset

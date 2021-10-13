@@ -1,7 +1,7 @@
 from ..fixtures.fundamentals.trainers import TRAINERS
 from ..fixtures.db import DB_AVAILABLE, mongo_config_store
 
-from dacapo.store.converter import converter
+from dacapo.attrs.converter import converter
 from dacapo.fundamentals.trainers import Trainer
 
 import pytest

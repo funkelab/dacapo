@@ -1,6 +1,6 @@
 from .stats_store import StatsStore
 from pymongo import MongoClient, ASCENDING
-from .converter import converter
+from dacapo.attrs import converter
 # from dacapo.experiments import TrainingStats, TrainingIterationStats
 # from dacapo.experiments import ValidationScores, ValidationIterationScores
 from typing import List

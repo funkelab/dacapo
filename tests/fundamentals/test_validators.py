@@ -1,7 +1,7 @@
 from ..fixtures.fundamentals.validators import VALIDATORS
 from ..fixtures.db import DB_AVAILABLE, mongo_config_store
 
-from dacapo.store.converter import converter
+from dacapo.attrs.converter import converter
 from dacapo.fundamentals.validators import Validator
 
 import pytest

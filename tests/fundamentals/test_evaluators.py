@@ -1,7 +1,7 @@
 from ..fixtures.fundamentals.evaluators import EVALUATORS
 from ..fixtures.db import DB_AVAILABLE, mongo_config_store
 
-from dacapo.store.converter import converter
+from dacapo.attrs.converter import converter
 from dacapo.fundamentals.evaluators import Evaluator
 
 import pytest

@@ -1,7 +1,7 @@
 from ..fixtures.fundamentals.augments import AUGMENTS
 from ..fixtures.db import DB_AVAILABLE, mongo_config_store
 
-from dacapo.store.converter import converter
+from dacapo.attrs.converter import converter
 from dacapo.fundamentals.augments import Augment
 
 import gunpowder as gp

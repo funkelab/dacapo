@@ -1,7 +1,7 @@
 from ..fixtures.fundamentals.predictors import PREDICTORS
 from ..fixtures.db import DB_AVAILABLE, mongo_config_store
 
-from dacapo.store.converter import converter
+from dacapo.attrs.converter import converter
 from dacapo.fundamentals.predictors import Predictor
 
 import pytest

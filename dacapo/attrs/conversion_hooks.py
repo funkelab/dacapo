@@ -1,9 +1,9 @@
 # star imports ensure visibility of concrete classes, so here they are accepted
 # flake8: noqa: F405
+from dacapo.basics.arraytypes import *
 from dacapo.fundamentals.applicators import *
 from dacapo.fundamentals.architectures import *
 from dacapo.fundamentals.arraysources import *
-from dacapo.basics.arraytypes import *
 from dacapo.fundamentals.augments import *
 from dacapo.fundamentals.evaluators import *
 from dacapo.fundamentals.executers import *

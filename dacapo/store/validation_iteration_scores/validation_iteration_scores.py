@@ -1,4 +1,4 @@
-from dacapo.fundamentals.predictors import Predictor
+from dacapo.stateless.predictors import Predictor
 from typing import List, Tuple, Dict, Any
 import attr
 

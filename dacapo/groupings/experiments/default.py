@@ -1,12 +1,12 @@
 from .helpers import Experiment
-from dacapo.fundamentals.datasplits import DataSplit
-from dacapo.fundamentals.architectures import Architecture
-from dacapo.fundamentals.outputs import Output
-from dacapo.fundamentals.dataproviders import DataProvider
-from dacapo.fundamentals.trainers import Trainer
-from dacapo.fundamentals.validators import Validator
-from dacapo.fundamentals.optimizers import Optimizer
-from dacapo.fundamentals.executers import Executer
+from dacapo.stateless.datasplits import DataSplit
+from dacapo.stateless.architectures import Architecture
+from dacapo.stateless.outputs import Output
+from dacapo.stateless.dataproviders import DataProvider
+from dacapo.stateless.trainers import Trainer
+from dacapo.stateless.validators import Validator
+from dacapo.stateless.optimizers import Optimizer
+from dacapo.stateless.executers import Executer
 from dacapo.store import ConfigStore, StatsStore, weights_store
 from dacapo.categoricals.datakeys import ArrayKey
 from dacapo.groupings.runs import Run, DefaultRun

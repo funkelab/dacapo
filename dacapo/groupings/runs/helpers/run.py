@@ -1,11 +1,11 @@
 from dacapo.store import StatsStore, WeightsStore
-from dacapo.fundamentals.trainers import Trainer
-from dacapo.fundamentals.validators import Validator
-from dacapo.fundamentals.dataproviders import DataProvider
-from dacapo.fundamentals.datasets import Dataset
-from dacapo.fundamentals.architectures import Architecture
-from dacapo.fundamentals.outputs import Output
-from dacapo.fundamentals.optimizers import Optimizer
+from dacapo.stateless.trainers import Trainer
+from dacapo.stateless.validators import Validator
+from dacapo.stateless.dataproviders import DataProvider
+from dacapo.stateless.datasets import Dataset
+from dacapo.stateless.architectures import Architecture
+from dacapo.stateless.outputs import Output
+from dacapo.stateless.optimizers import Optimizer
 
 import attr
 

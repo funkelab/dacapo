@@ -1,15 +1,15 @@
 from dacapo.groupings import experiments
-from ..fixtures.fundamentals.datasplits import MK_FUNCTIONS
-from ..fixtures.fundamentals.outputs import OUTPUTS
-from ..fixtures.fundamentals.architectures import ARCHITECTURES
-from ..fixtures.fundamentals.starts import STARTS
-from ..fixtures.fundamentals.dataproviders import DATAPROVIDERS
-from ..fixtures.fundamentals.optimizers import OPTIMIZERS
+from ..fixtures.stateless.datasplits import MK_FUNCTIONS
+from ..fixtures.stateless.outputs import OUTPUTS
+from ..fixtures.stateless.architectures import ARCHITECTURES
+from ..fixtures.stateless.starts import STARTS
+from ..fixtures.stateless.dataproviders import DATAPROVIDERS
+from ..fixtures.stateless.optimizers import OPTIMIZERS
 
 
 from dacapo import Experiment, train
-from dacapo.fundamentals.trainers import DefaultTrainer
-from dacapo.fundamentals.validators import Null as NullValidator
+from dacapo.stateless.trainers import DefaultTrainer
+from dacapo.stateless.validators import Null as NullValidator
 from dacapo.store.debug_config_store import DebugConfigStore
 from dacapo.store.debug_stats_store import DebugStatsStore
 

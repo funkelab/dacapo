@@ -1,5 +1,5 @@
 from dacapo.groupings.experiments import Experiment
-from dacapo.fundamentals.executers import Executer
+from dacapo.stateless.executers import Executer
 from dacapo.operations.validate import validate
 
 from typing import Optional

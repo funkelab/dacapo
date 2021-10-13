@@ -1,1 +1,0 @@
-from dacapo.fundamentals.dataproviders import DefaultDataProvider

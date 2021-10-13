@@ -7,7 +7,7 @@ from dacapo.store import (
     LocalWeightsStore,
     DebugScoresStore,
 )
-from dacapo.fundamentals.arraysources import ZarrSource
+from dacapo.stateless.arraysources import ZarrSource
 
 import daisy
 

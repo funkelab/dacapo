@@ -1,12 +1,12 @@
-from ..fixtures.fundamentals.datasplits import MK_FUNCTIONS
-from ..fixtures.fundamentals.outputs import OUTPUTS
-from ..fixtures.fundamentals.architectures import UNETS
+from ..fixtures.stateless.datasplits import MK_FUNCTIONS
+from ..fixtures.stateless.outputs import OUTPUTS
+from ..fixtures.stateless.architectures import UNETS
 
 from dacapo import Experiment, train
-from dacapo.fundamentals.optimizers import Adam
-from dacapo.fundamentals.trainers import DefaultTrainer
-from dacapo.fundamentals.validators import DefaultValidator
-from dacapo.fundamentals.dataproviders import GunpowderTrain
+from dacapo.stateless.optimizers import Adam
+from dacapo.stateless.trainers import DefaultTrainer
+from dacapo.stateless.validators import DefaultValidator
+from dacapo.stateless.dataproviders import GunpowderTrain
 from dacapo.store.debug_config_store import DebugConfigStore
 from dacapo.store.debug_stats_store import DebugStatsStore
 

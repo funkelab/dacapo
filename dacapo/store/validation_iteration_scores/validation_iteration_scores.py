@@ -1,6 +1,5 @@
-# from .tasks.evaluators import EvaluationScores
-# from .tasks.post_processors import PostProcessorParameters
-from typing import List, Tuple
+from dacapo.fundamentals.predictors import Predictor
+from typing import List, Tuple, Dict, Any
 import attr
 
 
@@ -8,7 +7,9 @@ import attr
 class ValidationIterationScores:
 
     iteration: int = attr.ib()
-    # parameter_scores: List[Tuple[PostProcessorParameters, EvaluationScores]] = attr.ib()
+    parameter_scores: List[
+        Tuple[Predictor, Dict[str, Any], Dict[str, Any]]
+    ] = attr.ib()
 
     def is_better(self, reference_scores, score_name, lower_is_better):
         """Return True if the given reference score is better than the already

@@ -1,5 +1,6 @@
 from dacapo.groupings.experiments import Experiment
 from dacapo.fundamentals.executers import Executer
+from dacapo.operations.validate import validate
 
 from typing import Optional
 
@@ -26,13 +27,21 @@ def train(
         return
 
     run = experiment.run(repitition)
-    
+
     # TODO: Use a context manager?
-    run.setup() # load model weights, initialize data pipeline etc.
+    run.setup()  # load model weights, initialize data pipeline etc.
 
     while not run.complete:
-        run.step()
+        validate_next = run.step()
+        if validate_next:
+            iteration_scores = validate(
+                experiment,
+                run.repitition,
+                iteration=run.trained_iterations - 1,
+                executer=experiment.validation_executer,
+            )
+            run.add_iteration_scores(iteration_scores)
 
-    run.teardown() # free resources, stop workers, etc.
+    run.teardown()  # free resources, stop workers, etc.
 
     return run.repitition

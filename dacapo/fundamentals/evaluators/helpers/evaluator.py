@@ -16,7 +16,7 @@ class Evaluator(ABC):
     return_results:bool = attr.ib()
 
     @abstractmethod
-    def evaluate(predicted, ground_truth):
+    def evaluate_block(self, block, predicted, ground_truth):
         """
         Evaluate the performance of the model by comparing the
         provided predictions to the provided ground_truth

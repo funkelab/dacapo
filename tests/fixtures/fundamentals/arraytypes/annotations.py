@@ -1,3 +1,3 @@
-from dacapo.fundamentals.arraytypes import Annotations
+from dacapo.basics.arraytypes import Annotations
 
-binary_annotations = Annotations(name="binary_annotations", num_classes=2)
+binary_annotations = Annotations(num_classes=2)

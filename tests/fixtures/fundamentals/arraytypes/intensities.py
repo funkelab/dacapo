@@ -1,3 +1,3 @@
-from dacapo.fundamentals.arraytypes import Intensities
+from dacapo.basics.arraytypes import Intensities
 
-simple_intensities = Intensities(name="simple_intensities", shift=0, scale=1)
+simple_intensities = Intensities(shift=0, scale=1)

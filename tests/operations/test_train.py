@@ -1,4 +1,4 @@
-from dacapo.groupings import experiments
+from dacapo.statefull import experiments
 from ..fixtures.stateless.datasplits import MK_FUNCTIONS
 from ..fixtures.stateless.outputs import OUTPUTS
 from ..fixtures.stateless.architectures import ARCHITECTURES

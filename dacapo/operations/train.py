@@ -1,4 +1,4 @@
-from dacapo.groupings.experiments import Experiment
+from dacapo.statefull.experiments import Experiment
 from dacapo.stateless.executers import Executer
 from dacapo.operations.validate import validate
 

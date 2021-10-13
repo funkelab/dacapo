@@ -9,8 +9,8 @@ from dacapo.stateless.optimizers import Optimizer
 from dacapo.stateless.executers import Executer
 from dacapo.store import ConfigStore, StatsStore, weights_store
 from dacapo.categoricals.datakeys import ArrayKey
-from dacapo.groupings.runs import Run, DefaultRun
-from dacapo.groupings.validations import Validation, DefaultValidation
+from dacapo.statefull.runs import Run, DefaultRun
+from dacapo.statefull.validations import Validation, DefaultValidation
 
 import attr
 

@@ -11,5 +11,5 @@
 # from . import configurables  # noqa
 # from . import config_fields  # noqa
 
-from .groupings.experiments import DefaultExperiment as Experiment
+from .statefull.experiments import DefaultExperiment as Experiment
 from .operations import train, validate

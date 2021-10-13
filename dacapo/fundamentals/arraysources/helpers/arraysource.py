@@ -1,4 +1,4 @@
-from dacapo.fundamentals.arraytypes import ArrayType
+from dacapo.basics.arraytypes import ArrayType
 
 from funlib.geometry import Coordinate, Roi
 

@@ -11,7 +11,7 @@ import numpy as np
 class AffinityEvaluator(Evaluator):
     return_results: bool = attr.ib(default=False)
 
-    def evaluate(self, predicted, ground_truth):
+    def evaluate_block(self, predicted, ground_truth):
         gt_label_data = ground_truth.to_ndarray(roi=predicted.roi)
         pred_label_data = predicted.to_ndarray(roi=predicted.roi)
 

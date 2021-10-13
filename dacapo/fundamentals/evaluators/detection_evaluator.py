@@ -16,7 +16,7 @@ class DetectionEvaluator(Evaluator):
     matching_score: str = attr.ib(default="overlap")
     matching_threshold: float = attr.ib(default=1.0)
 
-    def evaluate(self, predicted, ground_truth):
+    def evaluate_block(self, predicted, ground_truth):
         gt_label_data = ground_truth.to_ndarray(roi=predicted.roi)
         pred_label_data = predicted.to_ndarray(roi=predicted.roi)
 

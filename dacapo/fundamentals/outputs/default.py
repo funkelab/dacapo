@@ -30,3 +30,14 @@ class DefaultOutput(Output):
     @property
     def losses(self):
         return (o[1] for o in self.outputs)
+
+    @property
+    def post_processors(self):
+        return (o[2] for o in self.outputs)
+
+    @property
+    def evaluators(self):
+        return (o[3] for o in self.outputs)
+
+    def is_better(self, new_validation_scores, current_best):
+        return True

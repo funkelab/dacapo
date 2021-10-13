@@ -6,6 +6,7 @@ from dacapo.fundamentals.dataproviders import DataProvider
 from dacapo.fundamentals.trainers import Trainer
 from dacapo.fundamentals.validators import Validator
 from dacapo.fundamentals.optimizers import Optimizer
+from dacapo.fundamentals.executers import Executer
 from dacapo.store import ConfigStore, StatsStore, weights_store
 from dacapo.categoricals.datakeys import ArrayKey
 from dacapo.groupings.runs import Run, DefaultRun
@@ -37,9 +38,6 @@ class DefaultExperiment(Experiment):
     train_provider: DataProvider = attr.ib(
         metadata={"help_text": "The dataprovider to use for fetching training batches"}
     )
-    val_provider: DataProvider = attr.ib(
-        metadata={"help_text": "The dataprovider to use for iterating validation data"}
-    )
     trainer: Trainer = attr.ib(metadata={"help_text": "Training details go here"})
     validator: Validator = attr.ib(metadata={"help_text": "Validation details go here"})
     config_store: ConfigStore = attr.ib(
@@ -50,6 +48,9 @@ class DefaultExperiment(Experiment):
     )
     experiments_dir: Optional[Path] = attr.ib(
         metadata={"help_text": "Where to find your experiments"}, default=None
+    )
+    validation_executer: Optional[Executer] = attr.ib(
+        metadata={"help_text": "How to execute your validations"}, default=None
     )
 
     @property
@@ -113,26 +114,24 @@ class DefaultExperiment(Experiment):
             stats_store=self.stats_store,
             trainer=self.trainer,
             validator=self.validator,
-            train_provider=self.train_provider,
-            validation_provider=self.val_provider,
-            datasplit=self.datasplit,
+            dataprovider=self.train_provider,
+            dataset=self.datasplit.train,
             architecture=self.architecture,
             output=self.output,
             optimizer=self.optimizer,
         )
 
     def validate(self, repitition: int, iteration: int) -> Validation:
+        run = self.run(repitition)
+        checkpoint = run.checkpoint(iteration)
         return DefaultValidation(
             experiment_name=self.name,
+            checkpoint=checkpoint,
             repitition=repitition,
+            iteration=iteration,
             root_dir=self.root_dir / f"runs/{repitition}",
             stats_store=self.stats_store,
-            trainer=self.trainer,
-            validator=self.validator,
-            train_provider=self.dataprovider,
-            validation_provider=self.dataprovider,
-            datasplit=self.datasplit,
+            dataset=self.datasplit.validate,
             architecture=self.architecture,
             output=self.output,
-            optimizer=self.optimizer,
         )

@@ -1,4 +1,7 @@
 from .helpers import Evaluator
+from dacapo.basics import Parameters
+from dacapo.fundamentals.arraysources import ArraySource
+from dacapo.store import ScoresStore
 
 import funlib.evaluate
 import daisy
@@ -6,7 +9,7 @@ import daisy
 import attr
 import numpy as np
 
-from typing import Optional
+from typing import Optional, List, Tuple, Dict
 
 
 @attr.s
@@ -16,12 +19,62 @@ class LabelEvaluator(Evaluator):
     matching_score: str = attr.ib(default="overlap")
     matching_threshold: float = attr.ib(default=1.0)
 
-    def evaluate(self, predicted, ground_truth):
+    def task(
+        self,
+        pred_id: str,
+        post_processing_parameters: Parameters,
+        pred_source: ArraySource,
+        gt_source: ArraySource,
+        scores_store: ScoresStore,
+        upstream_task: daisy.Task,
+    ) -> daisy.Task:
+
+        gt = gt_source.daisy_array
+        pred = pred_source.daisy_array
+
+        gt_roi = gt.roi
+        read_shape = daisy.Coordinate(gt.chunk_shape[-gt_roi.dims :]) * gt.voxel_size
+        read_roi = daisy.Roi((0,) * read_shape.dims, read_shape)
+        write_roi = read_roi
+
+        eval_task_id = f"{pred_id}_{self.name}_{post_processing_parameters.index}"
+
+        # Define the prediction task
+        evaluate_task = daisy.Task(
+            eval_task_id,
+            total_roi=gt_roi,
+            read_roi=read_roi,
+            write_roi=write_roi,
+            process_function=lambda b: self.evaluate_block(b, pred, gt, scores_store),
+            num_workers=1,
+            upstream_tasks=[upstream_task],
+            fit="shrink",
+        )
+
+        return evaluate_task
+
+    def aggregate_block_scores(
+        self, block_scores: List[Tuple[daisy.Block, Dict[str, float]]]
+    ):
+
+        total_weight = sum([np.prod(block.write_roi.shape) for block, _ in block_scores])
+
+        agg_scores = {}
+        for block, sample_scores in block_scores:
+            block_weight = np.prod(block.write_roi.shape)
+            for k, v in sample_scores.items():
+                if k not in agg_scores:
+                    agg_scores[k] = v * (block_weight / total_weight)
+                else:
+                    agg_scores[k] += v * (block_weight / total_weight)
+        return agg_scores
+
+    def evaluate_block(self, block, predicted, ground_truth, scores_store: ScoresStore):
 
         voxel_size = ground_truth.voxel_size
 
-        ground_truth_data = ground_truth.to_ndarray(roi=predicted.roi)
-        pred_labels_data = predicted.to_ndarray(roi=predicted.roi)
+        ground_truth_data = ground_truth.to_ndarray(roi=block.read_roi)
+        pred_labels_data = predicted.to_ndarray(roi=block.read_roi)
 
         # PIXEL-WISE SCORES
 
@@ -231,8 +284,7 @@ class LabelEvaluator(Evaluator):
             sample_scores["detection_tpr"] /= num_classes
             sample_scores["detection_fscore"] /= num_classes
 
-        scores = {"sample": sample_scores, "average": sample_scores}
-
+        """
         if self.return_results:
             results = {
                 "volumes/predicted": daisy.Array(
@@ -247,5 +299,6 @@ class LabelEvaluator(Evaluator):
                 results[k] = v_uint64
 
             return scores, results
+        """
 
-        return scores
+        scores_store.store_scores(block, sample_scores)

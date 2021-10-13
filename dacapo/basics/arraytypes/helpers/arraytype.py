@@ -11,7 +11,3 @@ class ArrayType(ABC):
     provide labels in uint64. In this case we would also need to know the number of
     classes.
     """
-
-    name: str = attr.ib(
-        metadata={"help_text": "Name of your ArrayType for easy search and reuse"}
-    )

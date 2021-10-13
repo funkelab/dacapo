@@ -1,3 +1,5 @@
+from funlib.geometry import Coordinate
+
 import attr
 
 from abc import ABC, abstractmethod
@@ -40,3 +42,11 @@ class Architecture(ABC):
     @abstractmethod
     def module(self):
         pass
+
+    @property
+    def eval_input_shape(self) -> Coordinate:
+        return self.input_shape
+
+    @property
+    def eval_output_shape(self) -> Coordinate:
+        return self.output_shape

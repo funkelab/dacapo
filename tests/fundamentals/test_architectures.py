@@ -2,7 +2,9 @@ from ..fixtures.fundamentals.architectures import ARCHITECTURES
 from ..fixtures.db import DB_AVAILABLE, mongo_config_store
 
 from dacapo.attrs.converter import converter
-from dacapo.fundamentals.architectures import Architectures
+from dacapo.fundamentals.architectures import Architecture
+
+from funlib.geometry import Coordinate
 
 import pytest
 import torch
@@ -20,8 +22,14 @@ def test_architectures(architecture):
     # so that it works properly with the database
     serialized = converter.unstructure(architecture)
     assert serialized == converter.unstructure(
-        converter.structure(serialized, Architectures)
+        converter.structure(serialized, Architecture)
     )
+
+    assert isinstance(architecture.input_shape, Coordinate)
+    assert isinstance(architecture.output_shape, Coordinate)
+    assert isinstance(architecture.eval_input_shape, Coordinate)
+    assert isinstance(architecture.eval_output_shape, Coordinate)
+    assert isinstance(architecture.fmaps_out, int)
 
 
 @pytest.mark.skipif(not DB_AVAILABLE, reason="Mongodb not available")

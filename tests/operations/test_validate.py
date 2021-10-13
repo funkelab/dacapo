@@ -1,35 +1,38 @@
 from ..fixtures.fundamentals.datasplits import MK_FUNCTIONS
 from ..fixtures.fundamentals.outputs import OUTPUTS
-from ..fixtures.fundamentals.architectures import ARCHITECTURES
-from ..fixtures.fundamentals.dataproviders import DATAPROVIDERS
+from ..fixtures.fundamentals.architectures import UNETS
 
 from dacapo import Experiment, train
 from dacapo.fundamentals.optimizers import Adam
 from dacapo.fundamentals.trainers import DefaultTrainer
 from dacapo.fundamentals.validators import DefaultValidator
-from dacapo.fundamentals.dataproviders import GunpowderTrain, GunpowderValidate
+from dacapo.fundamentals.dataproviders import GunpowderTrain
 from dacapo.store.debug_config_store import DebugConfigStore
 from dacapo.store.debug_stats_store import DebugStatsStore
 
+import daisy
+
 import pytest
 
+NUM_ITERATIONS = 1
 
 @pytest.mark.parametrize("mkfunction", MK_FUNCTIONS)
-@pytest.mark.parametrize("architecture", ARCHITECTURES)
+@pytest.mark.parametrize("architecture", UNETS)
 @pytest.mark.parametrize("output", OUTPUTS)
-@pytest.mark.parametrize("dataprovider", DATAPROVIDERS)
 def test_validate(
     tmp_path,
     mkfunction,
     architecture,
     output,
-    dataprovider,
 ):
+    # set daisy to log worker outputs to the temp directory
+    daisy.logging.set_log_basedir(f"{tmp_path}/daisy_logs")
+
     # make the temporary datasets to use:
     datasplit = mkfunction(tmp_path)
 
     name = "test_validate"
-    trainer = DefaultTrainer(name="test_validate", num_iterations=100, batch_size=1)
+    trainer = DefaultTrainer(name="test_validate", num_iterations=NUM_ITERATIONS, batch_size=1)
     validator = DefaultValidator(name="test_validate", validation_interval=1)
 
     config_store = DebugConfigStore()
@@ -39,7 +42,6 @@ def test_validate(
     optimizer = Adam("validation_test")
 
     train_provider = GunpowderTrain(name="simple_gp_train")
-    val_provider = GunpowderValidate(name="simple_gp_validate")
 
     experiment = Experiment(
         name=name,
@@ -48,7 +50,6 @@ def test_validate(
         output=output,
         optimizer=optimizer,
         train_provider=train_provider,
-        val_provider=val_provider,
         trainer=trainer,
         validator=validator,
         config_store=config_store,
@@ -64,11 +65,11 @@ def test_validate(
         repitition = train(experiment)
 
     run = experiment.run(repitition)
-    assert run.training_stats.trained_until == 100
-    assert run.validation_scores.validated_until == 100
+    assert run.training_stats.trained_until == NUM_ITERATIONS
+    assert run.validation_scores.validated_until == NUM_ITERATIONS
 
     path_to_best_model = run.best_weights()
     assert path_to_best_model.exists()
-    
+
     path_to_latest_model = run.latest_weights()
     assert path_to_latest_model.exists()

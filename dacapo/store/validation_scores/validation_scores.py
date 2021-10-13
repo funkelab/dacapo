@@ -1,5 +1,5 @@
 from dacapo.store.validation_iteration_scores import ValidationIterationScores
-from typing import List
+from typing import List, Optional, Tuple
 import attr
 
 
@@ -9,10 +9,13 @@ class ValidationScores:
     iteration_scores: List[ValidationIterationScores] = attr.ib(
         default=attr.Factory(list)
     )
+    best_iteration_score: Optional[ValidationIterationScores] = attr.ib(default=None)
 
-    def add_iteration_scores(self, iteration_scores):
+    def add_iteration_scores(self, iteration_scores, new_best=False):
 
         self.iteration_scores.append(iteration_scores)
+        if self.best_iteration_score is None or new_best:
+            self.best_iteration_score = iteration_scores
 
     def delete_after(self, iteration):
 

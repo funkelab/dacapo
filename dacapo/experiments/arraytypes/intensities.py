@@ -8,6 +8,7 @@ import attr
 @attr.s
 class Intensities(ArrayType):
 
+    # this would be known by the array, not the arraytype
     min: float = attr.ib()
     max: float = attr.ib()
 
@@ -23,6 +24,7 @@ class Intensities(ArrayType):
     def interpolatable(self) -> bool:
         return True
 
+    # TODO: make this part of the trainer
     def node(self, in_key, out_key):
         return IntensityScaleShift(in_key, self.scale, self.shift) + NoOp(
             in_key, out_key

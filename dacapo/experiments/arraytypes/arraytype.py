@@ -28,6 +28,7 @@ class NoOp(gp.BatchFilter):
 
 
 
+# TODO: Should be read only
 class ArrayType(ABC):
     """
     The type of data provided by your array. For example, your ground truth data might

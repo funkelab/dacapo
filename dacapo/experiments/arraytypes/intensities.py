@@ -1,31 +1,46 @@
 from arraytype import ArrayType
 
-from dacapo.gp import IntensityScaleShift, NoOp
+import numpy as np
 
 import attr
 
 
 @attr.s
-class Intensities(ArrayType):
+class IntensitiesArray(ArrayType):
+    """
+    An IntensitiesArray normalizes the Intensities to a standard
+    range that DaCapo can rely on. i.e. if your intensities are
+    stored as uint8, you can set the min and max to 0 and 255
+    respectively and the intensities will be normalized between
+    0 and 1.
+    """
 
-    # this would be known by the array, not the arraytype
-    min: float = attr.ib()
-    max: float = attr.ib()
+    min: float = attr.ib(
+        metadata={"help_text": "The minimum possible value of your intensities."}
+    )
+    max: float = attr.ib(
+        metadata={"help_text": "The maximum possible value of your intensities."}
+    )
+    target_min: float = attr.ib(
+        default=0,
+        metadata={"help_text": "The minimum possible intensity after normalizing."},
+    )
+    target_max: float = attr.ib(
+        default=1,
+        metadata={"help_text": "The maximum possible intensity after normalizing."},
+    )
 
     @property
     def scale(self):
-        return 2 / (self.max - self.min)
+        return self.target_max / (self.max - self.min)
 
     @property
     def shift(self):
-        return -1 - self.min * self.scale
+        return self.target_min - self.min * self.scale
 
     @property
     def interpolatable(self) -> bool:
         return True
 
-    # TODO: make this part of the trainer
-    def node(self, in_key, out_key):
-        return IntensityScaleShift(in_key, self.scale, self.shift) + NoOp(
-            in_key, out_key
-        )
+    def process(self, data: np.ndarray) -> np.ndarray:
+        return (data * self.scale) + self.shift

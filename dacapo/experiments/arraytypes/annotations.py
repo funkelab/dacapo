@@ -5,7 +5,7 @@ from typing import Optional, List
 
 
 @attr.s
-class Annotations(ArrayType):
+class AnnotationArray(ArrayType):
 
     num_classes: int = attr.ib()
 

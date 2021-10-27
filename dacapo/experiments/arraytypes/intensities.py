@@ -21,14 +21,6 @@ class IntensitiesArray(ArrayType):
     max: float = attr.ib(
         metadata={"help_text": "The maximum possible value of your intensities."}
     )
-    target_min: float = attr.ib(
-        default=0,
-        metadata={"help_text": "The minimum possible intensity after normalizing."},
-    )
-    target_max: float = attr.ib(
-        default=1,
-        metadata={"help_text": "The maximum possible intensity after normalizing."},
-    )
 
     @property
     def scale(self):
@@ -41,6 +33,3 @@ class IntensitiesArray(ArrayType):
     @property
     def interpolatable(self) -> bool:
         return True
-
-    def process(self, data: np.ndarray) -> np.ndarray:
-        return (data * self.scale) + self.shift

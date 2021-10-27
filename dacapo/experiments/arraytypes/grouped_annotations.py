@@ -24,10 +24,3 @@ class GroupedAnnotationArray(ArrayType):
     @property
     def interpolatable(self) -> bool:
         return False
-
-    def process(self, data: np.ndarray) -> np.ndarray:
-        grouped = np.zeros((len(self.groupings), *data.shape), dtype=data.dtype)
-        for i, ids in enumerate(self.groupings):
-            for id in ids:
-                grouped[i] += data == id
-        return grouped

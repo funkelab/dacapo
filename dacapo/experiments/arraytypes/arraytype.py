@@ -22,11 +22,3 @@ class ArrayType(ABC):
     @abstractmethod
     def interpolatable(self) -> bool:
         pass
-
-    def process(self, data: np.ndarray) -> np.ndarray:
-        """
-        Process should turn the provided `data` numpy ndarray into
-        a normalized form that can be used and depended on throughout
-        DaCapo.
-        """
-        return data

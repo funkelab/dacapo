@@ -2,7 +2,8 @@ from .config_store import ConfigStore, DuplicateNameError
 from .converter import converter
 from dacapo.experiments import RunConfig
 from dacapo.experiments.architectures import ArchitectureConfig
-from dacapo.experiments.datasets import DatasetConfig
+from dacapo.experiments.datasplits import DataSplitConfig
+from dacapo.experiments.datasplits.datasets.arrays import ArrayConfig
 from dacapo.experiments.tasks import TaskConfig
 from dacapo.experiments.trainers import TrainerConfig
 from pymongo import MongoClient, ASCENDING
@@ -107,24 +108,43 @@ class MongoConfigStore(ConfigStore):
             projection={"_id": False, "name": True})
         return list([trainer["name"] for trainer in trainers])
 
-    def store_dataset_config(self, dataset_config):
+    def store_datasplit_config(self, datasplit_config):
 
-        dataset_doc = converter.unstructure(dataset_config)
-        self.__save_insert(self.datasets, dataset_doc)
+        datasplit_doc = converter.unstructure(datasplit_config)
+        self.__save_insert(self.datasplits, datasplit_doc)
 
-    def retrieve_dataset_config(self, dataset_name):
+    def retrieve_datasplit_config(self, datasplit_name):
 
-        dataset_doc = self.datasets.find_one(
-            {"name": dataset_name},
+        datasplit_doc = self.datasplits.find_one(
+            {"name": datasplit_name},
             projection={"_id": False})
-        return converter.structure(dataset_doc, DatasetConfig)
+        return converter.structure(datasplit_doc, DataSplitConfig)
 
-    def retrieve_dataset_config_names(self):
+    def retrieve_datasplit_config_names(self):
 
-        datasets = self.datasets.find(
+        datasplits = self.datasplits.find(
             {},
             projection={"_id": False, "name": True})
-        return list([dataset["name"] for dataset in datasets])
+        return list([datasplit["name"] for datasplit in datasplits])
+
+    def store_array_config(self, array_config):
+
+        array_doc = converter.unstructure(array_config)
+        self.__save_insert(self.arrays, array_doc)
+
+    def retrieve_array_config(self, array_name):
+
+        array_doc = self.arrays.find_one(
+            {"name": array_name},
+            projection={"_id": False})
+        return converter.structure(array_doc, ArrayConfig)
+
+    def retrieve_array_config_names(self):
+
+        arrays = self.arrays.find(
+            {},
+            projection={"_id": False, "name": True})
+        return list([array["name"] for array in arrays])
 
     def __save_insert(self, collection, data, ignore=None):
 
@@ -183,6 +203,11 @@ class MongoConfigStore(ConfigStore):
             name="name",
             unique=True)
 
+        self.arrays.create_index(
+            [("name", ASCENDING)],
+            name="name",
+            unique=True)
+
         self.architectures.create_index(
             [("name", ASCENDING)],
             name="name",
@@ -199,5 +224,6 @@ class MongoConfigStore(ConfigStore):
         self.runs = self.database["runs"]
         self.tasks = self.database["tasks"]
         self.datasets = self.database["datasets"]
+        self.arrays = self.database["arrays"]
         self.architectures = self.database["architectures"]
         self.trainers = self.database["trainers"]

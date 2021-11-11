@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class Predictor(ABC):
 
     @abstractmethod
-    def create_model(self, architecture, dataset):
+    def create_model(self, architecture):
         """Given a training architecture, create a model for this predictor.
         This is usually done by appending extra layers to the output of the
         architecture to get the output tensor of the architecture into the
@@ -31,6 +31,18 @@ class Predictor(ABC):
         threshold), you can request a larger ground-truth region. See method
         ``gt_region_for_roi``.
         """
+        pass
+
+    @abstractmethod
+    def create_weight(self, gt, target):
+        """Create the weight array for training, given a ground-truth and
+        associated target array.
+        """
+        pass
+
+    @property
+    @abstractmethod
+    def output_array_type(self):
         pass
 
     def gt_region_for_roi(self, target_roi):

@@ -47,7 +47,7 @@ def get_runs_info(run_config_base_names,
                           "task",
                           "architecture",
                           "trainer",
-                          "dataset",
+                          "datasplit",
                           "training_stats",
                           "validation_scores",
                           "validation_score_name",
@@ -68,7 +68,7 @@ def get_runs_info(run_config_base_names,
                           run_config.task_config.name,
                           run_config.architecture_config.name,
                           run_config.trainer_config.name,
-                          run_config.dataset_config.name,
+                          run_config.datasplit_config.name,
                           stats_store.retrieve_training_stats(
                               run_config_name) if plot_loss else None,
                           stats_store.retrieve_validation_scores(
@@ -91,7 +91,7 @@ def plot_runs(run_config_base_names, smooth=100, validation_scores=None, higher_
         ("task", "@task"),
         ("architecture", "@architecture"),
         ("trainer", "@trainer"),
-        ("dataset",  "@dataset"),
+        ("datasplit",  "@datasplit"),
         ("iteration", "@iteration"),
         ("loss", "@loss"),
     ]
@@ -120,7 +120,7 @@ def plot_runs(run_config_base_names, smooth=100, validation_scores=None, higher_
             ("task", "@task"),
             ("architecture", "@architecture"),
             ("trainer", "@trainer"),
-            ("dataset",  "@dataset"),
+            ("datasplit",  "@datasplit"),
         ] + [(name, "@" + name) for name in validation_score_names] \
             + [(name, "@" + name)
                 for name in validation_postprocessor_parameter_names]
@@ -138,7 +138,7 @@ def plot_runs(run_config_base_names, smooth=100, validation_scores=None, higher_
         ("task", "@task"),
         ("architecture", "@architecture"),
         ("trainer", "@trainer"),
-        ("dataset",  "@dataset"),
+        ("datasplit",  "@datasplit"),
         ("best iteration", "@iteration"),
         ("best voi_split", "@voi_split"),
         ("best voi_merge", "@voi_merge"),
@@ -168,6 +168,7 @@ def plot_runs(run_config_base_names, smooth=100, validation_scores=None, higher_
 
             if run.plot_loss:
                 include_loss_figure = True
+                smooth = int(np.maximum(len(iterations)/2500, 1))
                 x, _ = smooth_values(
                     iterations, smooth, stride=smooth)
                 y, s = smooth_values(losses,
@@ -179,7 +180,7 @@ def plot_runs(run_config_base_names, smooth=100, validation_scores=None, higher_
                         "task": [run.task] * len(x),
                         "architecture": [run.architecture] * len(x),
                         "trainer": [run.trainer] * len(x),
-                        "dataset": [run.dataset] * len(x),
+                        "datasplit": [run.datasplit] * len(x),
                         "run": [name] * len(x),
                     }
                 )
@@ -209,7 +210,7 @@ def plot_runs(run_config_base_names, smooth=100, validation_scores=None, higher_
                 "task": [run.task] * len(x),
                 "architecture": [run.architecture] * len(x),
                 "trainer": [run.trainer] * len(x),
-                "dataset": [run.dataset] * len(x),
+                "datasplit": [run.datasplit] * len(x),
                 "run": [run.name] * len(x),
             }
             # TODO: get_best: higher_is_better is not true for all scores

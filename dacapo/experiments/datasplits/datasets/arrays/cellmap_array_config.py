@@ -2,7 +2,7 @@ import attr
 
 from .array_config import ArrayConfig
 from .cellmap_array import CellMapArray
-from .array_config import ArrayConfig
+from .array import Array
 
 from typing import List
 
@@ -14,7 +14,7 @@ class CellMapArrayConfig(ArrayConfig):
 
     array_type = CellMapArray
 
-    source_array_config: ArrayConfig = attr.ib(
+    source_array_config: Array = attr.ib(
         metadata={
             "help_text": "The Array from which to pull annotated data. Is expected to contain a volume with uint64 voxels and no channel dimension"
         }

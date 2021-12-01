@@ -4,11 +4,15 @@ import attr
 import numpy as np
 import inspect
 
+
 @attr.s
 class ValidationScores:
 
     iteration_scores: List[ValidationIterationScores] = attr.ib(
-        default=attr.Factory(list))
+        default=attr.Factory(list),
+        metadata={
+            "help_text": "An ordered list of validation scores by iteration."},
+    )
 
     def add_iteration_scores(self, iteration_scores):
 
@@ -17,9 +21,7 @@ class ValidationScores:
     def delete_after(self, iteration):
 
         self.iteration_scores = [
-            scores
-            for scores in self.iteration_scores
-            if scores.iteration < iteration
+            scores for scores in self.iteration_scores if scores.iteration < iteration
         ]
 
     def validated_until(self):
@@ -86,6 +88,7 @@ class ValidationScores:
                 )
 
         return (best_score_parameters, best_scores)
+
 
 '''
     def get_score_names(self):

@@ -3,6 +3,10 @@ from .experiments import Run
 from .compute_context import LocalTorch
 from .store import create_config_store, create_stats_store, create_weights_store
 from .validate import validate_run
+
+import torch
+from tqdm import tqdm
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -82,7 +86,12 @@ def train(run_name, compute_context=LocalTorch()):
 
     # start/resume training
 
+    # make sure model and optimizer are on correct device.
+    # loading weights directly from a checkpoint into cuda
+    # can allocate twice the memory of loading to cpu before
+    # moving to cuda.
     run.model = run.model.to(compute_context.device)
+    run.move_optimizer(compute_context.device)
 
     array_store = create_array_store()
     run.trainer.set_iteration(trained_until)
@@ -99,11 +108,15 @@ def train(run_name, compute_context=LocalTorch()):
             # train for at most 100 iterations at a time, then store training stats
             iterations = min(100, train_until - trained_until)
 
-            for iteration_stats in trainer.iterate(
+            for iteration_stats in tqdm(
+                trainer.iterate(
+                    iterations,
+                    run.model,
+                    run.optimizer,
+                    compute_context.device,
+                ),
+                "training",
                 iterations,
-                run.model,
-                run.optimizer,
-                compute_context.device,
             ):
 
                 run.training_stats.add_iteration_stats(iteration_stats)
@@ -111,6 +124,8 @@ def train(run_name, compute_context=LocalTorch()):
                 if (iteration_stats.iteration + 1) % validation_interval == 0:
 
                     run.model.eval()
+                    # free up optimizer memory to allow larger validation blocks
+                    run.move_optimizer(torch.device("cpu"), empty_cuda_cache=True)
 
                     weights_store.store_weights(run, iteration_stats.iteration + 1)
                     validate_run(
@@ -119,9 +134,13 @@ def train(run_name, compute_context=LocalTorch()):
                         compute_context=compute_context,
                     )
                     stats_store.store_validation_scores(run_name, run.validation_scores)
+                    stats_store.store_training_stats(run_name, run.training_stats)
 
+                    # make sure to move optimizer back to the correct device
+                    run.move_optimizer(compute_context.device)
                     run.model.train()
 
+            weights_store.store_weights(run, run.training_stats.trained_until(), remove_old=True)
             stats_store.store_training_stats(run_name, run.training_stats)
             trained_until = run.training_stats.trained_until()
 

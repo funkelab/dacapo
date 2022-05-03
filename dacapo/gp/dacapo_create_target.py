@@ -4,6 +4,9 @@ from dacapo.experiments.datasplits.datasets.arrays import Array, NumpyArray
 import gunpowder as gp
 
 from typing import Optional
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class DaCapoTargetFilter(gp.BatchFilter):

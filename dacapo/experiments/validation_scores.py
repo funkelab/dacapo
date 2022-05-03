@@ -4,12 +4,16 @@ from .tasks.evaluators import EvaluationScores
 from .tasks.post_processors import PostProcessorParameters
 from .datasplits.datasets import Dataset
 
-from typing import List, Tuple, Optional
 import attr
 import numpy as np
 import xarray as xr
 import inspect
+
 import itertools
+import logging
+from typing import List, Tuple, Optional
+
+logger = logging.getLogger(__name__)
 
 
 @attr.s
@@ -93,9 +97,28 @@ class ValidationScores:
         return self.parameters[0].parameter_names
 
     def to_xarray(self):
+        iteration_score_shapes = [
+            np.array(iteration_scores.scores).shape
+            for iteration_scores in self.iteration_scores
+        ]
+        iteration_scores = list(self.iteration_scores)
+        if not all(
+            [shape == iteration_score_shapes[-1] for shape in iteration_score_shapes]
+        ):
+            logger.warning(
+                f"Shapes are inconsistent: {iteration_score_shapes}, filtering out some"
+            )
+            iteration_scores = [
+                iteration_score
+                for shape, iteration_score in zip(
+                    iteration_score_shapes, iteration_scores
+                )
+                if shape == iteration_score_shapes[-1]
+            ]
+
         return xr.DataArray(
             np.array(
-                [iteration_score.scores for iteration_score in self.iteration_scores]
+                [iteration_score.scores for iteration_score in iteration_scores]
             ).reshape(
                 (-1, len(self.datasets), len(self.parameters), len(self.criteria))
             ),
@@ -103,7 +126,7 @@ class ValidationScores:
             coords={
                 "iterations": [
                     iteration_score.iteration
-                    for iteration_score in self.iteration_scores
+                    for iteration_score in iteration_scores
                 ],
                 "datasets": self.datasets,
                 "parameters": self.parameters,

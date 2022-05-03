@@ -8,6 +8,9 @@ from gunpowder.array_spec import ArraySpec
 
 import numpy as np
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 class DaCapoArraySource(gp.BatchProvider):
     """A DaCapo Array source node
@@ -35,6 +38,11 @@ class DaCapoArraySource(gp.BatchProvider):
 
     def provide(self, request):
         output = gp.Batch()
+
+        current = self.array
+        while hasattr(current, "_source_array"):
+            current = current._source_array
+        logger.debug(f"Providing from {current}")
 
         timing_provide = Timing(self, "provide")
         timing_provide.start()

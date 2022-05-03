@@ -2,6 +2,7 @@ import dacapo
 import click
 import logging
 
+from pathlib import Path
 
 @click.group()
 @click.option(

@@ -1,6 +1,8 @@
-from abc import ABC, abstractmethod
-
 from funlib.geometry import Coordinate
+
+import torch
+
+from abc import ABC, abstractmethod
 
 
 class Predictor(ABC):

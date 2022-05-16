@@ -35,11 +35,26 @@ class MongoConfigStore(ConfigStore):
         self.__open_collections()
         self.__init_db()
 
+    def no_such_config_exception_handler(func):
+
+        def inner_function(*args, **kwargs):
+
+            try:
+                return func(*args, **kwargs)
+            except TypeError:
+                config_type = func.__name__.split("_")[1]
+                raise Exception(
+                    f"{config_type}: {args[1]} not present in config store "
+                    f"during call to {func.__name__}")
+
+        return inner_function
+
     def store_run_config(self, run_config):
         
         run_doc = converter.unstructure(run_config)
         self.__save_insert(self.runs, run_doc)
 
+    @no_such_config_exception_handler
     def retrieve_run_config(self, run_name):
 
         run_doc = self.runs.find_one(
@@ -75,6 +90,7 @@ class MongoConfigStore(ConfigStore):
         task_doc = converter.unstructure(task_config)
         self.__save_insert(self.tasks, task_doc)
 
+    @no_such_config_exception_handler
     def retrieve_task_config(self, task_name):
 
         task_doc = self.tasks.find_one(
@@ -94,6 +110,7 @@ class MongoConfigStore(ConfigStore):
         architecture_doc = converter.unstructure(architecture_config)
         self.__save_insert(self.architectures, architecture_doc)
 
+    @no_such_config_exception_handler
     def retrieve_architecture_config(self, architecture_name):
 
         architecture_doc = self.architectures.find_one(
@@ -113,6 +130,7 @@ class MongoConfigStore(ConfigStore):
         trainer_doc = converter.unstructure(trainer_config)
         self.__save_insert(self.trainers, trainer_doc)
 
+    @no_such_config_exception_handler
     def retrieve_trainer_config(self, trainer_name):
 
         trainer_doc = self.trainers.find_one(
@@ -151,6 +169,7 @@ class MongoConfigStore(ConfigStore):
         dataset_doc = converter.unstructure(dataset_config)
         self.__save_insert(self.datasets, dataset_doc)
 
+    @no_such_config_exception_handler
     def retrieve_dataset_config(self, dataset_name):
 
         dataset_doc = self.datasets.find_one(

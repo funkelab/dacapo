@@ -216,60 +216,52 @@ execution of established machine learning techniques on
 arbitrarily large volumes of multi-dimensional images.</p>
 <p>DaCapo has 4 major configurable components:</p>
 <ol class="arabic simple">
-<li><dl class="field-list simple">
-<dt class="field-odd">ref<span class="colon">:</span></dt>
-<dd class="field-odd"><p><cite>DataSplit &lt;sec_api_datasplit&gt;</cite></p>
-</dd>
-</dl>
-</li>
-<li><dl class="field-list simple">
-<dt class="field-odd">ref<span class="colon">:</span></dt>
-<dd class="field-odd"><p><cite>Architecture &lt;sec_api_architecture&gt;</cite></p>
-</dd>
-</dl>
-</li>
-<li><dl class="field-list simple">
-<dt class="field-odd">ref<span class="colon">:</span></dt>
-<dd class="field-odd"><p><cite>Task &lt;sec_api_task&gt;</cite></p>
-</dd>
-</dl>
-</li>
-<li><dl class="field-list simple">
-<dt class="field-odd">ref<span class="colon">:</span></dt>
-<dd class="field-odd"><p><cite>Trainer &lt;sec_api_trainer&gt;</cite></p>
-</dd>
-</dl>
-</li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dacapo.datasplits.DataSplit</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dacapo.architectures.Architecture</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dacapo.tasks.Task</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dacapo.trainers.Trainer</span></code></p></li>
 </ol>
-<p>These are then combined in a single <a class="reference internal" href="api.html#sec-api-run"><span class="std std-ref">Run</span></a> that
+<p>These are then combined in a single <a class="reference internal" href="api.html#dacapo.experiments.Run" title="dacapo.experiments.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">dacapo.experiments.Run</span></code></a> that
 includes your starting point (whether you want to start training from
 scratch or continue off of a previously trained model) and stopping
 criterion (the number of iterations you want to train).</p>
 </section>
 <section id="how-does-dacapo-work">
 <h2 id="how-does-dacapo-work">How does DaCapo work?<a class="headerlink" href="#how-does-dacapo-work" title="Permalink to this heading">¶</a></h2>
-<p>Many machine learning experiments can be broken down into a few major components:</p>
-<blockquote>
-<div><p>1. <strong>DataSplit</strong>: Where can you find your data? What format is it in? Does it need
-to be normalized? What data do you want to use for validation?</p>
-<p>2. <strong>Architecture</strong>: Do you want to use a <a class="reference internal" href="api.html#dacapo.experiments.architectures.CNNectomeUNet" title="dacapo.experiments.architectures.CNNectomeUNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">dacapo.experiments.architectures.CNNectomeUNet</span></code></a>?
-How much do you want to downsample? How many convolutional layers do you want?
-All of these decisions are encoded into the
-<span class="xref std std-ref">ArchitectureConfig</span>.</p>
-<p>3. <strong>Task</strong>: What do you want to learn? An instance segmentation? If so how? Affinities,
-Distance Transform, Foreground/Background, etc. Each of these tasks are commonly learned
-and evaluated with specific loss functions and evaluation metrics. Some tasks may
-also require specific non-linearities or output formats from your model. DaCapo will
-handle all of that using the <span class="xref std std-ref">TaskConfig</span> you define.</p>
-<p>4. <strong>Trainer</strong>: How do you want to train? This config defines the training loop
-and how the other three components work together. What sort of augmentations
-to apply during training, what learning rate and optimizer to use, what batch size
-to train with.</p>
-</div></blockquote>
+<p>Each of the major components can be configured separately allowing you to define
+your job in a nicely structured format. Here we define what each component is
+responsible for:</p>
+<ol class="arabic">
+<li><div class="line-block">
+<div class="line"><strong>DataSplit</strong>: Where can you find your data? What format is it in? Does it need</div>
+<div class="line">to be normalized? What data do you want to use for validation?</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><strong>Architecture</strong>: Biomedical image to image translation often utilizes a UNet,</div>
+<div class="line">but even after choosing a UNet you still need to provide some additional parameters.</div>
+<div class="line">How much do you want to downsample? How many convolutional layers do you want?</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><strong>Task</strong>: What do you want to learn? An instance segmentation? If so how? Affinities,</div>
+<div class="line">Distance Transform, Foreground/Background, etc. Each of these tasks are commonly learned</div>
+<div class="line">and evaluated with specific loss functions and evaluation metrics. Some tasks may</div>
+<div class="line">also require specific non-linearities or output formats from your model.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><strong>Trainer</strong>: How do you want to train? This config defines the training loop</div>
+<div class="line">and how the other three components work together. What sort of augmentations</div>
+<div class="line">to apply during training, what learning rate and optimizer to use, what batch size</div>
+<div class="line">to train with.</div>
+</div>
+</li>
+</ol>
 <p>DaCapo allows you to define each of these configurations separately, and give them
-unique names. These configurations are then stored in a mongodb, allowing you to
-retrieve configs by name and easily start multitudes of jobs as combinations of
-datasplits, architectures, tasks, and trainers.</p>
+unique names. These configurations are then stored in a mongodb or on your filesystem,
+allowing you to retrieve configs by name and easily start multitudes of jobs as
+combinations of <cite>Datasplits</cite>, <cite>Architectures</cite>, <cite>Tasks</cite>, and <cite>Trainers</cite>.</p>
 <p>The <a class="reference internal" href="tutorial_simple_experiment_python.html#sec-tutorial-simple-experiment-python"><span class="std std-ref">Simple Experiment using Python</span></a> demonstrates how such
 an experiment is assembled in <code class="docutils literal notranslate"><span class="pre">dacapo</span></code></p>
 </section>

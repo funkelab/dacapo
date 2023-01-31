@@ -52,10 +52,8 @@
     <link rel="stylesheet" type="text/css" href="_static/material.css" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
   
@@ -268,9 +266,9 @@ get comparable results. This data will be stored in the MongoDB if available.</p
 Here is a template:</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">dacapo.yaml template</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">mongodbhost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb://dbuser:dbpass@dburl:dbport/</span><span class="w"></span>
-<span class="w">  </span><span class="nt">mongodbname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dacapo</span><span class="w"></span>
-<span class="w">  </span><span class="nt">runs_base_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/my/data/storage</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">mongodbhost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb://dbuser:dbpass@dburl:dbport/</span>
+<span class="w">  </span><span class="nt">mongodbname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dacapo</span>
+<span class="w">  </span><span class="nt">runs_base_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/my/data/storage</span>
 </pre></div>
 </div>
 </div>
@@ -312,7 +310,7 @@ In this tutorial we will use the dacapo dashboard to do this.</p>
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

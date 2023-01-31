@@ -52,10 +52,8 @@
     <link rel="stylesheet" type="text/css" href="../_static/material.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Tutorial: A Simple Experiment in Python" href="../tutorial_simple_experiment_python.html" />
@@ -188,15 +186,63 @@
   <ul class="md-nav__list" data-md-scrollfix="">
         <li class="md-nav__item"><a href="#api-configs--page-root" class="md-nav__link">Configs</a><nav class="md-nav">
               <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#runconfig" class="md-nav__link">RunConfig</a>
+        <li class="md-nav__item"><a href="#runconfig" class="md-nav__link">RunConfig</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.RunConfig" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">RunConfig</span></code></a>
+        </li></ul>
+            </nav>
         </li>
-        <li class="md-nav__item"><a href="#datasplitconfigs" class="md-nav__link">DataSplitConfigs</a>
+        <li class="md-nav__item"><a href="#datasplitconfigs" class="md-nav__link">DataSplitConfigs</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.datasplits.TrainValidateDataSplitConfig" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">TrainValidateDataSplitConfig</span></code></a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.datasplits.TrainValidateDataSplitConfig.datasplit_type" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">TrainValidateDataSplitConfig.datasplit_type</span></code></a>
+        </li></ul>
+            </nav>
+        </li></ul>
+            </nav>
         </li>
-        <li class="md-nav__item"><a href="#architectureconfigs" class="md-nav__link">ArchitectureConfigs</a>
+        <li class="md-nav__item"><a href="#architectureconfigs" class="md-nav__link">ArchitectureConfigs</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.architectures.CNNectomeUNetConfig" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">CNNectomeUNetConfig</span></code></a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.architectures.CNNectomeUNetConfig.architecture_type" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">CNNectomeUNetConfig.architecture_type</span></code></a>
+        </li></ul>
+            </nav>
+        </li></ul>
+            </nav>
         </li>
-        <li class="md-nav__item"><a href="#taskconfigs" class="md-nav__link">TaskConfigs</a>
+        <li class="md-nav__item"><a href="#taskconfigs" class="md-nav__link">TaskConfigs</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.tasks.OneHotTaskConfig" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">OneHotTaskConfig</span></code></a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.tasks.OneHotTaskConfig.task_type" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">OneHotTaskConfig.task_type</span></code></a>
+        </li></ul>
+            </nav>
         </li>
-        <li class="md-nav__item"><a href="#trainerconfigs" class="md-nav__link">TrainerConfigs</a>
+        <li class="md-nav__item"><a href="#dacapo.experiments.tasks.AffinitiesTaskConfig" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">AffinitiesTaskConfig</span></code></a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.tasks.AffinitiesTaskConfig.task_type" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">AffinitiesTaskConfig.task_type</span></code></a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#dacapo.experiments.tasks.DistanceTaskConfig" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">DistanceTaskConfig</span></code></a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.tasks.DistanceTaskConfig.task_type" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">DistanceTaskConfig.task_type</span></code></a>
+        </li></ul>
+            </nav>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#trainerconfigs" class="md-nav__link">TrainerConfigs</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainerConfig" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainerConfig</span></code></a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainerConfig.trainer_type" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainerConfig.trainer_type</span></code></a>
+        </li></ul>
+            </nav>
+        </li></ul>
+            </nav>
         </li></ul>
             </nav>
         </li>
@@ -308,7 +354,7 @@ distinct objects, this cannot happen with distances.</p>
 <blockquote>
 <div><dl class="py class">
 <dt class="sig sig-object py" id="dacapo.experiments.trainers.GunpowderTrainerConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dacapo.experiments.trainers.</span></span><span class="sig-name descname"><span class="pre">GunpowderTrainerConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_data_fetchers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_masked</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dacapo.experiments.trainers.GunpowderTrainerConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dacapo.experiments.trainers.</span></span><span class="sig-name descname"><span class="pre">GunpowderTrainerConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_data_fetchers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_masked</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dacapo.experiments.trainers.GunpowderTrainerConfig" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="dacapo.experiments.trainers.GunpowderTrainerConfig.trainer_type">
 <span class="sig-name descname"><span class="pre">trainer_type</span></span><a class="headerlink" href="#dacapo.experiments.trainers.GunpowderTrainerConfig.trainer_type" title="Permalink to this definition">¶</a></dt>
@@ -366,7 +412,7 @@ distinct objects, this cannot happen with distances.</p>
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

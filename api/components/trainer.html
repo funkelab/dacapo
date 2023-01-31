@@ -52,10 +52,8 @@
     <link rel="stylesheet" type="text/css" href="../../_static/material.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Configs" href="../configs.html" />
@@ -189,7 +187,33 @@
   <ul class="md-nav__list" data-md-scrollfix="">
         <li class="md-nav__item"><a href="#api-components-trainer--page-root" class="md-nav__link">Trainer Reference</a><nav class="md-nav">
               <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#trainer" class="md-nav__link">Trainer</a>
+        <li class="md-nav__item"><a href="#trainer" class="md-nav__link">Trainer</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.Trainer" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">Trainer</span></code></a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.Trainer.build_batch_provider" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">Trainer.build_batch_provider()</span></code></a>
+        </li>
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.Trainer.can_train" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">Trainer.can_train()</span></code></a>
+        </li>
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.Trainer.create_optimizer" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">Trainer.create_optimizer()</span></code></a>
+        </li>
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.Trainer.iterate" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">Trainer.iterate()</span></code></a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainer" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainer</span></code></a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainer.build_batch_provider" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainer.build_batch_provider()</span></code></a>
+        </li>
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainer.can_train" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainer.can_train()</span></code></a>
+        </li>
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainer.create_optimizer" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainer.create_optimizer()</span></code></a>
+        </li>
+        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainer.iterate" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainer.iterate()</span></code></a>
+        </li></ul>
+            </nav>
+        </li></ul>
+            </nav>
         </li></ul>
             </nav>
         </li>
@@ -348,7 +372,7 @@ may have requirements for their training datasets.</p>
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

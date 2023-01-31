@@ -52,10 +52,8 @@
     <link rel="stylesheet" type="text/css" href="_static/material.css" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Configs" href="api/configs.html" />
@@ -298,9 +296,9 @@ modes of saving data.</p>
 </ol>
 <p>To define where this data goes, create a <cite>dacapo.yaml</cite> configuration file.
 Here is a template:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">mongodbhost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb://dbuser:dbpass@dburl:dbport/</span><span class="w"></span>
-<span class="nt">mongodbname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dacapo</span><span class="w"></span>
-<span class="nt">runs_base_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/my/data/storage</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">mongodbhost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb://dbuser:dbpass@dburl:dbport/</span>
+<span class="nt">mongodbname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dacapo</span>
+<span class="nt">runs_base_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/my/data/storage</span>
 </pre></div>
 </div>
 <p>The <cite>runs_base_dir</cite> defines where your on-disk data will be stored.
@@ -465,9 +463,9 @@ you can specify specific compute requirements.</p>
 <p>Finally your job should be running. The full script to run this tutorial is
 provided here:</p>
 <p><cite>dacapo.yaml</cite>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">mongodbhost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb://dbuser:dbpass@dburl:dbport/</span><span class="w"></span>
-<span class="nt">mongodbname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dacapo</span><span class="w"></span>
-<span class="nt">runs_base_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/my/data/storage</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">mongodbhost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb://dbuser:dbpass@dburl:dbport/</span>
+<span class="nt">mongodbname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dacapo</span>
+<span class="nt">runs_base_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/my/data/storage</span>
 </pre></div>
 </div>
 <p><cite>train.py</cite>:</p>
@@ -609,7 +607,7 @@ provided here:</p>
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

@@ -187,33 +187,7 @@
   <ul class="md-nav__list" data-md-scrollfix="">
         <li class="md-nav__item"><a href="#api-components-trainer--page-root" class="md-nav__link">Trainer Reference</a><nav class="md-nav">
               <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#trainer" class="md-nav__link">Trainer</a><nav class="md-nav">
-              <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.Trainer" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">Trainer</span></code></a><nav class="md-nav">
-              <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.Trainer.build_batch_provider" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">Trainer.build_batch_provider()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.Trainer.can_train" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">Trainer.can_train()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.Trainer.create_optimizer" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">Trainer.create_optimizer()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.Trainer.iterate" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">Trainer.iterate()</span></code></a>
-        </li></ul>
-            </nav>
-        </li>
-        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainer" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainer</span></code></a><nav class="md-nav">
-              <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainer.build_batch_provider" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainer.build_batch_provider()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainer.can_train" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainer.can_train()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainer.create_optimizer" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainer.create_optimizer()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#dacapo.experiments.trainers.GunpowderTrainer.iterate" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">GunpowderTrainer.iterate()</span></code></a>
-        </li></ul>
-            </nav>
-        </li></ul>
-            </nav>
+        <li class="md-nav__item"><a href="#trainer" class="md-nav__link">Trainer</a>
         </li></ul>
             </nav>
         </li>
@@ -235,93 +209,6 @@
 <h1 id="api-components-trainer--page-root">Trainer Reference<a class="headerlink" href="#api-components-trainer--page-root" title="Permalink to this heading">¶</a></h1>
 <section id="trainer">
 <h2 id="trainer">Trainer<a class="headerlink" href="#trainer" title="Permalink to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="dacapo.experiments.trainers.Trainer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dacapo.experiments.trainers.</span></span><span class="sig-name descname"><span class="pre">Trainer</span></span><a class="headerlink" href="#dacapo.experiments.trainers.Trainer" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="dacapo.experiments.trainers.Trainer.build_batch_provider">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_batch_provider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_container</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dacapo.experiments.trainers.Trainer.build_batch_provider" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize the training pipeline using the datasets, model, task
-and snapshot_container</p>
-<p>The training datasets are required s.t. the pipeline knows where to pull
-data from.
-The model is needed to inform the pipeline of required input/output sizes
-The task is needed to transform gt into target
-The snapshot_container defines where snapshots will be saved.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="dacapo.experiments.trainers.Trainer.can_train">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">can_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasets</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dacapo.experiments.trainers.Trainer.can_train" title="Permalink to this definition">¶</a></dt>
-<dd><p>Can this trainer train with a specific set of datasets. Some trainers
-may have requirements for their training datasets.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="dacapo.experiments.trainers.Trainer.create_optimizer">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_optimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dacapo.experiments.trainers.Trainer.create_optimizer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a <code class="docutils literal notranslate"><span class="pre">torch</span></code> optimizer for the given model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="dacapo.experiments.trainers.Trainer.iterate">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">iterate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dacapo.experiments.trainers.Trainer.iterate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform <code class="docutils literal notranslate"><span class="pre">num_iterations</span></code> training iterations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">TrainingIterationStats</span></code>]</p>
-</dd>
-</dl>
-</dd></dl>
-</dd></dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="dacapo.experiments.trainers.GunpowderTrainer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dacapo.experiments.trainers.</span></span><span class="sig-name descname"><span class="pre">GunpowderTrainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trainer_config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dacapo.experiments.trainers.GunpowderTrainer" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="dacapo.experiments.trainers.GunpowderTrainer.build_batch_provider">
-<span class="sig-name descname"><span class="pre">build_batch_provider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_container</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dacapo.experiments.trainers.GunpowderTrainer.build_batch_provider" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize the training pipeline using the datasets, model, task
-and snapshot_container</p>
-<p>The training datasets are required s.t. the pipeline knows where to pull
-data from.
-The model is needed to inform the pipeline of required input/output sizes
-The task is needed to transform gt into target
-The snapshot_container defines where snapshots will be saved.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="dacapo.experiments.trainers.GunpowderTrainer.can_train">
-<span class="sig-name descname"><span class="pre">can_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasets</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dacapo.experiments.trainers.GunpowderTrainer.can_train" title="Permalink to this definition">¶</a></dt>
-<dd><p>Can this trainer train with a specific set of datasets. Some trainers
-may have requirements for their training datasets.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="dacapo.experiments.trainers.GunpowderTrainer.create_optimizer">
-<span class="sig-name descname"><span class="pre">create_optimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dacapo.experiments.trainers.GunpowderTrainer.create_optimizer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a <code class="docutils literal notranslate"><span class="pre">torch</span></code> optimizer for the given model.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="dacapo.experiments.trainers.GunpowderTrainer.iterate">
-<span class="sig-name descname"><span class="pre">iterate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dacapo.experiments.trainers.GunpowderTrainer.iterate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform <code class="docutils literal notranslate"><span class="pre">num_iterations</span></code> training iterations.</p>
-</dd></dl>
-</dd></dl>
 </section>
 </section>
 

@@ -210,8 +210,8 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  <nav class="contents local" id="contents" role="doc-toc">
-<span id="sec-tutorial-simple-experiment-python"></span><ul class="simple">
+  <span class="target" id="module-dacapo"><span id="sec-tutorial-simple-experiment-python"></span></span><nav class="contents local" id="contents" role="doc-toc">
+<ul class="simple">
 <li><p><a class="reference internal" href="#tutorial-a-simple-experiment-in-python" id="id2">Tutorial: A Simple Experiment in Python</a></p></li>
 </ul>
 </nav>
@@ -333,7 +333,7 @@ for a tutorial stepping through the use of the dashboard.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dacapo.experiments.architectures</span> <span class="kn">import</span> <span class="n">CNNectomeUNetConfig</span>
 <span class="n">architecture_config</span> <span class="o">=</span> <span class="n">CNNectomeUNetConfig</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">"small_unet"</span><span class="p">,</span>
-    <span class="n">input_shape</span><span class="o">=</span><span class="n">Coordinate</span><span class="p">(</span><span class="mi">216</span><span class="p">,</span> <span class="mi">216</span><span class="p">,</span> <span class="mi">216</span><span class="p">),</span>
+    <span class="n">input_shape</span><span class="o">=</span><span class="n">Coordinate</span><span class="p">(</span><span class="mi">212</span><span class="p">,</span> <span class="mi">212</span><span class="p">,</span> <span class="mi">212</span><span class="p">),</span>
     <span class="n">eval_shape_increase</span><span class="o">=</span><span class="n">Coordinate</span><span class="p">(</span><span class="mi">72</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">72</span><span class="p">),</span>
     <span class="n">fmaps_in</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">num_fmaps</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
@@ -402,6 +402,8 @@ combine them into a run and start training.</p>
   <span class="kn">from</span> <span class="nn">dacapo.experiments.run_config</span> <span class="kn">import</span> <span class="n">RunConfig</span>
   <span class="kn">from</span> <span class="nn">dacapo.experiments.run</span> <span class="kn">import</span> <span class="n">Run</span>
 
+  <span class="kn">from</span> <span class="nn">torchsummary</span> <span class="kn">import</span> <span class="n">summary</span>
+
 
   <span class="n">run_config</span> <span class="o">=</span> <span class="n">RunConfig</span><span class="p">(</span>
       <span class="n">name</span><span class="o">=</span><span class="s2">"tutorial_run"</span><span class="p">,</span>
@@ -417,7 +419,7 @@ combine them into a run and start training.</p>
   <span class="n">run</span> <span class="o">=</span> <span class="n">Run</span><span class="p">(</span><span class="n">run_config</span><span class="p">)</span>
 
   <span class="c1"># if you want a summary of the model you can print that here</span>
-  <span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">216</span><span class="p">,</span> <span class="mi">216</span><span class="p">,</span> <span class="mi">216</span><span class="p">)))</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">212</span><span class="p">,</span> <span class="mi">212</span><span class="p">,</span> <span class="mi">212</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -488,13 +490,14 @@ provided here:</p>
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
 <span class="c1"># TODO: create datasplit config</span>
+<span class="n">train_array</span>
 <span class="n">datasplit_config</span> <span class="o">=</span> <span class="o">...</span>
 
 
 <span class="c1"># Create Architecture Config</span>
 <span class="n">architecture_config</span> <span class="o">=</span> <span class="n">CNNectomeUNetConfig</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">"small_unet"</span><span class="p">,</span>
-    <span class="n">input_shape</span><span class="o">=</span><span class="n">Coordinate</span><span class="p">(</span><span class="mi">216</span><span class="p">,</span> <span class="mi">216</span><span class="p">,</span> <span class="mi">216</span><span class="p">),</span>
+    <span class="n">input_shape</span><span class="o">=</span><span class="n">Coordinate</span><span class="p">(</span><span class="mi">212</span><span class="p">,</span> <span class="mi">212</span><span class="p">,</span> <span class="mi">212</span><span class="p">),</span>
     <span class="n">eval_shape_increase</span><span class="o">=</span><span class="n">Coordinate</span><span class="p">(</span><span class="mi">72</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">72</span><span class="p">),</span>
     <span class="n">fmaps_in</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">num_fmaps</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>

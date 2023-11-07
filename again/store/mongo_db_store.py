@@ -144,14 +144,14 @@ class MongoDbStore:
                     f"DB, but was given\n\n{run_doc}")
 
             if update_db:
-                self.runs.update({'id': run.id}, run_doc)
+                self.runs.update_one({'id': run.id},{"$set": run_doc})
             elif update_current:
                 run.started = stored_run['started']
                 run.stopped = stored_run['stopped']
 
         else:
+                self.runs.insert_one(run_doc)
 
-            self.runs.insert(run_doc)
 
     def __sync_task_config(self, task_config):
         self.__save_insert(self.tasks, task_config.to_dict())

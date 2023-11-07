@@ -1,7 +1,8 @@
 bokeh
 configargparse
-funlib.learn.torch
-git+git://github.com/funkelab/funlib.evaluate@e53a8c5099f696b076f30ef8851ebaf4c7e66ce0#egg=funlib.evaluate
+git+https://github.com/funkelab/funlib.learn.torch@c870d3edf016f9f46ae14e06f6430c684e84953a#egg=funlib.learn.torch
+git+https://github.com/funkelab/funlib.evaluate@e53a8c5099f696b076f30ef8851ebaf4c7e66ce0#egg=funlib.evaluate
+git+https://github.com/funkelab/funlib.run@bf383a76865b998e621c034de4f84e2ac9f69377#egg=funlib.run
 gunpowder
 mahotas
 pymongo
@@ -9,3 +10,5 @@ scipy
 torch
 tqdm
 zarr
+numpy
+waterz

@@ -114,7 +114,7 @@ class Run:
             task.predictor.parameters(),
             self.optimizer_config.lr)
 
-        outdir = os.path.join('runs', self.hash)
+        outdir = os.path.join('runs', self.hash).replace(':', '_')
         print(f"Storing this run's data in {outdir}")
         os.makedirs(outdir, exist_ok=True)
 
@@ -261,9 +261,9 @@ def run_remote(run):
                 f'-v {run.validation_interval} '
                 f'-s {run.snapshot_interval} '
                 f'-b {run.keep_best_validation} ',
-        num_cpus=2,
+        num_cpus=5,
         num_gpus=1,
-        queue='gpu_any',
+        queue='gpu_rtx',
         execute=True)
 
 

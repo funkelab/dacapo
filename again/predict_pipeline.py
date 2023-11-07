@@ -121,7 +121,8 @@ def predict_2d(
 def predict_3d(
         raw_data,
         gt_data,
-        predictor):
+        predictor,
+        roi=None):
 
     raw_channels = max(1, raw_data.num_channels)
     input_shape = predictor.input_shape
@@ -199,8 +200,11 @@ def predict_3d(
     # prediction: ([c,] d, h, w)
     pipeline += gp.Scan(scan_request)
 
+    if roi is None:
+        roi = raw_data.roi
+
     # ensure validation ROI is at least the size of the network input
-    roi = raw_data.roi.grow(input_size/2, input_size/2)
+    roi = roi.grow(input_size/2, input_size/2)
 
     total_request = gp.BatchRequest()
     total_request[raw] = gp.ArraySpec(roi=roi)
@@ -226,14 +230,15 @@ def predict_3d(
 def predict(
         raw,
         predictor,
-        gt=None):
+        gt=None,
+        roi=None):
 
     task_dims = raw.spatial_dims
 
     if task_dims == 2:
-        return predict_2d(raw, gt, predictor)
+        return predict_2d(raw, gt, predictor, roi)
     elif task_dims == 3:
-        return predict_3d(raw, gt, predictor)
+        return predict_3d(raw, gt, predictor, roi)
     else:
         raise RuntimeError(
             "Validation other than 2D/3D not yet implemented")

@@ -162,6 +162,10 @@ def create_pipeline_3d(
     has_mask = task.data.has_mask
 
     # switch to world units
+    voxel_size = gp.Coordinate(voxel_size)
+    input_shape = gp.Coordinate(input_shape)
+    output_shape = gp.Coordinate(output_shape)
+
     input_size = voxel_size*input_shape
     output_size = voxel_size*output_shape
 
@@ -221,7 +225,7 @@ def create_pipeline_3d(
     # raw: (c, d, h, w)
     # target: ([c,] d, h, w)
     # [weights: ([c,] d, h, w)]
-    pipeline += gp.PreCache()
+    pipeline += gp.PreCache(num_workers=10)
     pipeline += gp.Stack(batch_size)
     # raw: (b, c, d, h, w)
     # target: (b, [c,] d, h, w)

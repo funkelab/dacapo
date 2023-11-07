@@ -9,7 +9,16 @@ setup(
         license='MIT',
         packages=[
             'again',
+            'again.analyze',
             'again.evaluate',
-            'again.models'
+            'again.models',
+            'again.optimizers',
+            'again.tasks',
+            'again.tasks.post_processors',
+            'again.tasks.losses',
+            'again.tasks.predictors',
+            'again.tasks.data',
+            'again.store',
+            'again.gp',
         ]
 )
